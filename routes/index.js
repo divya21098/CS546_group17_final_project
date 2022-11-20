@@ -3,15 +3,15 @@ const postRoutes = require("./posts");
 const path = require("path");
 
 const constructorMethod = (app) => {
-  app.use("/", (req, res) => {
+  app.get("/", (req, res) => {
     res.sendFile(path.resolve("static/index.html"));
   });
-  app.use("/posts", postRoutes);
-  app.use("/users", userRoutes);
+  // app.use("/posts", postRoutes);
+  // app.use("/users", userRoutes);
 
-  app.use("*", (req, res) => {
-    res.sendStatus(404);
-  });
+  // app.use("*", (req, res) => {
+  //   res.sendStatus(404);
+  // });
 };
 
 module.exports = constructorMethod;
