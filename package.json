@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "seed": "node ./tasks/seed.js",
+    "seed": "node seed.js",
     "start": "nodemon app.js"
   },
   "repository": {
