@@ -4,7 +4,7 @@ const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 const helper = require("../helper");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const saltRounds = 16;
 
 const createUser = async (
@@ -86,7 +86,7 @@ const getAllUsers = async () => {
 
 const getUserById = async (id) => {
   if (!helper.validString(id)) throw "id must be given";
-  helper.isValidId(id);
+  helper.validId(id);
   id = helper.trimString(id);
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: ObjectId(id) });
@@ -97,7 +97,7 @@ const getUserById = async (id) => {
 const updateUser = async (id, updatedUser) => {
   let updatedUserData = {};
   if (!helper.validString(id)) throw "id must be given";
-  helper.isValidId(id);
+  helper.validId(id);
   id = helper.trimString(id);
   let = await getUserById(id);
   if (updatedUser.firstName) {

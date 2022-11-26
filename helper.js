@@ -3,8 +3,8 @@
 const { ObjectId } = require("mongodb");
 
 const validString = (str) => {
-  if (!str || typeof str !== "string" || !str.trim()) return false;
-  return true;
+  if (!str || typeof str !== "string" || !str.trim()) throw "not valid string";
+  return str;
 };
 
 // Takes in a number argument.
@@ -33,7 +33,7 @@ const validatePhoneNumber = (phoneNumber) => {
   }
 };
 
-const isValidId = (id) => {
+const validId = (id) => {
   if (!ObjectId.isValid(id)) {
     throw "invalid object ID";
   }
@@ -43,7 +43,7 @@ const isValidId = (id) => {
 const trimString = (str) => {
   return str.trim();
 };
-function isValidDate(dateString) {
+function validDate(dateString) {
   // First check for the pattern
   if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) return false;
 
@@ -69,7 +69,7 @@ module.exports = {
   validAge,
   validEmail,
   validatePhoneNumber,
-  isValidId,
+  validId,
   trimString,
-  isValidDate,
+  validDate,
 };

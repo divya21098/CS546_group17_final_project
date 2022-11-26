@@ -37,7 +37,6 @@ const createPost = async (
     throw "could not add post";
   const newId = insertInfo.insertedId;
   const newIDString = String(newId);
-  console.log(newIDString);
   const post = await getPostById(newIDString);
   post._id = post._id.toString();
   return post;
@@ -56,7 +55,7 @@ const getAllPosts = async () => {
 };
 //post individual
 const getPostById = async (id) => {
-  const postId = validation.isValidId(id);
+  const postId = validation.validId(id);
   const postCollection = await posts();
   const post = await postCollection.findOne({ _id: ObjectId(postId) });
   if (post === null) throw "No post with that id";
@@ -64,7 +63,7 @@ const getPostById = async (id) => {
 };
 //edit post once user login
 const removePostById = async (id) => {
-  postId = validation.isValidId(id);
+  postId = validation.validId(id);
 
   const postCollection = await posts();
   // const movie = await getMovieById(postId);

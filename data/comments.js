@@ -7,7 +7,8 @@ const users = mongoCollections.users;
 const posts = mongoCollections.posts;
 
 const createComment = async (postId, userId, commentText) => {
-  if (!validation.validString(postId)) throw "postId must be given as a string";
+  console.log("in comm create data");
+  if (!validation.validId(postId)) throw "postId must be given as a string";
   if (!validation.validString(userId)) throw "userId must be given as a string";
   if (!validation.validString(commentText))
     throw "must give comment text as a string";
@@ -18,7 +19,7 @@ const createComment = async (postId, userId, commentText) => {
   });
 
   if (samePost === null) throw "Post to which comment added doesnt exist";
-
+  console.log(samePost);
   let newComment = {
     // postId: postId,
     _id: new ObjectId(),
@@ -86,7 +87,7 @@ const getAllComments = async (postId) => {
   const post = await postsCollection.findOne({ _id: ObjectId(postId) });
   if (post === null) throw "No post present with that Id";
 
-  // console.log(post);
+  console.log(post);
   post.comments.forEach((element) => {
     element._id = element._id.toString();
   });
@@ -94,10 +95,7 @@ const getAllComments = async (postId) => {
 };
 
 const removeComment = async (commentId) => {
-  commentId = validation.isValidId(commentId);
-  // const commentCollection = await comments();
-  // let comment = await getComment(commentId);
-  console.log(commentId);
+  commentId = validation.validId(commentId);
 
   try {
     const postCollection = await posts();
