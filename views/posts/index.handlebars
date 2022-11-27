@@ -1,1 +1,24 @@
 {{!-- all handlerbars --}}
+<main>
+    <div class="search-card">
+        <form id="search-form" method="POST" action="/search">
+            <input id="search-bar" type="text" name="search" class = "searchFields" placeholder="Search a user or post" />
+            <input type="submit" class = "btn" value="Search" />
+        </form>
+    </div>
+    {{#each post}}
+    <div class="post-details-card">
+        <div class="row">
+            <div class="col-sm">
+                {{image}}
+            </div>
+            <div class="col-sm">
+                <p>{{post.userId}}</p>
+                <h2>{{post.postTitle}}</h2>
+                <p>{{post.price}}</p>
+                <p>{{post.location}}</p>
+                <p>{{post.date}}</p>
+            </div>
+        </div>
+    </div>
+</main>
