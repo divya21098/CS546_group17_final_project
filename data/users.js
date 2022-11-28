@@ -38,17 +38,19 @@ const createUser = async (
   }
   /*before storing email and username into DB, make sure there are no duplicate entries of email in DB */
   const allUsers = await getAllUsers();
+  if(allUsers.length!==0){
   allUsers.forEach((user) => {
-    if (user.email == email)
+    if (user.emailId === helper.trimString(emailId))
       throw "An account is already created with the provided email id.";
   });
+}
 
   //create hashed password
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   firstName = helper.trimString(firstName);
   lastName = helper.trimString(lastName);
   emailId = helper.trimString(emailId);
-  age = helper.trimString(age);
+  //age = helper.trimString(age);
   phoneNumber = helper.trimString(phoneNumber);
   gender = helper.trimString(gender);
   nationality = helper.trimString(nationality);
@@ -80,7 +82,7 @@ const createUser = async (
 const getAllUsers = async () => {
   const userCollection = await users();
   const userList = await userCollection.find({}).toArray();
-  if (userList.length === 0) throw "no users in the collection";
+  if (userList.length === 0) return [];
   return userList;
 };
 
@@ -112,11 +114,7 @@ const updateUser = async (id, updatedUser) => {
     updatedUser.lastName = helper.trimString(updatedUser.lastName);
     updatedUserData.lastName = updatedUser.lastName;
   }
-  // if(updatedUser.emailId){
-  //   if (!helper.validEmail(updatedUser.emailId)) throw "Email is not a valid string.";
-  //   updatedUser.emailId=helper.trimString(updatedUser.validEmail)
-  //   updatedUserData.validEmail = updatedUser.validEmail.toLowerCase()
-  // }
+  
   if (updatedUser.age) {
     if (!helper.validAge(updatedUser.age))
       throw "Age must be a positive integer";
