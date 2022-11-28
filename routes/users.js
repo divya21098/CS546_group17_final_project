@@ -9,7 +9,7 @@ const userData = mongoCollections.users;
 const saltRounds = 10;
 const validator = require("../helper");
 
-//Post signup
+//POST METHOD for /register route
 router.post("/register", async (req, res) => {
   let errors = [];
   let firstName = validator.trimString(req.body.firstname);
@@ -71,13 +71,12 @@ router.post("/register", async (req, res) => {
   } catch (e) {
     errors.push(e);
     return res.status(400).render("/register", {
-      authenticated: false,
-      title: "Register",
-      partial: "signup-script",
       errors: errors,
     });
   }
 });
+
+
 
 // get Logout
 router.get('/logout', async(req,res) =>{
@@ -86,46 +85,41 @@ router.get('/logout', async(req,res) =>{
 })
 
 
-// Get signup page
+// GET METHOD for /register route
 router.get('/register', async (req, res) => {
   if (req.session.user){
-      res.redirect('/private');
+      res.redirect('/postList');
   } else{
-      res.render('users/signup', {
-          title: 'Sign Up',
-          authenticated: false,
-          partial: 'signup-script'
+      res.render('/register', {
       })
   } 
 })
 
-// Get login page
+// GET METHOD for /login route
 router.get('/login', async (req, res) => {
   if (req.session.user){
       res.redirect('/postList');
   } else{
       res.render('/login', {
-          title: 'Log In',
-          authenticated: false
       });
   }
 });
 
-//get post landing pages
-router.get('/', async (req, res) => {
-  if (req.session.user){
-      res.redirect("/posts");
-  }
-});
+
+// router.get('/', async (req, res) => {
+//   if (req.session.user){
+//       res.redirect("/posts");
+//   }
+// });
 
 
-//post login
+//POST METHOD for /login route
 router.post('/login', async (req, res) => {
   
     const emailId = validator.trimString(req.body.emailId)
     const password = req.body.password
 
-    errors = [];
+    let errors = [];
 
     if (!validator.validEmail(emailId)) {
       errors.push("Please Enter valid email id");
@@ -133,14 +127,12 @@ router.post('/login', async (req, res) => {
     if (!validator.validPassword(password)) errors.push('Invalid password.');
 
     const userCollection = await userData();
-    const myUser = await userCollection.findOne({ email: emailId });
+    const myUser = await userCollection.findOne({ email: emailId.toLowerCase()});
 
     if (!myUser) errors.push("Username or password does not match.");
 
     if (errors.length > 0) {
         return res.status(401).render('users/login',{
-            title: "Log In",
-            partial: "login-script",
             errors: errors
         });
     }
@@ -148,7 +140,7 @@ router.post('/login', async (req, res) => {
     let match = await bcrypt.compare(password, myUser.password);
 
     if (match){
-        req.session.user = myUser._id;
+        req.session.user = myUser._id.toString();
         // Redirect the user to their previous route after they login if it exists
         // Otherwise, bring them to the home/post list page
         let prev = req.session.previousRoute;
@@ -156,12 +148,10 @@ router.post('/login', async (req, res) => {
             req.session.previousRoute = '';
             return res.redirect(prev);
         } 
-        res.redirect('/');
+        res.redirect('/postList');
     } else {
         errors.push("Username or password does not match");
-        return res.status(401).render('users/login', {   
-            title: "Errors",
-            partial: "login-script",
+        return res.status(403).render('/login', {   
             errors: errors
         });
     }
