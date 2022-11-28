@@ -1,5 +1,3 @@
-// Takes in a string argument.
-// Return true if the argument is non-empty, a string, and non-empty when trimmed; otherwise return false.
 const { ObjectId } = require("mongodb");
 
 const validString = (str) => {
@@ -34,9 +32,13 @@ const validatePhoneNumber = (phoneNumber) => {
 };
 
 const validId = (id) => {
-  if (!ObjectId.isValid(id)) {
-    throw "invalid object ID";
-  }
+  if (!id) throw "Error: You must provide an id to search for";
+  if (typeof id !== "string") throw "Error: id must be a string";
+  id = id.trim();
+  if (id.length === 0)
+    throw "Error: id cannot be an empty string or just spaces";
+  if (!ObjectId.isValid(id)) throw "Error: invalid object ID";
+
   return id;
 };
 
