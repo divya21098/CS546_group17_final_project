@@ -2,7 +2,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const posts = mongoCollections.posts;
 const { ObjectId } = require("mongodb");
-const comments = mongoCollections.comments;
+const userData = mongoCollections.users;
 const validation = require("../helper");
 
 const createPost = async (
