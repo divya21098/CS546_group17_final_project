@@ -5,7 +5,7 @@ const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 const validator = require("../helper");
 const bcrypt = require("bcryptjs");
-const saltRounds = 16;
+const saltRounds = 10;
 
 const createUser = async (
   firstName,
@@ -19,12 +19,14 @@ const createUser = async (
   aboutMe,
   preference
 ) => {
-  if (!validator.validString(firstName)) throw "First name is not a valid string.";
-  if (!validator.validString(lastName)) throw "Last name is not a valid string.";
+  if (!validator.validString(firstName))
+    throw "First name is not a valid string.";
+  if (!validator.validString(lastName))
+    throw "Last name is not a valid string.";
   if (!validator.validEmail(emailId)) throw "Email is not a valid string.";
   let email = emailId.toLowerCase();
-  if(typeof age==="string"){
-    age = parseInt(age) 
+  if (typeof age === "string") {
+    age = parseInt(age);
   }
   if (!validator.validAge(age)) throw "Age must be a positive integer";
   if (!validator.validString(password)) throw "Password is not a valid string.";
@@ -53,12 +55,12 @@ const createUser = async (
   */
   /*before storing email and username into DB, make sure there are no duplicate entries of email in DB */
   const allUsers = await getAllUsers();
-  if(allUsers.length!==0){
-  allUsers.forEach((user) => {
-    if (user.emailId === validator.trimString(email))
-      throw "An account is already created with the provided email id.";
-  });
-}
+  if (allUsers.length !== 0) {
+    allUsers.forEach((user) => {
+      if (user.emailId === validator.trimString(email))
+        throw "An account is already created with the provided email id.";
+    });
+  }
   //create hashed password
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   firstName = validator.trimString(firstName);
@@ -80,17 +82,17 @@ const createUser = async (
     nationality: nationality,
     aboutMe: aboutMe,
     preference: preference,
-    postId:[],
-    commentId:[],
+    postId: [],
+    commentId: [],
   };
-
+  console.log("new user dict");
   const userCollection = await users();
   const insertInfo = await userCollection.insertOne(newUser);
   if (insertInfo.insertedCount === 0) throw "Could not add user.";
-
+  console.log("insert done");
   const newId = insertInfo.insertedId;
   const userDetail = await getUserById(newId.toString());
-
+  console.log("user hi");
   return userDetail;
 };
 
@@ -103,7 +105,7 @@ const getAllUsers = async () => {
 
 const getUserById = async (id) => {
   if (!validator.validString(id)) throw "id must be given";
-  validator.isValidId(id);
+  validator.validId(id);
   id = validator.trimString(id);
   const userCollection = await users();
   const user = await userCollection.findOne({ _id: ObjectId(id) });
@@ -114,7 +116,7 @@ const getUserById = async (id) => {
 const updateUser = async (id, updatedUser) => {
   let updatedUserData = {};
   if (!validator.validString(id)) throw "id must be given";
-  validator.isValidId(id);
+  validator.validId(id);
   id = validator.trimString(id);
   let = await getUserById(id);
   if (updatedUser.firstName) {
@@ -136,7 +138,6 @@ const updateUser = async (id, updatedUser) => {
     updatedUser.age = validator.trimString(updatedUser.age);
     updatedUserData.age = updatedUser.age;
   }
-
 
   if (updatedUser.phoneNumber) {
     validator.validatePhoneNumber(updatedUser.phoneNumber);

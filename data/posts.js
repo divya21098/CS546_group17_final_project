@@ -2,20 +2,29 @@
 const mongoCollections = require("../config/mongoCollections");
 const posts = mongoCollections.posts;
 const { ObjectId } = require("mongodb");
-const userData = mongoCollections.users;
+const users = mongoCollections.users;
 const validation = require("../helper");
+// const { users } = require(".");
 
 const createPost = async (
+  userId,
   postTitle,
   postBody,
+  // postPicture,
   mapCordinate,
-  image,
   preference
 ) => {
   console.log("in post data");
 
-  if (!validation.validString(postTitle) || !validation.validString(postBody))
+  if (
+    !validation.validString(postTitle) ||
+    !validation.validString(postBody) ||
+    !validation.validId(userId)
+  )
     throw "All fields need to have valid values";
+  // if (!postPicture || postPicture == "") {
+  //   postPicture = "";
+  // }
   // if (!validation.isValidDate(postDate)) throw "date is not valid";
   const date = new Date();
   let day = date.getDate();
@@ -24,21 +33,32 @@ const createPost = async (
   let currentDate = `${month}/${day}/${year}`;
 
   let newPost = {
+    userId: userId,
     postTitle: postTitle,
     postDate: currentDate,
     postBody: postBody,
     comments: [],
+    // postPicture: postPicture,
   };
 
   const postCollection = await posts();
-
+  const userCollection = await users();
   const insertInfo = await postCollection.insertOne(newPost);
   if (!insertInfo.acknowledged || insertInfo.insertedCount === 0)
     throw "could not add post";
+  else {
+    const updatedInfo = await userCollection.updateOne(
+      { _id: ObjectId(userId) },
+      { $push: { postId: String(newPost._id) } }
+    );
+    if (updatedInfo.modifiedCount === 0) {
+      throw "Could not update Restaurant Collection with Review Data!";
+    }
+  }
   const newId = insertInfo.insertedId;
   const newIDString = String(newId);
   const post = await getPostById(newIDString);
-  post._id = post._id.toString();
+  // post._id = post._id.toString();
   return post;
 };
 //post listing
@@ -112,7 +132,14 @@ const updatePostbyId = async (id, postTitle, postBody) => {
 };
 
 //list of post user see after login
-const getPostByuserId = async (id) => {};
+const getPostByuserId = async (id) => {
+  let postId = validation.validId(id);
+
+  const userCollection = await users();
+  const userinfo = await userCollection.findOne({ _id: ObjectId(postId) });
+  if (!userinfo) throw "Posts not found";
+  return userinfo.postId;
+};
 
 module.exports = {
   createPost,

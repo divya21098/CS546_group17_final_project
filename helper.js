@@ -42,8 +42,8 @@ const validId = (id) => {
   return id;
 };
 
-const trimString = (str) => {
-  return str.trim();
+const trimString = (string) => {
+  return string.trim();
 };
 function validDate(dateString) {
   // First check for the pattern
