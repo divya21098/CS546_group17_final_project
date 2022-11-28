@@ -1,5 +1,6 @@
 const { ObjectId } = require("mongodb");
-
+// Takes in a string argument.
+// Return true if the argument is non-empty, a string, and non-empty when trimmed; otherwise return false.
 const validString = (str) => {
   if (!str || typeof str !== "string" || !str.trim()) throw "not valid string";
   return str;
