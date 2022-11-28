@@ -48,7 +48,7 @@ const createUser = async (
   firstName = helper.trimString(firstName);
   lastName = helper.trimString(lastName);
   emailId = helper.trimString(emailId);
-  age = helper.trimString(age);
+  age = age;
   phoneNumber = helper.trimString(phoneNumber);
   gender = helper.trimString(gender);
   nationality = helper.trimString(nationality);
@@ -65,6 +65,8 @@ const createUser = async (
     nationality: nationality,
     aboutMe: aboutMe,
     preference: preference,
+    postId : [],
+    commentId: []
   };
 
   const userCollection = await users();
@@ -80,7 +82,7 @@ const createUser = async (
 const getAllUsers = async () => {
   const userCollection = await users();
   const userList = await userCollection.find({}).toArray();
-  if (userList.length === 0) throw "no users in the collection";
+  if (userList.length === 0) return [];
   return userList;
 };
 

@@ -73,4 +73,13 @@ router.route("/:id").delete(async (req, res) => {
   }
 });
 router.route("/search").get(async (req, res) => {});
+
+router.route("/userPost").get(async (req, res) =>{
+  try{
+    
+  }
+  catch(e){
+
+  }
+})
 module.exports = router;

@@ -1,6 +1,7 @@
 //post route
 const mongoCollections = require("../config/mongoCollections");
 const posts = mongoCollections.posts;
+const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 const comments = mongoCollections.comments;
 const validation = require("../helper");
@@ -81,7 +82,16 @@ const removePostById = async (id) => {
 const updatePostbyId = async (id) => {};
 
 //list of post user see after login
-const getPostByuserId = async (id) => {};
+const getPostByuserId = async (id) => {
+  //id = validation.checkId(id, 'ID');
+  const userCollection = await users();
+  const userinfo = await userCollection.findOne({_id: ObjectId(id)})
+  // const postCollection = await posts();
+  // const post = await postCollection.findAll({userId: userinfo.postId});
+
+  if (!userinfo) throw 'Posts not found';
+  return userinfo.postId;
+};
 
 module.exports = {
   createPost,
