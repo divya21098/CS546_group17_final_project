@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Roommate Finder</title>
+    <link rel="stylesheet" type="text/css" href="../../public/css/style.css">
+</head>
+<body>
+    <header>
+    <nav>
+        <li><a href="/">Home</a></li>
+        <li><a href="/postList" id="postList">Posts</a></li>
+        {{#if userLoggedIn}}
+        <li><a href="/creatPost" id="createPost">Posts</a></li>
+        <li><a href="/profile" id="users">Profile</a></li>
+        <li><a href="/logout" id="logout"></a></li>
+        {{else}}
+        <li><a href="/login" id="login">Posts</a></li>
+        {{/if}}
+    </nav>
+    </header>
+    {{{body}}}
+</body>
+</html>

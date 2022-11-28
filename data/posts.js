@@ -2,7 +2,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const posts = mongoCollections.posts;
 const { ObjectId } = require("mongodb");
-const comments = mongoCollections.comments;
+const userData = mongoCollections.users;
 const validation = require("../helper");
 
 const createPost = async (
@@ -18,11 +18,11 @@ const createPost = async (
     throw "All fields need to have valid values";
   // if (!validation.isValidDate(postDate)) throw "date is not valid";
   const date = new Date();
-
   let day = date.getDate();
   let month = String(date.getMonth() + 1).padStart(2, "0");
   let year = String(date.getFullYear()).padStart(2, "0");
   let currentDate = `${month}/${day}/${year}`;
+
   let newPost = {
     postTitle: postTitle,
     postDate: currentDate,
@@ -66,8 +66,8 @@ const removePostById = async (id) => {
   postId = validation.validId(id);
 
   const postCollection = await posts();
-  // const movie = await getMovieById(postId);
-
+  const post = await postCollection.findOne({ _id: ObjectId(postId) });
+  if (post === null) throw "No post with that id";
   const deletionInfo = await postCollection.deleteOne({
     _id: ObjectId(postId),
   });
@@ -78,7 +78,38 @@ const removePostById = async (id) => {
   return { postId: postId, deleted: true };
 };
 //edit post once user login
-const updatePostbyId = async (id) => {};
+const updatePostbyId = async (id, postTitle, postBody) => {
+  let postId = validation.validId(id);
+
+  if (!validation.validString(postTitle) || !validation.validString(postBody))
+    throw "All fields need to have valid values";
+  const postCollection = await posts();
+  // const movie = await getMovieById(postId);
+
+  const post = await postCollection.findOne({ _id: ObjectId(postId) });
+  if (post === null) throw "No post with that id";
+
+  const date = new Date();
+
+  let day = date.getDate();
+  let month = String(date.getMonth() + 1).padStart(2, "0");
+  let year = String(date.getFullYear()).padStart(2, "0");
+  let currentDate = `${month}/${day}/${year}`;
+
+  let updatedPost = {
+    postTitle: postTitle,
+    postDate: currentDate,
+    postBody: postBody,
+  };
+  const updateInfo = await postCollection.updateOne(
+    { _id: ObjectId(postId) },
+    { $set: updatedPost }
+  );
+  if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+    throw "Error: Update failed";
+  const res = await getPostById(postId);
+  return res;
+};
 
 //list of post user see after login
 const getPostByuserId = async (id) => {};
