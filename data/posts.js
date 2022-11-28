@@ -4,7 +4,7 @@ const posts = mongoCollections.posts;
 const { ObjectId } = require("mongodb");
 const users = mongoCollections.users;
 const validation = require("../helper");
-// const { users } = require(".");
+
 
 const createPost = async (
   userId,
@@ -132,15 +132,65 @@ const updatePostbyId = async (id, postTitle, postBody) => {
 };
 
 //list of post user see after login
+//list of post user see after login
 const getPostByuserId = async (id) => {
-  let postId = validation.validId(id);
-
+  //id = validation.checkId(id, 'ID');
+  id= validation.validId(id);
   const userCollection = await users();
-  const userinfo = await userCollection.findOne({ _id: ObjectId(postId) });
-  if (!userinfo) throw "Posts not found";
-  return userinfo.postId;
+  const userinfo = await userCollection.findOne({_id: ObjectId(id)})
+  let result=[]
+  if(userinfo.postId.length>0){
+    for(i=0;i<userinfo.postId.length;i++)
+    {
+      result.push(await getPostById(userinfo.postId[i]))
+    }
+  }
+  // const postCollection = await posts();
+  // const post = await postCollection.findAll({userId: userinfo.postId});
+
+  if (!result) throw 'Posts not found';
+  return result;
 };
 
+const getSavedPostByuserId = async (id) => {
+  id = validation.validId(id);
+  const userCollection = await users();
+  const userinfo = await userCollection.findOne({_id: ObjectId(id)})
+  let result=[]
+  if(userinfo.savedPost.length>0){
+    for(i=0;i<userinfo.savedPost.length;i++)
+    {
+      result.push(await getPostById(userinfo.savedPost[i]))
+    }
+  }
+  // const postCollection = await posts();
+  // const post = await postCollection.findAll({userId: userinfo.postId});
+
+  if (!result) throw 'Posts not found';
+  return result;
+};
+
+const removeSavedPostByuserId = async (postid, userid) => {
+  postid = validation.validId(postid);
+  userid = validation.validId(userid)
+  const userCollection = await users();
+  const userinfo = await userCollection.findOne({_id: ObjectId(userid)})
+  if(userinfo.savedPost.length>0){
+    for(i=0;i<userinfo.savedPost.length;i++)
+    {
+      if(userinfo.savedPost[i]===postid){
+        userinfo.savedPost.splice(i, 1);
+      }
+    }
+    users.updateUser({"postId":userinfo})
+  }
+
+  // const postCollection = await posts();
+  // const post = await postCollection.findAll({userId: userinfo.postId});
+
+  if (!result) throw 'Posts not found';
+  return {"updated":true};
+};
 module.exports = {
   createPost,
   getAllPosts,
@@ -148,4 +198,6 @@ module.exports = {
   removePostById,
   updatePostbyId,
   getPostByuserId,
+  getSavedPostByuserId,
+  removeSavedPostByuserId
 };
