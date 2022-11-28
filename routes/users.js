@@ -4,6 +4,7 @@ const mongoCollections = require("../config/mongoCollections");
 const router = express.Router();
 const data = require("../data/");
 const users = data.users;
+const posts = data.posts;
 const bcrypt = require("bcryptjs");
 const userData = mongoCollections.users;
 const saltRounds = 10;
@@ -12,7 +13,6 @@ const validator = require("../helper");
 //POST METHOD for /register route
 router.post("/register", async (req, res) => {
   let errors = [];
-  console.log(req.body);
   let firstName = validator.trimString(req.body.firstName);
   let lastName = validator.trimString(req.body.lastName);
   let emailId = validator.trimString(req.body.emailId).toLowerCase();
@@ -152,4 +152,150 @@ router.post("/login", async (req, res) => {
     });
   }
 });
+
+//GET METHOD for myProfle route
+router.get("/myProfile", async (req, res) => {
+  if (req.session.user) {
+    const userInfo = await users.getUserById(req.session.user);
+    return res.render("users/index", { userInfo: userInfo });
+  } else {
+    res.render("/login", {});
+  }
+});
+
+// // get 
+// router.get("/myProfileEdit", async (req, res) => {
+//   if (req.session.user) {
+//     const userInfo = await users.getUserById(req.session.user);
+//     return res.render("users/userEdit", { userInfo: userInfo });
+//   } else {
+//     res.render("/login", {});
+//   }
+// });
+
+// PUT METHOD for myProfileEdit route
+router.put("/myProfileEdit", async (req, res) => {
+  if (req.session.user) {
+    let updatedUser = req.body;
+    let updatedUserData={}
+    let errors=[]
+    //if (!validator.validString(req.session.user)) throw "id must be given";
+    // try{
+    // var updatedUser  = await users.getUserById(req.session.user);
+    // }
+    // catch(e){
+    //   return res.status(500).render("error",{e:"Something went wrong"})
+    // }
+
+    if (updatedUser.firstName) {
+      if (!validator.validString(updatedUser.firstName))
+        errors.push("First name is not a valid string");
+      updatedUser.firstName = validator.trimString(updatedUser.firstName);
+      updatedUserData.firstName = updatedUser.firstName;
+    }
+    if (updatedUser.lastName) {
+      if (!validator.validString(updatedUser.lastName))
+        errors.push("Last name is not a valid string");
+      updatedUser.lastName = validator.trimString(updatedUser.lastName);
+      updatedUserData.lastName = updatedUser.lastName;
+    }
+
+    if (updatedUser.age) {
+      if (!validator.validAge(updatedUser.age))
+        errors.push("Age must be a positive integer");
+      updatedUser.age = validator.trimString(updatedUser.age);
+      updatedUserData.age = updatedUser.age;
+    }
+
+    if (updatedUser.phoneNumber) {
+      validator.validatePhoneNumber(updatedUser.phoneNumber);
+      updatedUser.phoneNumber = validator.trimString(updatedUser.phoneNumber);
+      updatedUserData.phoneNumber = updatedUser.phoneNumber;
+    }
+
+    if (updatedUser.aboutMe) {
+      if (!validator.validString(updatedUser.aboutMe))
+        errors.push("About  Me is not a valid string");
+      updatedUser.aboutMe = validator.trimString(updatedUser.aboutMe);
+      updatedUserData.aboutMe = updatedUser.aboutMe;
+    }
+
+    //nationality call use npm package in drop down box to be called on client side
+    if (updatedUser.nationality) {
+      if (!validator.validString(updatedUser.nationality))
+        errors.push("Nationality is not a valid string");
+      updatedUser.nationality = validator.trimString(updatedUser.nationality);
+      updatedUserData.nationality = updatedUser.nationality;
+    }
+    //preference  in drop down box to be called on client side
+    //gender - Male, Female, Others drop box
+    if (updatedUser.gender) {
+      if (!validator.validString(updatedUser.gender))
+        errors.push("Gender is not a valid string");
+      updatedUser.gender = validator.trimString(updatedUser.gender);
+      updatedUserData.gender = updatedUser.gender;
+    }
+    //Preference edit left
+    // if (updatedUser.preference.length < 0) {
+    //   throw `There should be atleast one preference`;
+    // }
+    if(errors.length>0){
+      return res.status(400).render("users/userEdit", {
+        errors: errors,
+      });
+    }
+    try{
+      let userInfo = await users.updateUser(req.session.user, updatedUserData)
+      return res.render("users/index",{userInfo:userInfo})
+    }
+    catch(e){
+      return res.render("users/userEdit")
+    }
+    
+  }
+});
+
+//GET METHOD for myProfile/posts
+router.get("/myProfile/posts", async (req, res) =>{
+  if(req.session.user){
+    try{
+   let all_post = await posts.getPostByuserId(req.session.user)
+   return res.render("users/userPosts",{allPost:all_post})
+    }
+    catch{
+      return res.render("error",{})
+    }
+  }
+}
+);
+
+//GET METHOD for myProfile/savedPosts
+router.get("/myProfile/savedPosts", async (req, res) =>{
+  if(req.session.user){
+    try{
+   let all_post = await posts.getSavedPostByuserId(req.session.user)
+   return res.render("users/userPosts",{allPost:all_post})
+    }
+    catch{
+      return res.render("error",{})
+    }
+  }
+}
+);
+
+//PUT METHOD for myProfile/savedPosts
+router.put("/myProfile/savedPosts", async (req, res) =>{
+  if(req.session.user){
+    try{
+   let all_post = await posts.removeSavedPostByuserId(req.session.user)
+   return res.render("users/userPosts",{allPost:all_post})
+    }
+    catch{
+      return res.render("error",{})
+    }
+  }
+}
+);
+
+
 module.exports = router;

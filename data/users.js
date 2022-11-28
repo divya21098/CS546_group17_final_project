@@ -82,8 +82,9 @@ const createUser = async (
     nationality: nationality,
     aboutMe: aboutMe,
     preference: preference,
-    postId: [],
-    commentId: [],
+    postId:[],
+    commentId:[],
+    savedPost:[]
   };
   console.log("new user dict");
   const userCollection = await users();
@@ -116,7 +117,7 @@ const getUserById = async (id) => {
 const updateUser = async (id, updatedUser) => {
   let updatedUserData = {};
   if (!validator.validString(id)) throw "id must be given";
-  validator.validId(id);
+  id = validator.validId(id);
   id = validator.trimString(id);
   let = await getUserById(id);
   if (updatedUser.firstName) {
@@ -171,6 +172,16 @@ const updateUser = async (id, updatedUser) => {
   // if (updatedUser.preference.length < 0) {
   //   throw `There should be atleast one preference`;
   // }
+  if (updatedUser.postId){
+    updatedUser.postId = validator.validId(postId)
+    updatedUser.postId = validator.trimString(updatedUser.postId)
+    updatedUserData.postId.push(updatedUser.postId)
+  }
+  if (updatedUser.commentId){
+    updatedUser.commentId = validator.validId(commentId)
+    updatedUser.commentId = validator.trimString(updatedUser.commentId)
+    updatedUserData.commentId.push(updatedUser.commentId)
+  }
   const userCollection = await users();
   if (updatedUserData == {}) {
     return await getUserById(id);
@@ -184,6 +195,27 @@ const updateUser = async (id, updatedUser) => {
     throw "could not update user";
   return await getUserById(id);
 };
+
+// const checkUser = async (emailId, password) => {
+//   if (!validator.validEmail(emailId)) throw "Email is not a valid string.";
+
+//   const userCollection = await users();
+//   const user = await userCollection.findOne({
+//     emailId: emailId.toLowerCase(),
+//   });
+//   if (!user) {
+//     throw "Either the username or password is invalid";
+//   }
+  
+//   let comp = await bcrypt.compare(password, user.password);
+//   if (!comp) {
+//     throw "Either the username or password is invalid";
+//   }
+//   return { authenticatedUser: true };
+// };
+
+
+
 
 module.exports = {
   createUser,
