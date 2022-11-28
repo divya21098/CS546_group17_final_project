@@ -14,6 +14,15 @@ app.use(
   })
 );
 
+app.use('*',(req,res, next)=>{
+  console.log("[%s]: %s %s (%s)",
+     new Date().toUTCString(),
+     req.method,
+     req.originalUrl,
+    `${req.session.user ? "Authenticated User" : "Non-Authenticated User"}`
+     );
+  next();
+});
 //if user attempts to access private route without being authenicated, redirect them to the "main" page
 app.use('/private', async(req, res, next) =>{
     if (!req.session.user) {
@@ -38,6 +47,19 @@ app.use('/posts/new', async(req,res, next) =>{
   } 
   next();
 })
+
+const rewriteUnsupportedBrowserMethods = (req, res, next) => {
+  // If the user posts to the server with a property called _method, rewrite the request's method
+  // To be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets
+  // rewritten in this middleware to a PUT route
+  if (req.body && req.body._method) {
+    req.method = req.body._method;
+    delete req.body._method;
+  }
+
+  // let the next middleware run:
+  next();
+};
 
 configRoutes(app);
 
