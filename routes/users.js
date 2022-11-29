@@ -157,13 +157,16 @@ router.post("/login", async (req, res) => {
 router.get("/myProfile", async (req, res) => {
   if (req.session.user) {
     const userInfo = await users.getUserById(req.session.user);
-    return res.render("users/index", { userInfo: userInfo });
+    return res.status(200).json(userInfo);
+
+    // return res.render("users/index", { userInfo: userInfo });
   } else {
-    res.render("/login", {});
+    console.log("err");
+    // res.render("/login", {});
   }
 });
 
-// // get 
+// // get
 // router.get("/myProfileEdit", async (req, res) => {
 //   if (req.session.user) {
 //     const userInfo = await users.getUserById(req.session.user);
@@ -177,8 +180,8 @@ router.get("/myProfile", async (req, res) => {
 router.put("/myProfileEdit", async (req, res) => {
   if (req.session.user) {
     let updatedUser = req.body;
-    let updatedUserData={}
-    let errors=[]
+    let updatedUserData = {};
+    let errors = [];
     //if (!validator.validString(req.session.user)) throw "id must be given";
     // try{
     // var updatedUser  = await users.getUserById(req.session.user);
@@ -203,7 +206,7 @@ router.put("/myProfileEdit", async (req, res) => {
     if (updatedUser.age) {
       if (!validator.validAge(updatedUser.age))
         errors.push("Age must be a positive integer");
-      updatedUser.age = validator.trimString(updatedUser.age);
+      //updatedUser.age = validator.trimString(updatedUser.age);
       updatedUserData.age = updatedUser.age;
     }
 
@@ -239,63 +242,93 @@ router.put("/myProfileEdit", async (req, res) => {
     // if (updatedUser.preference.length < 0) {
     //   throw `There should be atleast one preference`;
     // }
-    if(errors.length>0){
-      return res.status(400).render("users/userEdit", {
-        errors: errors,
-      });
+    if (errors.length > 0) {
+      return res.status(200).json(errors);
+      // return res.status(400).render("users/userEdit", {
+      //   errors: errors,
+      // });
     }
-    try{
-      let userInfo = await users.updateUser(req.session.user, updatedUserData)
-      return res.render("users/index",{userInfo:userInfo})
+    try {
+      let userInfo = await users.updateUser(req.session.user, updatedUserData);
+      return res.status(200).json(userInfo);
+
+      // return res.render("users/index", { userInfo: userInfo });
+    } catch (e) {
+      return res.status(400).json(e);
+      // return res.render("users/userEdit");
     }
-    catch(e){
-      return res.render("users/userEdit")
-    }
-    
+  } else {
+    return res.status(401).json({ "not auth": "6" });
   }
 });
 
 //GET METHOD for myProfile/posts
-router.get("/myProfile/posts", async (req, res) =>{
-  if(req.session.user){
-    try{
-   let all_post = await posts.getPostByuserId(req.session.user)
-   return res.render("users/userPosts",{allPost:all_post})
-    }
-    catch{
-      return res.render("error",{})
+router.get("/myProfile/posts", async (req, res) => {
+  if (req.session.user) {
+    try {
+      let all_post = await posts.getPostByuserId(req.session.user);
+      return res.status(200).json(all_post);
+      // return res.render("users/userPosts", { allPost: all_post });
+    } catch {
+      console.log("err");
+      // return res.render("error", {});
     }
   }
-}
-);
+});
+
+//POST METHOD for myProfile/savedPosts
+router.post("/myProfile/savedPosts/:postid", async (req, res) => {
+  if (req.session.user) {
+    try {
+      console.log(req.params.postid);
+      let postid = req.params.postid;
+      let all_post = await posts.createSavedPost(postid, req.session.user);
+      return res.send(all_post);
+      // return res.render("users/userPosts", { allPost: all_post });
+    } catch {
+      console.log("err");
+
+      // return res.render("error", {});
+    }
+  }
+  return res.status(400).json({ hi: "NOT AUTH" });
+});
 
 //GET METHOD for myProfile/savedPosts
-router.get("/myProfile/savedPosts", async (req, res) =>{
-  if(req.session.user){
-    try{
-   let all_post = await posts.getSavedPostByuserId(req.session.user)
-   return res.render("users/userPosts",{allPost:all_post})
-    }
-    catch{
-      return res.render("error",{})
+router.get("/myProfile/savedPosts", async (req, res) => {
+  if (req.session.user) {
+    try {
+      let all_post = await posts.getSavedPostByuserId(req.session.user);
+      return res.send(all_post);
+      // return res.render("users/userPosts", { allPost: all_post });
+    } catch {
+      console.log("err");
+
+      // return res.render("error", {});
     }
   }
-}
-);
+});
 
 //PUT METHOD for myProfile/savedPosts
-router.put("/myProfile/savedPosts", async (req, res) =>{
-  if(req.session.user){
-    try{
-   let all_post = await posts.removeSavedPostByuserId(req.session.user)
-   return res.render("users/userPosts",{allPost:all_post})
-    }
-    catch{
-      return res.render("error",{})
-    }
-  }
-}
-);
+router.put("/myProfile/savedPosts/:postid", async (req, res) => {
+  if (req.session.user) {
+    try {
+      let postid = req.params.postid;
+      let all_post = await posts.removeSavedPostByuserId(
+        postid,
+        req.session.user
+      );
+      return res.send(all_post);
 
+      // return res.render("users/userPosts", { allPost: all_post });
+    } catch {
+      console.log("err");
+
+      // return res.render("error", {});
+    }
+  } else {
+    return res.status(401).json("Not Authenticated");
+  }
+});
 
 module.exports = router;
