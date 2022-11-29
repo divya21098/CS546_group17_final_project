@@ -82,9 +82,9 @@ const createUser = async (
     nationality: nationality,
     aboutMe: aboutMe,
     preference: preference,
-    postId:[],
-    commentId:[],
-    savedPost:[]
+    postId: [],
+    commentId: [],
+    savedPost: [],
   };
   console.log("new user dict");
   const userCollection = await users();
@@ -136,7 +136,7 @@ const updateUser = async (id, updatedUser) => {
   if (updatedUser.age) {
     if (!validator.validAge(updatedUser.age))
       throw "Age must be a positive integer";
-    updatedUser.age = validator.trimString(updatedUser.age);
+    //updatedUser.age = validator.trimString(updatedUser.age);
     updatedUserData.age = updatedUser.age;
   }
 
@@ -172,15 +172,20 @@ const updateUser = async (id, updatedUser) => {
   // if (updatedUser.preference.length < 0) {
   //   throw `There should be atleast one preference`;
   // }
-  if (updatedUser.postId){
-    updatedUser.postId = validator.validId(postId)
-    updatedUser.postId = validator.trimString(updatedUser.postId)
-    updatedUserData.postId.push(updatedUser.postId)
+  if (updatedUser.postId) {
+    //updatedUser.postId = validator.validId(postId);
+    //updatedUser.postId = validator.trimString(updatedUser.postId);
+    updatedUserData.postId = updatedUser.postId;
   }
-  if (updatedUser.commentId){
-    updatedUser.commentId = validator.validId(commentId)
-    updatedUser.commentId = validator.trimString(updatedUser.commentId)
-    updatedUserData.commentId.push(updatedUser.commentId)
+  if (updatedUser.commentId) {
+    //updatedUser.commentId = validator.validId(commentId);
+    //updatedUser.commentId = validator.trimString(updatedUser.commentId);
+    updatedUserData.commentId = updatedUser.commentId;
+  }
+  if (updatedUser.savedPost) {
+    //updatedUser.savedPost = validator.validId(savedPost);
+    //updatedUser.savedPost = validator.trimString(updatedUser.savedPost);
+    updatedUserData.savedPost = updatedUser.savedPost;
   }
   const userCollection = await users();
   if (updatedUserData == {}) {
@@ -206,16 +211,13 @@ const updateUser = async (id, updatedUser) => {
 //   if (!user) {
 //     throw "Either the username or password is invalid";
 //   }
-  
+
 //   let comp = await bcrypt.compare(password, user.password);
 //   if (!comp) {
 //     throw "Either the username or password is invalid";
 //   }
 //   return { authenticatedUser: true };
 // };
-
-
-
 
 module.exports = {
   createUser,

@@ -2,9 +2,9 @@
 const mongoCollections = require("../config/mongoCollections");
 const posts = mongoCollections.posts;
 const { ObjectId } = require("mongodb");
+const us = require("./users");
 const users = mongoCollections.users;
 const validation = require("../helper");
-
 
 const createPost = async (
   userId,
@@ -82,9 +82,11 @@ const getPostById = async (id) => {
   return post;
 };
 //edit post once user login
-const removePostById = async (id) => {
-  postId = validation.validId(id);
-
+const removePostById = async (postid, userid) => {
+  //check if it's a savedPost in other users then delete it  from other users
+  postId = validation.validId(postid);
+  userid = validation.validId(userid);
+  const userCollection = await users();
   const postCollection = await posts();
   const post = await postCollection.findOne({ _id: ObjectId(postId) });
   if (post === null) throw "No post with that id";
@@ -95,6 +97,18 @@ const removePostById = async (id) => {
   if (deletionInfo.deletedCount === 0) {
     throw `Could not delete movie with id of ${id}`;
   }
+  const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
+  if (userinfo === null) throw "No user with that id";
+  if (userinfo.postId.length > 0) {
+    for (i = 0; i < userinfo.postId.length; i++) {
+      if (userinfo.postId[i] === postid) {
+        userinfo.postId.splice(i, 1);
+      }
+    }
+    console.log(userinfo);
+    await us.updateUser(userid, { postId: userinfo.postId });
+  }
+
   return { postId: postId, deleted: true };
 };
 //edit post once user login
@@ -135,61 +149,77 @@ const updatePostbyId = async (id, postTitle, postBody) => {
 //list of post user see after login
 const getPostByuserId = async (id) => {
   //id = validation.checkId(id, 'ID');
-  id= validation.validId(id);
+  id = validation.validId(id);
   const userCollection = await users();
-  const userinfo = await userCollection.findOne({_id: ObjectId(id)})
-  let result=[]
-  if(userinfo.postId.length>0){
-    for(i=0;i<userinfo.postId.length;i++)
-    {
-      result.push(await getPostById(userinfo.postId[i]))
+  const userinfo = await userCollection.findOne({ _id: ObjectId(id) });
+  let result = [];
+  if (userinfo.postId.length > 0) {
+    for (i = 0; i < userinfo.postId.length; i++) {
+      result.push(await getPostById(userinfo.postId[i]));
     }
   }
   // const postCollection = await posts();
   // const post = await postCollection.findAll({userId: userinfo.postId});
 
-  if (!result) throw 'Posts not found';
+  if (!result) throw "Posts not found";
   return result;
+};
+
+const createSavedPost = async (postid, userid) => {
+  postid = validation.validId(postid);
+  userid = validation.validId(userid);
+  const userCollection = await users();
+  //const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
+  //const userinfo = await userCollection.findOne({ _id: ObjectId(id) });
+  //if (!userinfo) throw "No user exists";
+  const updatedInfo = await userCollection.updateOne(
+    { _id: ObjectId(userid) },
+    { $push: { savedPost: String(postid) } }
+  );
+  if (updatedInfo.modifiedCount === 0) {
+    throw "Could not add posts to favourite!";
+  }
+  return { savedPost: "True" };
 };
 
 const getSavedPostByuserId = async (id) => {
   id = validation.validId(id);
   const userCollection = await users();
-  const userinfo = await userCollection.findOne({_id: ObjectId(id)})
-  let result=[]
-  if(userinfo.savedPost.length>0){
-    for(i=0;i<userinfo.savedPost.length;i++)
-    {
-      result.push(await getPostById(userinfo.savedPost[i]))
+  const userinfo = await userCollection.findOne({ _id: ObjectId(id) });
+  let result = [];
+  if (userinfo.savedPost.length > 0) {
+    for (i = 0; i < userinfo.savedPost.length; i++) {
+      result.push(await getPostById(userinfo.savedPost[i]));
     }
   }
   // const postCollection = await posts();
   // const post = await postCollection.findAll({userId: userinfo.postId});
 
-  if (!result) throw 'Posts not found';
+  if (!result) {
+    return [];
+  }
   return result;
 };
 
 const removeSavedPostByuserId = async (postid, userid) => {
   postid = validation.validId(postid);
-  userid = validation.validId(userid)
+  userid = validation.validId(userid);
   const userCollection = await users();
-  const userinfo = await userCollection.findOne({_id: ObjectId(userid)})
-  if(userinfo.savedPost.length>0){
-    for(i=0;i<userinfo.savedPost.length;i++)
-    {
-      if(userinfo.savedPost[i]===postid){
+  const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
+  console.log(userinfo);
+  if (userinfo.savedPost.length > 0) {
+    for (i = 0; i < userinfo.savedPost.length; i++) {
+      if (userinfo.savedPost[i] === postid) {
         userinfo.savedPost.splice(i, 1);
       }
     }
-    users.updateUser({"postId":userinfo})
+    console.log(userinfo);
+    await us.updateUser(userid, { savedPost: userinfo.savedPost });
   }
 
   // const postCollection = await posts();
   // const post = await postCollection.findAll({userId: userinfo.postId});
-
-  if (!result) throw 'Posts not found';
-  return {"updated":true};
+  return { updated: "true" };
 };
 module.exports = {
   createPost,
@@ -199,5 +229,6 @@ module.exports = {
   updatePostbyId,
   getPostByuserId,
   getSavedPostByuserId,
-  removeSavedPostByuserId
+  removeSavedPostByuserId,
+  createSavedPost,
 };
