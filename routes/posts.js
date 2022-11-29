@@ -101,8 +101,8 @@ router
     let userId = req.session.user;
     if (userId) {
       try {
-        const id = req.params.id;
-        const movie = await posts.removePostById(id);
+        const postid = req.params.id;
+        const movie = await posts.removePostById(postid, userId);
         res.status(200).json(movie);
       } catch (e) {
         res.status(404).json({ error: "No post with id" });
@@ -116,7 +116,7 @@ router
     let userId = req.session.user;
     if (userId) {
       try {
-        id = validation.validId(req.params.id);
+        postId = validation.validId(req.params.id);
       } catch (e) {
         return res.status(400).json({ error: e });
       }
@@ -125,7 +125,12 @@ router
         info.postBody = validation.validString(info.postBody);
 
         const { postTitle, postBody } = info;
-        const post = await posts.updatePostbyId(id, postTitle, postBody);
+        const post = await posts.updatePostbyId(
+          postId,
+          userId,
+          postTitle,
+          postBody
+        );
         res.status(200).json(post);
       } catch (e) {
         res.status(500).json({ error: e });
