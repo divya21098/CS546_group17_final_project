@@ -11,8 +11,7 @@ const createPost = async (
   postTitle,
   postBody,
   // postPicture,
-  mapCordinate,
-  preference
+  mapCordinate
 ) => {
   console.log("in post data");
 
@@ -31,13 +30,17 @@ const createPost = async (
   let month = String(date.getMonth() + 1).padStart(2, "0");
   let year = String(date.getFullYear()).padStart(2, "0");
   let currentDate = `${month}/${day}/${year}`;
-
+  let preference = {} 
+  let userinfo = await userData.getUserById(userId)
+  if(userinfo===null) throw "user not found"
+  preference = userinfo.preference
   let newPost = {
     userId: userId,
     postTitle: postTitle,
     postDate: currentDate,
     postBody: postBody,
     comments: [],
+    preference: preference
     // postPicture: postPicture,
   };
 
@@ -229,19 +232,19 @@ const getSavedPostByuserId = async (id) => {
 const removeSavedPostByuserId = async (postid, userid) => {
   postid = validation.validId(postid);
   userid = validation.validId(userid);
-  const userCollection = await users();
-  const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
-  console.log(userinfo);
-  if (userinfo === null) throw "No user with that id";
-  const userWithPost = await userData.getUserById(userid);
-  if (!userWithPost) throw "user with that id not present";
-  if (userWithPost.postId.length > 0) {
-    for (i = 0; i < userWithPost.postId.length; i++) {
-      if (userWithPost.postId == postid) {
-        userWithPost.postId.splice(i, 1);
-      }
-    }
-  }
+  //const userCollection = await users();
+  // const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
+  // console.log(userinfo);
+  // if (userinfo === null) throw "No user with that id";
+  const userinfo = await userData.getUserById(userid);
+  if (!userinfo) throw "user with that id not present";
+  // if (userWithPost.postId.length > 0) {
+  //   for (i = 0; i < userWithPost.postId.length; i++) {
+  //     if (userWithPost.postId == postid) {
+  //       userWithPost.postId.splice(i, 1);
+  //     }
+  //   }
+  // }
   if (userinfo.savedPost.length > 0) {
     for (i = 0; i < userinfo.savedPost.length; i++) {
       if (userinfo.savedPost[i] === postid) {

@@ -139,5 +139,38 @@ router
       res.status(401).json({ user: "not auth" });
     }
   });
-router.route("/search").get(async (req, res) => {});
+router.route("/search").get(async (req, res) => {
+  const search = req.body
+  if(!search.key){
+    return res.redirect("/")
+  }
+  if(search.preference.drinking){
+    if(!validator.validBool(search.preference.drinking)) errors.push("Not a type boolean")
+
+  }
+  if(search.preference.smoking){
+    if(!validator.validBool(search.preference.smoking)) errors.push("Not a type boolean")
+  }
+  try{
+  if(search.preference.food){
+    validator.validArray(search.preference.food,"food")
+  }
+  if(search.preference.budget){
+    console.log(search.preference.budget)
+  }
+  if(search.preference.room){
+    validator.validArray(search.preference.room,"room")
+  }
+  if(search.preference.location){
+    validator.validArray(search.preference.location,"location")
+  }
+  if(search.preference.home_type){
+    validator.validArray(search.preference.home_type,"home_type")
+  }
+}
+catch(e){
+  errors.push(e)
+}
+
+});
 module.exports = router;
