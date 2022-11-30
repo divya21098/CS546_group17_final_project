@@ -67,6 +67,21 @@ function validDate(dateString) {
   return day > 0 && day <= monthLength[month - 1];
 }
 
+const validBool=(val)=>{
+  if( typeof val!=="boolean" ){
+    return false
+  }
+  return true
+}
+const validArray=(arr,name)=>{
+  if(!Array.isArray(arr)){
+    throw `Input ${name} is not of type array!`
+  }
+  if(arr.length<0){
+    throw `Input ${name} array cannot be empty`
+  }
+}
+
 module.exports = {
   validString,
   validAge,
@@ -75,4 +90,6 @@ module.exports = {
   validId,
   trimString,
   validDate,
+  validBool,
+  validArray
 };
