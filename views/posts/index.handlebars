@@ -6,19 +6,20 @@
             <input type="submit" class = "btn" value="Search" />
         </form>
     </div>
-    {{#each post}}
+    {{#each posts}}
     <div class="post-details-card">
         <div class="row">
             <div class="col-sm">
-                {{image}}
+                <p>some img</p>
             </div>
             <div class="col-sm">
-                <p>{{post.userId}}</p>
-                <h2>{{post.postTitle}}</h2>
-                <p>{{post.price}}</p>
-                <p>{{post.location}}</p>
-                <p>{{post.date}}</p>
+                <p>{{this.userId}}</p>
+                <h2>{{this.postTitle}}</h2>
+                <p>{{this.postBody}}</p>
+                <p>location</p>
+                <p>date</p>
             </div>
         </div>
     </div>
+    {{/each}}
 </main>

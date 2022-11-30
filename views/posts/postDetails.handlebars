@@ -1,0 +1,30 @@
+<main>
+    <div class="outer-card">
+        <div class="post-details">
+            <h2>Apartment</h2>
+            <p>Price:</p>
+            <p>Location:</p>
+            <p>User Posted</p>
+
+            <p>Preferences</p>
+            {{#each preferences}}
+                <p>Preference name :</p>
+            {{/each}}
+
+            <p>Apartment Details</p>
+
+            <p>Photos</p>
+            {{#each aptPhotos}}
+                <img></img>
+            {{/each}}
+        </div>
+        <div class="postcomments">
+            <p>Enter a comment</p>
+            <div class="comment-area">
+                {{#each}}
+                    <p>some comment</p>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</main>

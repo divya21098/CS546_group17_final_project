@@ -1,9 +1,10 @@
 //post route
 const mongoCollections = require("../config/mongoCollections");
 const posts = mongoCollections.posts;
+const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 const userData = require("./users");
-const users = mongoCollections.users;
+// const users = mongoCollections.users;
 const validation = require("../helper");
 
 const createPost = async (
