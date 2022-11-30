@@ -102,11 +102,13 @@ catch(e){
       aboutMe,
       preference
     );
-    return res.status(200).json({ user: "registered" });
+    //return res.status(200).json({ user: "registered" });
     // req.session.user = user.__id.toString();
     // res.redirect("/login");
+    res.render("login");
   } catch (e) {
     console.log(e);
+    res.render("register");
     // errors.push(e);
     // return res.status(400).render("/register", {
     //   errors: errors,
@@ -125,7 +127,7 @@ router.get("/register", async (req, res) => {
   if (req.session.user) {
     res.redirect("/postList");
   } else {
-    res.render("/register", {});
+    res.render("register", {});
   }
 });
 
@@ -133,8 +135,9 @@ router.get("/register", async (req, res) => {
 router.get("/login", async (req, res) => {
   if (req.session.user) {
     res.redirect("/postList");
+    res.render("posts/index.handlebars");
   } else {
-    res.render("/login", {});
+    res.render("login", {});
   }
 });
 
@@ -179,8 +182,9 @@ router.post("/login", async (req, res) => {
       req.session.previousRoute = "";
       // return res.redirect(prev);
     }
-    // res.redirect("/postList");
-    res.status(200).json(myUser);
+    res.redirect("/posts");
+    //res.status(200).json(myUser);
+    // res.render('posts/index');  
   } else {
     errors.push("Username or password does not match");
     return res.status(403).render("/login", {

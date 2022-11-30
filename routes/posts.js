@@ -38,7 +38,8 @@ router.route("/").get(async (req, res) => {
     //   post: newRestaurantList,
     //   userLoggedIn: userLoggedIn,
     // });
-    res.json(postList);
+    // res.json(postList);
+    res.render('posts/index',{posts : postList});
   } catch (e) {
     res.status(404).send();
   }
