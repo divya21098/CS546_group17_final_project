@@ -41,6 +41,29 @@ const createUser = async (
   if (preference.length < 0) {
     throw `There should be atleast one preference`;
   }
+  if(preference.drinking){
+    if(!validator.validBool(preference.drinking)) throw "Not a type boolean"
+
+  }
+  if(preference.smoking){
+    if(!validator.validBool(preference.smoking))  throw "Not a type booolean"
+  }
+
+  if(preference.food){
+    validator.validArray(preference.food,"food")
+  }
+  if(preference.budget){
+    console.log(preference.budget)
+  }
+  if(preference.room){
+    validator.validArray(preference.room,"room")
+  }
+  if(preference.location){
+    validator.validArray(preference.location,"location")
+  }
+  if(preference.home_type){
+    validator.validArray(preference.home_type,"home type")
+  }
   /*
   {
   "drinking":"true",
@@ -119,7 +142,7 @@ const updateUser = async (id, updatedUser) => {
   if (!validator.validString(id)) throw "id must be given";
   id = validator.validId(id);
   id = validator.trimString(id);
-  let = await getUserById(id);
+  // let = await getUserById(id);
   if (updatedUser.firstName) {
     if (!validator.validString(updatedUser.firstName))
       throw "First name is not a valid string.";
@@ -168,10 +191,38 @@ const updateUser = async (id, updatedUser) => {
     updatedUser.gender = validator.trimString(updatedUser.gender);
     updatedUserData.gender = updatedUser.gender;
   }
-  //Preference edit left
+  
   // if (updatedUser.preference.length < 0) {
   //   throw `There should be atleast one preference`;
   // }
+  
+  if(updatedUser.preference){
+    if(updatedUser.preference.drinking){
+      if(!validator.validBool(updatedUser.preference.drinking)) throw "Not a type boolean"
+  
+    }
+    if(updatedUser.preference.smoking){
+      if(!validator.validBool(updatedUser.preference.smoking)) throw "Not a type boolean"
+    }
+    if(updatedUser.preference.food){
+      validator.validArray(updatedUser.preference.food,"food")
+    }
+    if(updatedUser.preference.budget){
+      console.log(updatedUser.preference.budget)
+    }
+    if(updatedUser.preference.room){
+      validator.validArray(updatedUser.preference.room,"room")
+    }
+    if(updatedUser.preference.location){
+      validator.validArray(updatedUser.preference.location,"location")
+    }
+    if(updatedUser.preference.home_type){
+      validator.validArray(updatedUser.preference.home_type,"home_type")
+    }
+    updatedUserData.preference = updatedUser.preference;
+
+  }
+
   if (updatedUser.postId) {
     //updatedUser.postId = validator.validId(postId);
     //updatedUser.postId = validator.trimString(updatedUser.postId);
