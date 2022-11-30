@@ -25,6 +25,7 @@ const main = async () => {
 //     console.log(e);
 //   }
 
+<<<<<<< HEAD
 //   await dbConnection.closeConnection();
 // };
 
@@ -66,3 +67,8 @@ main();
 
 
 
+=======
+  await dbConnection.closeConnection();
+};
+main();
+>>>>>>> 7616a0aff4547afb0f89f233c32bc3167b14d1ae
