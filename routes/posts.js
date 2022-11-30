@@ -23,50 +23,57 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
+router.get("/postpic/:id", async (req, res) => {
+  const getPost = await posts.getPostById(req.params.id);
+  const profilepicData = getPost.postPicture;
+  if (profilepicData == "") {
+    return res.status(400).send({
+      message: "No Profile Pic Found!",
+    });
+  } else {
+    res.contentType("image/jpeg");
+    res.send(profilepicData.image.buffer);
+  }
+});
+
 router.route("/").get(async (req, res) => {
   try {
-    // let userLoggedIn = false;
-    // let userId = req.session.AuthCookie;
-
-    // if (!userId) {
-    //   userLoggedIn = false;
-    // } else {
-    //   userLoggedIn = true;
-    // }
     const postList = await posts.getAllPosts();
-    // res.status(200).render("posts", {
-    //   post: newRestaurantList,
-    //   userLoggedIn: userLoggedIn,
-    // });
+
     res.json(postList);
   } catch (e) {
     res.status(404).send();
   }
 });
-//post by id
-//add post
-router.route("/add").post(async (req, res) => {
-  if (req.session.user) {
-    // var finalImg = "";
-    // console.log(req.body.file);
-    // if (!req.body.file) {
-    //   finalImg = "";
-    // } else {
-    //   var img = fs.readFileSync(req.file.path);
-    //   var encode_image = img.toString("base64");
-    //   finalImg = {
-    //     contentType: req.file.mimetype,
-    //     image: Buffer.from(encode_image, "base64"),
-    //   };
-    // }
-    const info = req.body;
-    let userId = req.session.user;
-    console.log(userId);
+
+router.route("/add").post(upload.single("picture"), async (req, res) => {
+  const info = req.body;
+  let userId = req.session.user;
+  console.log(userId);
+  if (userId) {
     try {
       info.postTitle = validation.validString(info.postTitle);
       info.postBody = validation.validString(info.postBody);
-      const { postTitle, postBody } = info;
-      const post = await posts.createPost(userId, postTitle, postBody);
+      // info.postPicture = validation.validString(info.postPicture);
+      var finalImg = "";
+      console.log(req.file);
+      if (!req.file) {
+        finalImg = "";
+      } else {
+        var img = fs.readFileSync(req.file.path);
+        var encode_image = img.toString("base64");
+        finalImg = {
+          contentType: req.file.mimetype,
+          image: Buffer.from(encode_image, "base64"),
+        };
+      }
+      const { postTitle, postBody, postPicture } = info;
+      const post = await posts.createPost(
+        userId,
+        postTitle,
+        postBody,
+        finalImg
+      );
       return res.status(200).json(post);
     } catch (e) {
       console.log(e);

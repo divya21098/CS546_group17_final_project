@@ -10,7 +10,7 @@ const createPost = async (
   userId,
   postTitle,
   postBody,
-  // postPicture,
+  postPicture,
   mapCordinate,
   preference
 ) => {
@@ -20,12 +20,12 @@ const createPost = async (
     !validation.validString(postTitle) ||
     !validation.validString(postBody) ||
     !validation.validId(userId)
+    // !validation.validString(postPicture)
   )
     throw "All fields need to have valid values";
-  // if (!postPicture || postPicture == "") {
-  //   postPicture = "";
-  // }
-  // if (!validation.isValidDate(postDate)) throw "date is not valid";
+  if (!postPicture || postPicture == "") {
+    postPicture = "";
+  }
   const date = new Date();
   let day = date.getDate();
   let month = String(date.getMonth() + 1).padStart(2, "0");
@@ -38,7 +38,7 @@ const createPost = async (
     postDate: currentDate,
     postBody: postBody,
     comments: [],
-    // postPicture: postPicture,
+    postPicture: postPicture,
   };
 
   const postCollection = await posts();
@@ -173,8 +173,6 @@ const getPostByuserId = async (id) => {
       result.push(await getPostById(userinfo.postId[i]));
     }
   }
-  // const postCollection = await posts();
-  // const post = await postCollection.findAll({userId: userinfo.postId});
 
   if (!result) throw "Posts not found";
   return result;
@@ -248,6 +246,24 @@ const removeSavedPostByuserId = async (postid, userid) => {
   // const post = await postCollection.findAll({userId: userinfo.postId});
   return { updated: "true" };
 };
+
+const addPostPicture = async (postid, postPicture) => {
+  postid = validation.validId(postid);
+
+  const postCollection = await posts();
+  let updatedPostData = {};
+  let gotten = await this.getPostById(postid);
+  if (!gotten) throw "post doesnt exist";
+
+  updatedPostData.postPicture = postPicture;
+  const updateInfo = await postCollection.updateOne(
+    { _id: postid },
+    { $set: updatedPostData }
+  );
+  if (updateInfo.modifiedCount === 0 && updateInfo.deletedCount === 0)
+    throw "could not update user";
+  return await this.getPostById(postid);
+};
 module.exports = {
   createPost,
   getAllPosts,
@@ -258,4 +274,5 @@ module.exports = {
   getSavedPostByuserId,
   removeSavedPostByuserId,
   createSavedPost,
+  addPostPicture,
 };
