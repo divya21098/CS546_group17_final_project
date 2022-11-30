@@ -114,22 +114,31 @@ router
   .put(async (req, res) => {
     const info = req.body;
     let userId = req.session.user;
+    let updatedPostData = {};
     if (userId) {
+      console.log("in put post route");
+
       try {
         postId = validation.validId(req.params.id);
       } catch (e) {
         return res.status(400).json({ error: e });
       }
       try {
-        info.postTitle = validation.validString(info.postTitle);
-        info.postBody = validation.validString(info.postBody);
-
         const { postTitle, postBody } = info;
+        if (postTitle) {
+          if (!validation.validString(postTitle)) throw "Title not valid";
+          // postTitle = validation.trimString(postTitle);
+          updatedPostData.postTitle = postTitle;
+        }
+        if (postBody) {
+          if (!validation.validString(postBody)) throw "Body not valid";
+          // postBody = validation.trimString(postBody);
+          updatedPostData.postBody = postBody;
+        }
         const post = await posts.updatePostbyId(
           postId,
           userId,
-          postTitle,
-          postBody
+          updatedPostData
         );
         res.status(200).json(post);
       } catch (e) {

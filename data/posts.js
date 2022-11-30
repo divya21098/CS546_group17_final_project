@@ -112,11 +112,26 @@ const removePostById = async (postid, userid) => {
   return { postId: postId, deleted: true };
 };
 //edit post once user login
-const updatePostbyId = async (postId, userId, postTitle, postBody) => {
+const updatePostbyId = async (postId, userId, updatedPost) => {
   let postid = validation.validId(postId); //small i
   let userid = validation.validId(userId);
-  if (!validation.validString(postTitle) || !validation.validString(postBody))
+  let updatedPostData = {};
+
+  if (
+    !validation.validString(updatedPost.postTitle) ||
+    !validation.validString(updatedPost.postBody)
+  )
     throw "All fields need to have valid values";
+  if (updatedPost.postBody) {
+    updatedPost.postBody = validation.trimString(updatedPost.postBody);
+    updatedPostData.postBody = updatedPost.postBody;
+  }
+  if (updatedPost.postTitle) {
+    updatedPost.postTitle = validation.trimString(updatedPost.postTitle);
+
+    updatedPostData.postTitle = updatedPost.postTitle;
+  }
+  updatedPostData.userId = userid;
   const postCollection = await posts();
   // const movie = await getMovieById(postId);
 
@@ -129,16 +144,12 @@ const updatePostbyId = async (postId, userId, postTitle, postBody) => {
   let month = String(date.getMonth() + 1).padStart(2, "0");
   let year = String(date.getFullYear()).padStart(2, "0");
   let currentDate = `${month}/${day}/${year}`;
+  updatedPostData.userId = userid;
+  updatedPostData.currentDate = currentDate;
 
-  let updatedPost = {
-    userId: userid,
-    postTitle: postTitle,
-    postDate: currentDate,
-    postBody: postBody,
-  };
   const updateInfo = await postCollection.updateOne(
     { _id: ObjectId(postid) },
-    { $set: updatedPost }
+    { $set: updatedPostData }
   );
   if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
     throw "Error: Update failed";
@@ -168,26 +179,7 @@ const getPostByuserId = async (id) => {
   if (!result) throw "Posts not found";
   return result;
 };
-// const delPostByuserId = async (postid, userid) => {
-//   userid = validation.validId(userid);
-//   postid = validation.validId(postid);
-//   const postCollection = await posts();
-//   const postinfo = await postCollection.findOne({ _id: ObjectId(postid) });
-//   if (postinfo === null) throw "No post with that id";
 
-//   const removedPost = removePostById(postid, userid);
-//   return removedPost;
-// };
-// const editPostByuserId = async (postid, userid) => {
-//   userid = validation.validId(userid);
-//   postid = validation.validId(postid);
-//   const postCollection = await posts();
-//   const postinfo = await postCollection.findOne({ _id: ObjectId(postid) });
-//   if (postinfo === null) throw "No post with that id";
-
-//   const removedPost = updatePostById(postid, userid);
-//   return removedPost;
-// };
 const createSavedPost = async (postid, userid) => {
   postid = validation.validId(postid);
   userid = validation.validId(userid);
