@@ -11,7 +11,7 @@ const createPost = async (
   userId,
   postTitle,
   postBody,
-  // postPicture,
+  postPicture,
   mapCordinate
 ) => {
   console.log("in post data");
@@ -20,29 +20,29 @@ const createPost = async (
     !validation.validString(postTitle) ||
     !validation.validString(postBody) ||
     !validation.validId(userId)
+    // !validation.validString(postPicture)
   )
     throw "All fields need to have valid values";
-  // if (!postPicture || postPicture == "") {
-  //   postPicture = "";
-  // }
-  // if (!validation.isValidDate(postDate)) throw "date is not valid";
+  if (!postPicture || postPicture == "") {
+    postPicture = "";
+  }
   const date = new Date();
   let day = date.getDate();
   let month = String(date.getMonth() + 1).padStart(2, "0");
   let year = String(date.getFullYear()).padStart(2, "0");
   let currentDate = `${month}/${day}/${year}`;
-  let preference = {} 
-  let userinfo = await userData.getUserById(userId)
-  if(userinfo===null) throw "user not found"
-  preference = userinfo.preference
+  let preference = {};
+  let userinfo = await userData.getUserById(userId);
+  if (userinfo === null) throw "user not found";
+  preference = userinfo.preference;
   let newPost = {
     userId: userId,
     postTitle: postTitle,
     postDate: currentDate,
     postBody: postBody,
     comments: [],
-    preference: preference
-    // postPicture: postPicture,
+    preference: preference,
+    postPicture: postPicture,
   };
 
   const postCollection = await posts();
@@ -116,11 +116,26 @@ const removePostById = async (postid, userid) => {
   return { postId: postId, deleted: true };
 };
 //edit post once user login
-const updatePostbyId = async (postId, userId, postTitle, postBody) => {
+const updatePostbyId = async (postId, userId, updatedPost) => {
   let postid = validation.validId(postId); //small i
   let userid = validation.validId(userId);
-  if (!validation.validString(postTitle) || !validation.validString(postBody))
+  let updatedPostData = {};
+
+  if (
+    !validation.validString(updatedPost.postTitle) ||
+    !validation.validString(updatedPost.postBody)
+  )
     throw "All fields need to have valid values";
+  if (updatedPost.postBody) {
+    updatedPost.postBody = validation.trimString(updatedPost.postBody);
+    updatedPostData.postBody = updatedPost.postBody;
+  }
+  if (updatedPost.postTitle) {
+    updatedPost.postTitle = validation.trimString(updatedPost.postTitle);
+
+    updatedPostData.postTitle = updatedPost.postTitle;
+  }
+  updatedPostData.userId = userid;
   const postCollection = await posts();
   // const movie = await getMovieById(postId);
 
@@ -133,16 +148,12 @@ const updatePostbyId = async (postId, userId, postTitle, postBody) => {
   let month = String(date.getMonth() + 1).padStart(2, "0");
   let year = String(date.getFullYear()).padStart(2, "0");
   let currentDate = `${month}/${day}/${year}`;
+  updatedPostData.userId = userid;
+  updatedPostData.currentDate = currentDate;
 
-  let updatedPost = {
-    userId: userid,
-    postTitle: postTitle,
-    postDate: currentDate,
-    postBody: postBody,
-  };
   const updateInfo = await postCollection.updateOne(
     { _id: ObjectId(postid) },
-    { $set: updatedPost }
+    { $set: updatedPostData }
   );
   if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
     throw "Error: Update failed";
@@ -166,32 +177,11 @@ const getPostByuserId = async (id) => {
       result.push(await getPostById(userinfo.postId[i]));
     }
   }
-  // const postCollection = await posts();
-  // const post = await postCollection.findAll({userId: userinfo.postId});
 
   if (!result) throw "Posts not found";
   return result;
 };
-// const delPostByuserId = async (postid, userid) => {
-//   userid = validation.validId(userid);
-//   postid = validation.validId(postid);
-//   const postCollection = await posts();
-//   const postinfo = await postCollection.findOne({ _id: ObjectId(postid) });
-//   if (postinfo === null) throw "No post with that id";
 
-//   const removedPost = removePostById(postid, userid);
-//   return removedPost;
-// };
-// const editPostByuserId = async (postid, userid) => {
-//   userid = validation.validId(userid);
-//   postid = validation.validId(postid);
-//   const postCollection = await posts();
-//   const postinfo = await postCollection.findOne({ _id: ObjectId(postid) });
-//   if (postinfo === null) throw "No post with that id";
-
-//   const removedPost = updatePostById(postid, userid);
-//   return removedPost;
-// };
 const createSavedPost = async (postid, userid) => {
   postid = validation.validId(postid);
   userid = validation.validId(userid);
@@ -260,6 +250,24 @@ const removeSavedPostByuserId = async (postid, userid) => {
   // const post = await postCollection.findAll({userId: userinfo.postId});
   return { updated: "true" };
 };
+
+const addPostPicture = async (postid, postPicture) => {
+  postid = validation.validId(postid);
+
+  const postCollection = await posts();
+  let updatedPostData = {};
+  let gotten = await this.getPostById(postid);
+  if (!gotten) throw "post doesnt exist";
+
+  updatedPostData.postPicture = postPicture;
+  const updateInfo = await postCollection.updateOne(
+    { _id: postid },
+    { $set: updatedPostData }
+  );
+  if (updateInfo.modifiedCount === 0 && updateInfo.deletedCount === 0)
+    throw "could not update user";
+  return await this.getPostById(postid);
+};
 module.exports = {
   createPost,
   getAllPosts,
@@ -270,4 +278,5 @@ module.exports = {
   getSavedPostByuserId,
   removeSavedPostByuserId,
   createSavedPost,
+  addPostPicture,
 };
