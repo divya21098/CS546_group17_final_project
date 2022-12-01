@@ -27,11 +27,7 @@ const createComment = async (postId, userId, commentText) => {
     userId: userId,
     commentText: commentText,
   };
-  // const commentCollection = await comments();
-
-  // const insertInfo = await commentCollection.insertOne(newComment);
   const postsCollection = await posts();
-  const usersCollection = await users();
 
   //Add the comment id to the review
   const updatedInfo = await postsCollection.updateOne(

@@ -49,27 +49,25 @@ router.route("/").get(async (req, res) => {
   }
 });
 
-
-router.route("/add") .get( async (req, res) => {
+router.route("/add").get(async (req, res) => {
   if (req.session.user) {
-    res.render("posts/createPost")
+    res.render("posts/createPost");
   } else {
     res.render("login", {});
   }
 });
 
-
 router.route("/add").post(upload.single("postPicture"), async (req, res) => {
   const info = req.body;
   let userId = req.session.user;
-  console.log(userId);
+  // console.log(userId);
   if (userId) {
     try {
       info.postTitle = validation.validString(info.postTitle);
       info.postBody = validation.validString(info.postBody);
       // info.postPicture = validation.validString(info.postPicture);
       var finalImg = "";
-      console.log(req.file);
+
       if (!req.file) {
         finalImg = "";
       } else {
@@ -107,10 +105,10 @@ router
     }
     try {
       const id = req.params.id;
-      console.log(id);
+      // console.log(id);
       const post = await posts.getPostById(id);
       //return res.status(200).json(post);
-      res.render("posts/postDetails", {posts : post});
+      res.render("posts/postDetails", { posts: post });
     } catch (e) {
       res.status(404).json({ error: "No post with id" });
     }

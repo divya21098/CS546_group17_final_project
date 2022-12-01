@@ -30,7 +30,6 @@ router
     }
   })
   .post(async (req, res) => {
-    console.log(req.body);
     let commentInfo = req.body;
     if (!commentInfo) {
       res
@@ -38,25 +37,30 @@ router
         .json({ error: "You must provide data to create a review" });
       return;
     }
-    try {
-      commentInfo.commentText = validation.validString(commentInfo.commentText);
-      commentInfo.userId = validation.validString(commentInfo.userId);
-      const postId = validation.validId(req.params.postId);
-      await post.getPostById(postId);
-    } catch (e) {
-      return res.status(404).json({ error: "No post with id" });
-    }
-    try {
-      console.log("in comm create routes");
-      const newComment = await commentData.createComment(
-        req.params.postId,
-        commentInfo.userId.trim(),
-        commentInfo.commentText.trim()
-      );
-
-      res.status(200).json(newComment);
-    } catch (e) {
-      res.status(400).json({ error: "Comment cannot be created" });
+    if (req.session.user) {
+      try {
+        commentInfo.commentText = validation.validString(
+          commentInfo.commentText
+        );
+        commentInfo.userId = validation.validId(req.session.user);
+        const postId = validation.validId(req.params.postId);
+        await post.getPostById(postId);
+      } catch (e) {
+        return res.status(404).json({ error: "No post with id" });
+      }
+      try {
+        console.log("in comm create routes");
+        const post = await commentData.createComment(
+          req.params.postId,
+          commentInfo.userId,
+          commentInfo.commentText.trim()
+        );
+        res.render("posts/postDetails", { posts: post });
+      } catch (e) {
+        res.status(400).json({ error: "Comment cannot be created" });
+      }
+    } else {
+      res.status(401).json({ user: "not auth" });
     }
   });
 

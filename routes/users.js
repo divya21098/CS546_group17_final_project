@@ -12,7 +12,7 @@ const validator = require("../helper");
 
 //POST METHOD for /register route
 router.post("/register", async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   let errors = [];
   let firstName = validator.trimString(req.body.firstName);
   let lastName = validator.trimString(req.body.lastName);
@@ -38,50 +38,49 @@ router.post("/register", async (req, res) => {
     age = parseInt(age);
   }
   if (!validator.validAge(age)) errors.push("Age must be a positive integer");
-  try{
-  if (validator.validatePhoneNumber(phoneNumber)) {
-    errors.push("Please Enter valid phone number");
+  try {
+    if (validator.validatePhoneNumber(phoneNumber)) {
+      errors.push("Please Enter valid phone number");
+    }
+  } catch (e) {
+    errors.push(e);
   }
-}
-catch(e){
-  errors.push(e)
-}
   if (!validator.validString(aboutMe)) {
     errors.push("Please Enter valid about me");
   }
   if (!validator.validString(nationality)) {
     errors.push("Please Enter valid Nationality");
   }
-  if(preference.length<0){
-    errors.push("here should be atleast one preference")
+  if (preference.length < 0) {
+    errors.push("here should be atleast one preference");
   }
-  if(preference.drinking){
-    if(!validator.validBool(preference.drinking)) errors.push("Not a type boolean")
-
+  if (preference.drinking) {
+    if (!validator.validBool(preference.drinking))
+      errors.push("Not a type boolean");
   }
-  if(preference.smoking){
-    if(!validator.validBool(preference.smoking)) errors.push("Not a type boolean")
+  if (preference.smoking) {
+    if (!validator.validBool(preference.smoking))
+      errors.push("Not a type boolean");
   }
-  try{
-  if(preference.food){
-    validator.validArray(preference.food,"food")
+  try {
+    if (preference.food) {
+      validator.validArray(preference.food, "food");
+    }
+    if (preference.budget) {
+      console.log(preference.budget);
+    }
+    if (preference.room) {
+      validator.validArray(preference.room, "room");
+    }
+    if (preference.location) {
+      validator.validArray(preference.location, "location");
+    }
+    if (preference.home_type) {
+      validator.validArray(preference.home_type, "home_type");
+    }
+  } catch (e) {
+    errors.push(e);
   }
-  if(preference.budget){
-    console.log(preference.budget)
-  }
-  if(preference.room){
-    validator.validArray(preference.room,"room")
-  }
-  if(preference.location){
-    validator.validArray(preference.location,"location")
-  }
-  if(preference.home_type){
-    validator.validArray(preference.home_type,"home_type")
-  }
-}
-catch(e){
-  errors.push(e)
-}
   // if (errors.length > 0) {
   //   return res.status(400).render("/register", {
   //     authenticated: false,
@@ -176,7 +175,7 @@ router.post("/login", async (req, res) => {
 
   if (match) {
     req.session.user = myUser._id.toString();
-    // Redirect the user to their previous route after they login if it exists
+    // Redirect the user to their previous route after thsey login if it exists
     // Otherwise, bring them to the home/post list page
     let prev = req.session.previousRoute;
     if (prev) {
@@ -185,7 +184,7 @@ router.post("/login", async (req, res) => {
     }
     res.redirect("/posts");
     //res.status(200).json(myUser);
-    // res.render('posts/index');  
+    // res.render('posts/index');
   } else {
     errors.push("Username or password does not match");
     return res.status(403).render("/login", {
@@ -252,12 +251,10 @@ router.put("/myProfileEdit", async (req, res) => {
     }
 
     if (updatedUser.phoneNumber) {
-      try{
-      validator.validatePhoneNumber(updatedUser.phoneNumber);
-      }
-      catch(e)
-      {
-        errors.push(e)
+      try {
+        validator.validatePhoneNumber(updatedUser.phoneNumber);
+      } catch (e) {
+        errors.push(e);
       }
       updatedUser.phoneNumber = validator.trimString(updatedUser.phoneNumber);
       updatedUserData.phoneNumber = updatedUser.phoneNumber;
@@ -285,28 +282,29 @@ router.put("/myProfileEdit", async (req, res) => {
       updatedUser.gender = validator.trimString(updatedUser.gender);
       updatedUserData.gender = updatedUser.gender;
     }
-    if(updatedUser.preference){
-      if(updatedUser.preference.drinking){
-        if(!validator.validBool(updatedUser.preference.drinking)) errors.push("Not a type boolean")
-    
+    if (updatedUser.preference) {
+      if (updatedUser.preference.drinking) {
+        if (!validator.validBool(updatedUser.preference.drinking))
+          errors.push("Not a type boolean");
       }
-      if(updatedUser.preference.smoking){
-        if(!validator.validBool(updatedUser.preference.smoking)) errors.push("Not a type boolean")
+      if (updatedUser.preference.smoking) {
+        if (!validator.validBool(updatedUser.preference.smoking))
+          errors.push("Not a type boolean");
       }
-      if(updatedUser.preference.food){
-        validator.validArray(updatedUser.preference.food,"food")
+      if (updatedUser.preference.food) {
+        validator.validArray(updatedUser.preference.food, "food");
       }
-      if(updatedUser.preference.budget){
-        console.log(updatedUser.preference.budget)
+      if (updatedUser.preference.budget) {
+        console.log(updatedUser.preference.budget);
       }
-      if(updatedUser.preference.room){
-        validator.validArray(updatedUser.preference.room,"room")
+      if (updatedUser.preference.room) {
+        validator.validArray(updatedUser.preference.room, "room");
       }
-      if(updatedUser.preference.location){
-        validator.validArray(updatedUser.preference.location,"location")
+      if (updatedUser.preference.location) {
+        validator.validArray(updatedUser.preference.location, "location");
       }
-      if(updatedUser.preference.home_type){
-        validator.validArray(updatedUser.preference.home_type,"home_type")
+      if (updatedUser.preference.home_type) {
+        validator.validArray(updatedUser.preference.home_type, "home_type");
       }
       updatedUserData.preference = updatedUser.preference;
     }
@@ -376,7 +374,6 @@ router.get("/myProfile/savedPosts", async (req, res) => {
     }
   }
 });
-
 
 //PUT METHOD for myProfile/savedPosts
 router.put("/myProfile/savedPosts/:postid", async (req, res) => {
