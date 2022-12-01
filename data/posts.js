@@ -298,7 +298,6 @@ const filterSearch= async(searchFilter)=>{
 // }
 // }
   let allPost =  await getAllPosts()
-  drinking_poat
   
 
 }
