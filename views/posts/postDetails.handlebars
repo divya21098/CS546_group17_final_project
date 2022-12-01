@@ -1,28 +1,35 @@
 <main>
     <div class="outer-card">
         <div class="post-details">
-            <h2>Apartment</h2>
-            <p>Price:</p>
-            <p>Location:</p>
-            <p>User Posted</p>
-
-            <p>Preferences</p>
-            {{#each preferences}}
-                <p>Preference name :</p>
+            <h2>{{posts.postTitle}}</h2>
+            <p>{{posts.userId}}</p>
+            <p>{{posts.postDate}}</p>
+            {{!-- <p>{{posts.preference}}</p> --}}
+            <p>Preferences :</p>
+            {{#each posts.preference}}
+                {{!-- <p>{{this.drinking}}</p>
+                <p>{{this.smoking}}</p>
+                <p>{{this.food}}</p>
+                <p>{{this.budget}}</p>
+                <p>{{this.room}}</p>
+                <p>{{this.home_type}}</p>
+                <p>{{this.location}}</p> --}}
+                {{@key}} : {{this}} <br>
             {{/each}}
 
-            <p>Apartment Details</p>
+            <p>Apartment Details :</p>
+            <p>{{posts.postBody}}</p>
 
-            <p>Photos</p>
-            {{#each aptPhotos}}
-                <img></img>
-            {{/each}}
+            <p>Photos :</p>
+            <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto"></img>
         </div>
         <div class="postcomments">
             <p>Enter a comment</p>
             <div class="comment-area">
-                {{#each}}
-                    <p>some comment</p>
+                {{#each posts.comments}}
+                    {{!-- {{@key}} : {{this}}<br> --}}
+                        {{@key}} : {{this.userId}}<br>
+                        {{this.commentText}}<br>
                 {{/each}}
             </div>
         </div>

@@ -49,6 +49,16 @@ router.route("/").get(async (req, res) => {
   }
 });
 
+
+router.route("/add") .get( async (req, res) => {
+  if (req.session.user) {
+    res.render("posts/createPost")
+  } else {
+    res.render("login", {});
+  }
+});
+
+
 router.route("/add").post(upload.single("postPicture"), async (req, res) => {
   const info = req.body;
   let userId = req.session.user;
@@ -77,7 +87,9 @@ router.route("/add").post(upload.single("postPicture"), async (req, res) => {
         postBody,
         finalImg
       );
-      return res.status(200).json(post);
+      //return res.status(200).json(post);
+      return res.redirect("/posts");
+      //res.render("posts/index");
     } catch (e) {
       console.log(e);
     }
@@ -97,7 +109,8 @@ router
       const id = req.params.id;
       console.log(id);
       const post = await posts.getPostById(id);
-      res.status(200).json(post);
+      //return res.status(200).json(post);
+      res.render("posts/postDetails", {posts : post});
     } catch (e) {
       res.status(404).json({ error: "No post with id" });
     }

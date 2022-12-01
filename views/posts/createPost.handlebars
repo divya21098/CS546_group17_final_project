@@ -1,21 +1,18 @@
 <main>
     <div class="container-post">
         <div class="block-posts">
-            <form id="posts-form" method="POST" action="/createPost">
+            <form id="posts-form" method="POST" action="/posts/add" enctype="multipart/form-data">
             <!-- Input to add Post Title -->
             <label class="postTitle" for="postTitle">Post Title :</label>
             <input type="text" id="postTitle" name="postTitle"/>
-            <!-- Input to add price -->
-            <label class="aptPrice" for="aptPrice">Price :</label>
-            <input type="text" id="aptPrice" name="aptPrice"/>
             <!-- Input to add location dropdown -->
 
             <label class="postBody" for="postBody" name="postBody">Apartment Details :</label>
             <textarea id="postBody" name="postBody" rows="10" cols="30"></textarea>
 
             <!-- Input to add photos -->
-            <label class="aptPhotos" for="aptPhotos">Post Title :</label>
-            <input type="file" id="aptPhotos" name="aptPhotos"/>
+            <label class="postPicture" for="postPicture" accept="image/*">Upload Photo :</label>
+            <input type="file" id="postPicture" name="postPicture"/>
 
             <!-- Create Post Button-->
             <button type="submit">Create</button>
