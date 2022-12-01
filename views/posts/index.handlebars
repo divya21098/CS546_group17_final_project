@@ -10,11 +10,11 @@
     <div class="post-details-card">
         <div class="row">
             <div class="col-sm">
-                <p>some img</p>
+                <img src="/posts/postpic/{{this._id}}" alt="Apartment Photo" class="aptPhoto"></img>
             </div>
             <div class="col-sm">
                 <p>{{this.userId}}</p>
-                <h2>{{this.postTitle}}</h2>
+                <a href="/posts/{{this._id}}"><h2>{{this.postTitle}}</h2></a>
                 <p>{{this.postBody}}</p>
                 <p>location</p>
                 <p>date</p>

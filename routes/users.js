@@ -12,6 +12,7 @@ const validator = require("../helper");
 
 //POST METHOD for /register route
 router.post("/register", async (req, res) => {
+  console.log(req.body)
   let errors = [];
   let firstName = validator.trimString(req.body.firstName);
   let lastName = validator.trimString(req.body.lastName);
