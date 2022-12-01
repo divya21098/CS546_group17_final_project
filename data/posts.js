@@ -109,7 +109,6 @@ const removePostById = async (postid, userid) => {
         userinfo.postId.splice(i, 1);
       }
     }
-    console.log(userinfo);
     await userData.updateUser(userid, { postId: userinfo.postId });
   }
 

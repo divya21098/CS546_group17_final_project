@@ -19,7 +19,7 @@ const createComment = async (postId, userId, commentText) => {
   });
 
   if (samePost === null) throw "Post to which comment added doesnt exist";
-  console.log(samePost);
+
   let newComment = {
     // postId: postId,
     _id: new ObjectId(),
@@ -83,7 +83,6 @@ const getAllComments = async (postId) => {
   const post = await postsCollection.findOne({ _id: ObjectId(postId) });
   if (post === null) throw "No post present with that Id";
 
-  console.log(post);
   post.comments.forEach((element) => {
     element._id = element._id.toString();
   });
