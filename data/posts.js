@@ -135,6 +135,9 @@ const updatePostbyId = async (postId, userId, updatedPost) => {
 
     updatedPostData.postTitle = updatedPost.postTitle;
   }
+  if (updatedPost.postPicture) {
+    updatedPostData.postPicture = updatedPost.postPicture;
+  }
   updatedPostData.userId = userid;
   const postCollection = await posts();
   // const movie = await getMovieById(postId);
