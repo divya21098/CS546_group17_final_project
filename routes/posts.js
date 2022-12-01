@@ -49,6 +49,7 @@ router.route("/").get(async (req, res) => {
   }
 });
 
+
 router.route("/add") .get( async (req, res) => {
   if (req.session.user) {
     res.render("posts/createPost")
@@ -56,6 +57,7 @@ router.route("/add") .get( async (req, res) => {
     res.render("login", {});
   }
 });
+
 
 router.route("/add").post(upload.single("postPicture"), async (req, res) => {
   const info = req.body;
@@ -132,7 +134,7 @@ router
       res.status(401).json({ user: "not auth" });
     }
   })
-  .put(async (req, res) => {
+  .put(upload.single("postPicture"), async (req, res) => {
     const info = req.body;
     let userId = req.session.user;
     let updatedPostData = {};
@@ -145,7 +147,17 @@ router
         return res.status(400).json({ error: e });
       }
       try {
-        const { postTitle, postBody } = info;
+        if (!req.file) {
+          finalImg = "";
+        } else {
+          var img = fs.readFileSync(req.file.path);
+          var encode_image = img.toString("base64");
+          finalImg = {
+            contentType: req.file.mimetype,
+            image: Buffer.from(encode_image, "base64"),
+          };
+        }
+        const { postTitle, postBody, postPicture } = info;
         if (postTitle) {
           if (!validation.validString(postTitle)) throw "Title not valid";
           // postTitle = validation.trimString(postTitle);
@@ -155,6 +167,9 @@ router
           if (!validation.validString(postBody)) throw "Body not valid";
           // postBody = validation.trimString(postBody);
           updatedPostData.postBody = postBody;
+        }
+        if (postPicture) {
+          updatedPostData.postPicture = finalImg;
         }
         const post = await posts.updatePostbyId(
           postId,
