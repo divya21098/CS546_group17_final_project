@@ -74,6 +74,8 @@ const validBool=(val)=>{
   return true
 }
 const validArray=(arr,name)=>{
+  if(typeof arr==="string")
+    return arr.trim()
   if(!Array.isArray(arr)){
     throw `Input ${name} is not of type array!`
   }

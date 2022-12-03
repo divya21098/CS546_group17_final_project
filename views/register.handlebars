@@ -227,55 +227,95 @@
             <label class="aboutMe" for="aboutMe" name="aboutMe">About me :</label>
             <textarea id="aboutMe" name="aboutMe" rows="10" cols="30" required></textarea></br></br>
 
-            <label class="preference" id="preference" name="preference">Preferences :</label>
+                {{!-- <label class="preference" id="preference" name="preference">Preferences :</label>
 
-            <input type="checkbox" id="drinking" name="drinking" value="drinking">
-            <label for="drinking"> No Drinking</label><br>
-            <input type="checkbox" id="smoking" name="smoking" value="smoking">
-            <label for="smoking"> No Smoking</label><br>
-            <input type="checkbox" id="vegetarian" name="food" value="vegetarian" checked>
+                <input type="checkbox" id="drinking" name="drinking" value="drinking" checked>
+                <label for="drinking"> Drinking</label><br>
+                <input type="checkbox" id="nodrinking" name="drinking" value="nodrinking">
+                <label for="nodrinking"> No Drinking</label><br>
+                <input type="checkbox" id="smoking" name="smoking" value="smoking">
+                <label for="smoking"> Smoking</label><br>
+                <input type="checkbox" id="nosmoking" name="smoking" value="nosmoking">
+                <label for="nosmoking"> No Smoking</label><br>
+                <input type="checkbox" id="vegetarian" name="food" value="vegetarian" checked>
+                <label for="vegetarian"> Vegetarian</label><br><br>
+                <input type="checkbox" id="nonvegetarian" name="food" value="nonvegetarian">
+                <label for="nonvegetarian"> Non Vegetarian</label><br><br>
+                <input type="checkbox" id="vegan" name="food" value="vegan">
+                <label for="vegan"> Vegan</label><br><br>
+                <input type="checkbox" id="eggitarian" name="food" value="eggitarian">
+                <label for="eggitarian"> Eggitarian</label><br><br>
+                <input type="checkbox" id="male" name="genderpref" value="male" checked>
+                <label for="male"> Male</label><br><br>
+                <input type="checkbox" id="female" name="genderpref" value="female">
+                <label for="female"> Female</label><br><br>
+                <input type="checkbox" id="privateroom" name="roomtype" value="privateroom" checked>
+                <label for="privateroom"> Private Room</label><br><br>
+                <input type="checkbox" id="sharedroom" name="roomtype" value="sharedroom">
+                <label for="sharedroom"> Shared Room</label><br><br>
+                <input type="checkbox" id="apartments" name="roomtype" value="apartments" checked>
+                <label for="apartments"> Apartment</label><br><br>
+                <input type="checkbox" id="condos" name="roomtype" value="condos">
+                <label for="condos"> Condo</label><br><br>
+                <input type="checkbox" id="townhouse" name="roomtype" value="townhouse">
+                <label for="townhouse"> Townhouse</label><br><br>
+                <input type="checkbox" id="studioapt" name="roomtype" value="studioapt">
+                <label for="studioapt"> Studio Apartment</label><br><br>
+                <input type="checkbox" id="hoboken" name="location" value="hoboken" checked>
+                <label for="hoboken"> Hoboken </label><br><br>
+                <input type="checkbox" id="jerseyCity" name="location" value="jerseyCity">
+                <label for="jerseyCity"> Jersey City </label><br><br>
+                <input type="checkbox" id="journalsq" name="location" value="journalsq">
+                <label for="journalsq"> Journal Square </label><br><br>
+                <input type="checkbox" id="weehawken" name="location" value="weehawken">
+                <label for="weehawken"> Weehawken </label><br><br>
+                <input type="checkbox" id="unionCity" name="location" value="unionCity">
+                <label for="unionCity"> Union City </label><br><br> --}}
+
+                <label class="preference" id="preference" name="preference">Preferences :</label>
+
+            <input type="checkbox" id="drinking" name="preference[drinking]" value="drinking" checked>
+            <label for="drinking"> Drinking</label><br>
+            <input type="checkbox" id="nodrinking" name="preference[drinking]" value="nodrinking">
+            <label for="nodrinking"> No Drinking</label><br>
+            <input type="checkbox" id="smoking" name="preference[smoking]" value="smoking" checked>
+            <label for="smoking"> Smoking</label><br>
+            <input type="checkbox" id="nosmoking" name="preference[smoking]" value="nosmoking">
+            <label for="nosmoking"> No Smoking</label><br>
+            <input type="checkbox" id="vegetarian" name="preference[food]" value="vegetarian" checked>
             <label for="vegetarian"> Vegetarian</label><br><br>
-            <input type="checkbox" id="nonvegetarian" name="food" value="nonvegetarian">
+            <input type="checkbox" id="nonvegetarian" name="preference[food]" value="nonvegetarian">
             <label for="nonvegetarian"> Non Vegetarian</label><br><br>
-            <input type="checkbox" id="vegan" name="food" value="vegan">
+            <input type="checkbox" id="vegan" name="preference[food]" value="vegan">
             <label for="vegan"> Vegan</label><br><br>
-            <input type="checkbox" id="eggitarian" name="food" value="eggitarian">
+            <input type="checkbox" id="eggitarian" name="preference[food]" value="eggitarian">
             <label for="eggitarian"> Eggitarian</label><br><br>
-            <input type="checkbox" id="male" name="genderpref" value="male" checked>
+            {{!-- <input type="checkbox" id="male" name="preference[genderpref]" value="male" checked>
             <label for="male"> Male</label><br><br>
-            <input type="checkbox" id="female" name="genderpref" value="female">
-            <label for="female"> Female</label><br><br>
-            <input type="checkbox" id="privateroom" name="roomtype" value="privateroom" checked>
+            <input type="checkbox" id="female" name="preference[genderpref]" value="female">
+            <label for="female"> Female</label><br><br> --}}
+            <input type="checkbox" id="privateroom" name="preference[room]" value="privateroom" checked>
             <label for="privateroom"> Private Room</label><br><br>
-            <input type="checkbox" id="sharedroom" name="roomtype" value="sharedroom">
+            <input type="checkbox" id="sharedroom" name="preference[room]" value="sharedroom">
             <label for="sharedroom"> Shared Room</label><br><br>
-            <input type="checkbox" id="apartments" name="roomtype" value="apartments" checked>
+            <input type="checkbox" id="apartments" name="preference[home_type]" value="apartments" checked>
             <label for="apartments"> Apartment</label><br><br>
-            <input type="checkbox" id="condos" name="roomtype" value="condos">
+            <input type="checkbox" id="condos" name="preference[home_type]" value="condos">
             <label for="condos"> Condo</label><br><br>
-            <input type="checkbox" id="townhouse" name="roomtype" value="townhouse">
+            <input type="checkbox" id="townhouse" name="preference[home_type]" value="townhouse">
             <label for="townhouse"> Townhouse</label><br><br>
-            <input type="checkbox" id="studioapt" name="roomtype" value="studioapt">
+            <input type="checkbox" id="studioapt" name="preference[home_type]" value="studioapt">
             <label for="studioapt"> Studio Apartment</label><br><br>
-            <input type="checkbox" id="hoboken" name="location" value="hoboken" checked>
+            <input type="checkbox" id="hoboken" name="preference[location]" value="hoboken" checked>
             <label for="hoboken"> Hoboken </label><br><br>
-            <input type="checkbox" id="jerseyCity" name="location" value="jerseyCity">
+            <input type="checkbox" id="jerseyCity" name="preference[location]" value="jerseyCity">
             <label for="jerseyCity"> Jersey City </label><br><br>
-            <input type="checkbox" id="journalsq" name="location" value="journalsq">
+            <input type="checkbox" id="journalsq" name="preference[location]" value="journalsq">
             <label for="journalsq"> Journal Square </label><br><br>
-            <input type="checkbox" id="weehawken" name="location" value="weehawken">
+            <input type="checkbox" id="weehawken" name="preference[location]" value="weehawken">
             <label for="weehawken"> Weehawken </label><br><br>
-            <input type="checkbox" id="unionCity" name="location" value="unionCity">
+            <input type="checkbox" id="unionCity" name="preference[location]" value="unionCity">
             <label for="unionCity"> Union City </label><br><br>
-
-            {{!-- <label class="location" for="location" name="location">Location :</label>
-            <select id="location" name="location">
-                <option value="jerseycity">Jersey City</option>
-                <option value="weehawken">Weehawken</option>
-                <option value="unioncity">Union City</option>
-                <option value="hoboken">Hoboken</option>
-                <option value="newyorkcity">New York City</option>
-            </select> --}}
 
             <button type="submit">Register</button>
         </form>
