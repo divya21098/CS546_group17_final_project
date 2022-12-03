@@ -84,6 +84,8 @@ router.route("/add").post(upload.single("postPicture"), async (req, res) => {
         postTitle,
         postBody,
         finalImg,
+        longitude,
+        latitude
       );
       //return res.status(200).json(post);
       return res.redirect("/posts");
