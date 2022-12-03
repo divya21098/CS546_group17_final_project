@@ -12,7 +12,7 @@ const validator = require("../helper");
 
 //POST METHOD for /register route
 router.post("/register", async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   let errors = [];
   let firstName = validator.trimString(req.body.firstName);
   let lastName = validator.trimString(req.body.lastName);
@@ -56,19 +56,19 @@ catch(e){
     errors.push("here should be atleast one preference")
   }
   if(preference.drinking){
-    if(!validator.validBool(preference.drinking)) errors.push("Not a type boolean")
+    if(!validator.validString(preference.drinking)) errors.push("Not a type boolean")
 
   }
   if(preference.smoking){
-    if(!validator.validBool(preference.smoking)) errors.push("Not a type boolean")
+    if(!validator.validString(preference.smoking)) errors.push("Not a type boolean")
   }
   try{
   if(preference.food){
     validator.validArray(preference.food,"food")
   }
-  if(preference.budget){
-    console.log(preference.budget)
-  }
+  // if(preference.budget){
+  //   console.log(preference.budget)
+  // }
   if(preference.room){
     validator.validArray(preference.room,"room")
   }
@@ -82,13 +82,13 @@ catch(e){
 catch(e){
   errors.push(e)
 }
-  // if (errors.length > 0) {
-  //   return res.status(400).render("/register", {
-  //     authenticated: false,
-  //     title: "Register",
-  //     errors: errors
-  //   });
-  // }
+  if (errors.length > 0) {
+    return res.status(400).render("register", {
+      authenticated: false,
+      title: "Register",
+      errors: errors
+    });
+  }
   console.log("going to data");
   try {
     const user = await users.createUser(
@@ -287,11 +287,11 @@ router.put("/myProfileEdit", async (req, res) => {
     }
     if(updatedUser.preference){
       if(updatedUser.preference.drinking){
-        if(!validator.validBool(updatedUser.preference.drinking)) errors.push("Not a type boolean")
+        if(!validator.validString(updatedUser.preference.drinking)) errors.push("Not a type boolean")
     
       }
       if(updatedUser.preference.smoking){
-        if(!validator.validBool(updatedUser.preference.smoking)) errors.push("Not a type boolean")
+        if(!validator.validString(updatedUser.preference.smoking)) errors.push("Not a type boolean")
       }
       if(updatedUser.preference.food){
         validator.validArray(updatedUser.preference.food,"food")

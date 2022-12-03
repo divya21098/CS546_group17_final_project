@@ -38,32 +38,32 @@ const createUser = async (
   //preference  in drop down box to be called on client side
   //gender - Male, Female, Others drop box
   if (!validator.validString(gender)) throw "Gender is not a valid string.";
-  if (preference.length < 0) {
-    throw `There should be atleast one preference`;
-  }
-  if(preference.drinking){
-    if(!validator.validBool(preference.drinking)) throw "Not a type boolean"
+  // if (preference.length < 0) {
+  //   throw `There should be atleast one preference`;
+  // }
+  // if(preference.drinking){
+  //   if(!validator.validBool(preference.drinking)) throw "Not a type boolean"
 
-  }
-  if(preference.smoking){
-    if(!validator.validBool(preference.smoking))  throw "Not a type booolean"
-  }
+  // }
+  // if(preference.smoking){
+  //   if(!validator.validBool(preference.smoking))  throw "Not a type booolean"
+  // }
 
-  if(preference.food){
-    validator.validArray(preference.food,"food")
-  }
-  if(preference.budget){
-    console.log(preference.budget)
-  }
-  if(preference.room){
-    validator.validArray(preference.room,"room")
-  }
-  if(preference.location){
-    validator.validArray(preference.location,"location")
-  }
-  if(preference.home_type){
-    validator.validArray(preference.home_type,"home type")
-  }
+  // if(preference.food){
+  //   validator.validArray(preference.food,"food")
+  // }
+  // if(preference.budget){
+  //   console.log(preference.budget)
+  // }
+  // if(preference.room){
+  //   validator.validArray(preference.room,"room")
+  // }
+  // if(preference.location){
+  //   validator.validArray(preference.location,"location")
+  // }
+  // if(preference.home_type){
+  //   validator.validArray(preference.home_type,"home type")
+  // }
   /*
   {
   "drinking":"true",
@@ -73,7 +73,7 @@ const createUser = async (
 	"room":["private","sharing"],
 	"home_type":["Condo"],
 	"location":["Newport"],
-	 "roomate_count": "2"
+	"roomate_count": "2"
 }
   */
   /*before storing email and username into DB, make sure there are no duplicate entries of email in DB */
@@ -198,7 +198,7 @@ const updateUser = async (id, updatedUser) => {
   
   if(updatedUser.preference){
     if(updatedUser.preference.drinking){
-      if(!validator.validBool(updatedUser.preference.drinking)) throw "Not a type boolean"
+      if(!validator.validString(updatedUser.preference.drinking)) throw "Not a type boolean"
   
     }
     if(updatedUser.preference.smoking){
