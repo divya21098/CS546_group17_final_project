@@ -12,7 +12,8 @@ const createPost = async (
   postTitle,
   postBody,
   postPicture,
-  mapCordinate
+  latitude,
+  longitude
 ) => {
   console.log("in post data");
 
@@ -26,6 +27,12 @@ const createPost = async (
   if (!postPicture || postPicture == "") {
     postPicture = "";
   }
+
+  if (!longitude || typeof longitude != "number")
+    throw "must give longitude as a number";
+  if (!latitude || typeof latitude != "number")
+    throw "must give latitude as a number";
+
   const date = new Date();
   let day = date.getDate();
   let month = String(date.getMonth() + 1).padStart(2, "0");
@@ -43,6 +50,8 @@ const createPost = async (
     comments: [],
     preference: preference,
     postPicture: postPicture,
+    longitude: longitude,
+    latitude: latitude,
   };
 
   const postCollection = await posts();

@@ -1,4 +1,5 @@
 <main>
+<<<<<<< HEAD
     <div class="edit-user-page">
         <form id="edit-user-form" method="POST" action="/myProfileEdit">
             <label class="firstName" for="firstName">Enter firstname :</label>
@@ -6,10 +7,20 @@
 
             <label class="lastName" for="lastName">Enter lastname :</label>
             <input type="text" id="lastName" name="lastName" required/></br></br>
+=======
+    <div class="container-post">
+        <div class="block-posts">
+            <form id="posts-form" method="POST" action="/createUser">
+
+                {{!-- <!-- Edit (User Picture) -->
+                <label for="avatar">Edit profile picture:</label>
+                <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" /> --}}
+>>>>>>> 0bab724 (Added maps.js)
 
             <label class="password" for="password">Enter password :</label>
             <input type="password" id="password" name="password" required/></br></br>
 
+<<<<<<< HEAD
             <label class="age" for="age">Enter Age :</label>
             <input type="number" id="age" min="22" max="80" name="age" required/></br></br>
 
@@ -220,6 +231,23 @@
                 <option value="zambian">Zambian</option>
                 <option value="zimbabwean">Zimbabwean</option>
             </select></br></br>
+=======
+                <!-- Edit Email -->
+                <label class="userEmail" for="emailId">Email :</label>
+                <input type="text" id="emailId" name="emailId" />
+
+                <!-- Edit Phone No. -->
+                <label class="userPhone" for="phoneNumber">Phone No :</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" />
+
+                <!-- Edit Gender -->
+                <label class="userGender" for="gender">Gender :</label>
+                <input type="text" id="gender" name="gender" />
+
+                <!-- Edit Nationality -->
+                <label class="userCountry" for="nationality">Nationality :</label>
+                <input type="text" id="nationality" name="nationality" />
+>>>>>>> 0bab724 (Added maps.js)
 
             <label class="aboutMe" for="aboutMe" name="aboutMe">About me :</label>
             <textarea id="aboutMe" name="aboutMe" rows="10" cols="30" required></textarea></br></br>
