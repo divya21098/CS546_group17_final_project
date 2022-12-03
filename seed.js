@@ -7,17 +7,10 @@ const users  = require("./data/users");
 
 const main = async () => {
   const db = await dbConnection.dbConnection();
-<<<<<<< HEAD
   // await db.dropDatabase();
 
 
   // const U1 = await users.createUser("Divya", "Kamath", "dkamath@stevens.edu", "Test@123", 24, "5512478555", "F", "American", " am a good gul, I am happy!", {"location":'Hobojken'});
-=======
-  //await db.dropDatabase();
-
-
-//  const U1 = await users.createUser("Divya", "Kamath", "dkamath@stevens.edu", "Test@123", 24, "5512478555", "F", "American", " am a good gul, I am happy!", "No-drinking");
->>>>>>> fd05ab5 (resolved conflicts)
 
 //   {
 //     "firstName": "Divya",
@@ -53,11 +46,7 @@ const main = async () => {
 
 
 
-<<<<<<< HEAD
   const P1 = await posts.createPost("638bc858b679e6e7d349d676", "ABC", "Pizza", "");
-=======
-  const P1 = await posts.createPost("638bb92eaaa5fa6cbbc04663", "ABC", "Pizza", "", 40.732628, -74.037628);
->>>>>>> fd05ab5 (resolved conflicts)
 
   // userId,
   // postTitle,

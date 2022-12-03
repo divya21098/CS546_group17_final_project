@@ -23,6 +23,8 @@
             <p>Photos :</p>
             <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto"></img>
         </div>
+                <div id="gmap" style="height:400px; width:100%;"></div> <!-- Some restaurants already have a pin on Google maps, and manual pin is somewhat inaccurate due to our estimation -->
+
         <div class="postcomments">
             <p>Enter a comment</p>
             <div>
@@ -45,6 +47,6 @@
         </div>
     </div>
 
-    <script src="/public/javascript/maps.js" latitude={{posts.latitude}} longitude={{posts.longitude}}></script>
+    <script src="/public/js/maps.js" latitude={{posts.latitude}} longitude={{posts.longitude}}></script>
 
 </main>
