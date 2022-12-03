@@ -274,6 +274,34 @@ const addPostPicture = async (postid, postPicture) => {
     throw "could not update user";
   return await this.getPostById(postid);
 };
+const filterSearch= async(searchFilter)=>{
+//   searchFilter={
+//   "preference": {
+//     "drinking": false,
+//     "smoking": false,
+//     "food": [
+//         "veg"
+//     ],
+//     "budget": "1500$-2000$",
+//     "room": [
+//         "private",
+//         "sharing"
+//     ],
+//     "home_type": [
+//         "Condo",
+//         "Apartment"
+//     ],
+//     "location": [
+//         "Newport",
+//         "Hoboken"
+//     ]
+// }
+// }
+  let allPost =  await getAllPosts()
+  
+  
+
+}
 module.exports = {
   createPost,
   getAllPosts,
@@ -285,4 +313,5 @@ module.exports = {
   removeSavedPostByuserId,
   createSavedPost,
   addPostPicture,
+  filterSearch
 };

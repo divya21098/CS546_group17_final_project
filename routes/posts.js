@@ -186,32 +186,39 @@ router.route("/search").get(async (req, res) => {
   if (!search.key) {
     return res.redirect("/");
   }
-  if (search.preference.drinking) {
-    if (!validator.validBool(search.preference.drinking))
-      errors.push("Not a type boolean");
+  if(search.preference.drinking){
+    if(!validation.validBool(search.preference.drinking)) errors.push("Not a type boolean")
+
   }
-  if (search.preference.smoking) {
-    if (!validator.validBool(search.preference.smoking))
-      errors.push("Not a type boolean");
+  if(search.preference.smoking){
+    if(!validation.validBool(search.preference.smoking)) errors.push("Not a type boolean")
   }
-  try {
-    if (search.preference.food) {
-      validator.validArray(search.preference.food, "food");
-    }
-    if (search.preference.budget) {
-      console.log(search.preference.budget);
-    }
-    if (search.preference.room) {
-      validator.validArray(search.preference.room, "room");
-    }
-    if (search.preference.location) {
-      validator.validArray(search.preference.location, "location");
-    }
-    if (search.preference.home_type) {
-      validator.validArray(search.preference.home_type, "home_type");
-    }
-  } catch (e) {
-    errors.push(e);
+  try{
+  if(search.preference.food){
+    validation.validArray(search.preference.food,"food")
   }
+  if(search.preference.budget){
+    console.log(search.preference.budget)
+  }
+  if(search.preference.room){
+    validation.validArray(search.preference.room,"room")
+  }
+  if(search.preference.location){
+    validation.validArray(search.preference.location,"location")
+  }
+  if(search.preference.home_type){
+    validation.validArray(search.preference.home_type,"home_type")
+  }
+}
+catch(e){
+  errors.push(e)
+}
+try{
+  let searchList= await posts.filterSearch(search) 
+}
+catch(e){
+  
+}
+
 });
 module.exports = router;
