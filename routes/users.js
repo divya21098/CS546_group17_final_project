@@ -55,12 +55,12 @@ router.post("/register", async (req, res) => {
     errors.push("here should be atleast one preference");
   }
   if (preference.drinking) {
-    if (!validator.validBool(preference.drinking))
-      errors.push("Not a type boolean");
+    if (!validator.validString(preference.drinking))
+      errors.push("Please enter valid field");
   }
   if (preference.smoking) {
-    if (!validator.validBool(preference.smoking))
-      errors.push("Not a type boolean");
+    if (!validator.validString(preference.smoking))
+    errors.push("Please enter valid field");
   }
   try {
     if (preference.food) {
@@ -343,7 +343,7 @@ router.get("users/myProfile/posts", async (req, res) => {
 });
 
 //POST METHOD for myProfile/savedPosts
-router.post("users/myProfile/savedPosts/:postid", async (req, res) => {
+router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
   if (req.session.user) {
     try {
       console.log(req.params.postid);
@@ -361,7 +361,7 @@ router.post("users/myProfile/savedPosts/:postid", async (req, res) => {
 });
 
 //GET METHOD for myProfile/savedPosts
-router.get("users/myProfile/savedPosts", async (req, res) => {
+router.get("/users/myProfile/savedPosts", async (req, res) => {
   if (req.session.user) {
     try {
       let all_post = await posts.getSavedPostByuserId(req.session.user);
@@ -376,7 +376,7 @@ router.get("users/myProfile/savedPosts", async (req, res) => {
 });
 
 //PUT METHOD for myProfile/savedPosts
-router.put("users/myProfile/savedPosts/:postid", async (req, res) => {
+router.put("/users/myProfile/savedPosts/:postid", async (req, res) => {
   if (req.session.user) {
     try {
       let postid = req.params.postid;
