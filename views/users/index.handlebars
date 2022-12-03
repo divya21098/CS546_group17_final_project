@@ -1,1 +1,21 @@
 {{!-- all user handlebars --}}
+<main>
+    <div class="user-details-card">
+        <div class="row">
+            
+            <div class="col-sm">
+                <p>{{userInfo.firstName}}</p>
+                <p>{{userInfo.lastName}}</p>
+                <p>{{userInfo.emailId}}</p>
+                <p>{{userInfo.age}}</p>
+                <p> {{userInfo.gender}}</p>
+                <p>{{userInfo.aboutMe}}</p>
+                <p> {{userInfo.nationality}}</p>
+                <p>Preferences</p>
+                    {{#each userInfo.preference}}
+                        {{@key}} : {{this}} <br>
+                    {{/each}}
+            </div>
+        </div>
+    </div>
+</main>

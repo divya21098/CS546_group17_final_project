@@ -195,14 +195,16 @@ router.post("/login", async (req, res) => {
 
 //GET METHOD for myProfle route
 router.get("/myProfile", async (req, res) => {
+  let errors = [];
+
   if (req.session.user) {
     const userInfo = await users.getUserById(req.session.user);
-    return res.status(200).json(userInfo);
-
-    // return res.render("users/index", { userInfo: userInfo });
+    // return res.status(200).json(userInfo);
+    console.log(userInfo);
+    return res.render("users/index", { userInfo: userInfo });
   } else {
     console.log("err");
-    // res.render("/login", {});
+    res.render("login", { errors: errors });
   }
 });
 
@@ -309,19 +311,19 @@ router.put("/myProfileEdit", async (req, res) => {
       updatedUserData.preference = updatedUser.preference;
     }
     if (errors.length > 0) {
-      return res.status(200).json(errors);
-      // return res.status(400).render("users/userEdit", {
-      //   errors: errors,
-      // });
+      // return res.status(200).json(errors);
+      return res.status(400).render("users/editUser", {
+        errors: errors,
+      });
     }
     try {
       let userInfo = await users.updateUser(req.session.user, updatedUserData);
-      return res.status(200).json(userInfo);
+      // return res.status(200).json(userInfo);
 
-      // return res.render("users/index", { userInfo: userInfo });
+      return res.render("users/index", { userInfo: userInfo });
     } catch (e) {
-      return res.status(400).json(e);
-      // return res.render("users/userEdit");
+      // return res.status(400).json(e);
+      return res.render("users/editUser");
     }
   } else {
     return res.status(401).json({ "not auth": "6" });
@@ -333,8 +335,8 @@ router.get("/myProfile/posts", async (req, res) => {
   if (req.session.user) {
     try {
       let all_post = await posts.getPostByuserId(req.session.user);
-      return res.status(200).json(all_post);
-      // return res.render("users/userPosts", { allPost: all_post });
+      // return res.status(200).json(all_post);
+      return res.render("users/userPost", { all_post: all_post });
     } catch {
       console.log("err");
       // return res.render("error", {});
@@ -350,7 +352,7 @@ router.post("/myProfile/savedPosts/:postid", async (req, res) => {
       let postid = req.params.postid;
       let all_post = await posts.createSavedPost(postid, req.session.user);
       return res.send(all_post);
-      // return res.render("users/userPosts", { allPost: all_post });
+      // return res.render("users/userSavedPost", { allPost: all_post });
     } catch {
       console.log("err");
 
@@ -365,8 +367,8 @@ router.get("/myProfile/savedPosts", async (req, res) => {
   if (req.session.user) {
     try {
       let all_post = await posts.getSavedPostByuserId(req.session.user);
-      return res.send(all_post);
-      // return res.render("users/userPosts", { allPost: all_post });
+      // return res.send(all_post);
+      return res.render("users/userSavedPost", { allPost: all_post });
     } catch {
       console.log("Post no longer available!");
 

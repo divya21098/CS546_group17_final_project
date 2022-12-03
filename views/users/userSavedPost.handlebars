@@ -1,0 +1,21 @@
+<main>
+    <div class="user-saved-posts-list">
+         <ul>  
+            {{#each allPost}}              
+            <li>
+            <h2>{{this.postTitle}}</h2>
+            <p>{{this.postDate}}</p>
+               <p>Preferences :</p>
+            {{#each this.preference}}
+             {{@key}} : {{this}} <br>
+            {{/each}}
+            <p>Apartment Details :</p>
+            <p>{{this.postBody}}</p>
+
+            <p>Photos :</p>
+            <img src="/posts/postpic/{{this._id}}" alt="Apartment Photo" class="aptPhoto"></img>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</main>
