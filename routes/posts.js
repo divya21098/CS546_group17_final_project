@@ -236,4 +236,7 @@ catch(e){
 }
 
 });
+router.route("/search").get(async (req, res) => {
+  res.render("")
+})
 module.exports = router;
