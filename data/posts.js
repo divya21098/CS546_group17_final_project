@@ -109,6 +109,7 @@ const removePostById = async (postid, userid) => {
         userinfo.postId.splice(i, 1);
       }
     }
+    console.log(userinfo);
     await userData.updateUser(userid, { postId: userinfo.postId });
   }
 
@@ -274,6 +275,63 @@ const addPostPicture = async (postid, postPicture) => {
     throw "could not update user";
   return await this.getPostById(postid);
 };
+const filterSearch= async(searchFilter)=>{
+//   searchFilter={
+//   "preference": {
+//     "drinking": false,
+//     "smoking": false,
+//     "food": [
+//         "veg"
+//     ],
+//     "budget": "1500$-2000$",
+//     "room": [
+//         "private",
+//         "sharing"
+//     ],
+//     "home_type": [
+//         "Condo",
+//         "Apartment"
+//     ],
+//     "location": [
+//         "Newport",
+//         "Hoboken"
+//     ]
+// }
+// }
+  //let allPost =  await getAllPosts()
+  const postCollection = await posts();
+  if(Object.keys(searchFilter).length === 0){
+    throw "Preference is not valid"
+  }
+  if(searchFilter["preference.drinking"]){
+    searchFilter["preference.drinking"] = {$all:searchFilter["preference.drinking"]}
+  }
+  if(searchFilter["preference.smoking"]){
+    searchFilter["preference.smoking"] = {$all:searchFilter["preference.smoking"]}
+  }
+  if(searchFilter["preference.food"]){
+    searchFilter["preference.food"] = {$all:searchFilter["preference.food"]}
+  }
+  if(searchFilter["preference.budget"]){
+    searchFilter["preference.budget"] = {$all:searchFilter["preference.budget"]}
+  }
+  if(searchFilter["preference.room"]){
+    searchFilter["preference.room"] = {$all:searchFilter["preference.room"]}
+  }
+  if(searchFilter["preference.home_type"]){
+    searchFilter["preference.home_type"] = {$all:searchFilter["preference.home_type"]}
+  }
+  if(searchFilter["preference.location"]){
+    searchFilter["preference.location"] = {$all:searchFilter["preference.location"]}
+  }
+  const filteredPost = await postCollection.find(searchFilter).toArray();
+  if(filteredPost.length===0){
+    return "No results found"
+  }
+  return filteredPost
+  
+
+}
 module.exports = {
   createPost,
   getAllPosts,
@@ -285,4 +343,5 @@ module.exports = {
   removeSavedPostByuserId,
   createSavedPost,
   addPostPicture,
+  filterSearch
 };

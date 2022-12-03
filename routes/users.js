@@ -55,12 +55,12 @@ router.post("/register", async (req, res) => {
     errors.push("here should be atleast one preference");
   }
   if (preference.drinking) {
-    if (!validator.validBool(preference.drinking))
-      errors.push("Not a type boolean");
+    if (!validator.validString(preference.drinking))
+      errors.push("Please enter valid field");
   }
   if (preference.smoking) {
-    if (!validator.validBool(preference.smoking))
-      errors.push("Not a type boolean");
+    if (!validator.validString(preference.smoking))
+    errors.push("Please enter valid field");
   }
   try {
     if (preference.food) {
@@ -194,9 +194,7 @@ router.post("/login", async (req, res) => {
 });
 
 //GET METHOD for myProfle route
-router.get("/myProfile", async (req, res) => {
-  let errors = [];
-
+router.get("users/myProfile", async (req, res) => {
   if (req.session.user) {
     const userInfo = await users.getUserById(req.session.user);
     // return res.status(200).json(userInfo);
@@ -219,7 +217,7 @@ router.get("/myProfile", async (req, res) => {
 // });
 
 // PUT METHOD for myProfileEdit route
-router.put("/myProfileEdit", async (req, res) => {
+router.put("users/myProfileEdit", async (req, res) => {
   if (req.session.user) {
     let updatedUser = req.body;
     let updatedUserData = {};
@@ -331,7 +329,7 @@ router.put("/myProfileEdit", async (req, res) => {
 });
 
 //GET METHOD for myProfile/posts
-router.get("/myProfile/posts", async (req, res) => {
+router.get("users/myProfile/posts", async (req, res) => {
   if (req.session.user) {
     try {
       let all_post = await posts.getPostByuserId(req.session.user);
@@ -345,7 +343,7 @@ router.get("/myProfile/posts", async (req, res) => {
 });
 
 //POST METHOD for myProfile/savedPosts
-router.post("/myProfile/savedPosts/:postid", async (req, res) => {
+router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
   if (req.session.user) {
     try {
       console.log(req.params.postid);
@@ -363,7 +361,7 @@ router.post("/myProfile/savedPosts/:postid", async (req, res) => {
 });
 
 //GET METHOD for myProfile/savedPosts
-router.get("/myProfile/savedPosts", async (req, res) => {
+router.get("/users/myProfile/savedPosts", async (req, res) => {
   if (req.session.user) {
     try {
       let all_post = await posts.getSavedPostByuserId(req.session.user);
@@ -378,7 +376,7 @@ router.get("/myProfile/savedPosts", async (req, res) => {
 });
 
 //PUT METHOD for myProfile/savedPosts
-router.put("/myProfile/savedPosts/:postid", async (req, res) => {
+router.put("/users/myProfile/savedPosts/:postid", async (req, res) => {
   if (req.session.user) {
     try {
       let postid = req.params.postid;

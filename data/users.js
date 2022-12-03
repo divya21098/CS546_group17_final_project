@@ -42,11 +42,11 @@ const createUser = async (
     throw `There should be atleast one preference`;
   }
   if(preference.drinking){
-    if(!validator.validBool(preference.drinking)) throw "Not a type boolean"
+    if(!validator.validString(preference.drinking)) throw "Not a type boolean"
 
   }
   if(preference.smoking){
-    if(!validator.validBool(preference.smoking))  throw "Not a type booolean"
+    if(!validator.validString(preference.smoking))  throw "Not a type booolean"
   }
 
   if(preference.food){
@@ -198,11 +198,11 @@ const updateUser = async (id, updatedUser) => {
   
   if(updatedUser.preference){
     if(updatedUser.preference.drinking){
-      if(!validator.validBool(updatedUser.preference.drinking)) throw "Not a type boolean"
+      if(!validator.validString(updatedUser.preference.drinking)) throw "Not a type boolean"
   
     }
     if(updatedUser.preference.smoking){
-      if(!validator.validBool(updatedUser.preference.smoking)) throw "Not a type boolean"
+      if(!validator.validString(updatedUser.preference.smoking)) throw "Not a type boolean"
     }
     if(updatedUser.preference.food){
       validator.validArray(updatedUser.preference.food,"food")
