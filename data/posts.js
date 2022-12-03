@@ -135,6 +135,9 @@ const updatePostbyId = async (postId, userId, updatedPost) => {
 
     updatedPostData.postTitle = updatedPost.postTitle;
   }
+  if (updatedPost.postPicture) {
+    updatedPostData.postPicture = updatedPost.postPicture;
+  }
   updatedPostData.userId = userid;
   const postCollection = await posts();
   // const movie = await getMovieById(postId);
@@ -163,7 +166,6 @@ const updatePostbyId = async (postId, userId, updatedPost) => {
 };
 
 //list of post user see after login
-//list of post user see after login
 const getPostByuserId = async (id) => {
   //id = validation.checkId(id, 'ID');
   id = validation.validId(id);
@@ -186,9 +188,13 @@ const createSavedPost = async (postid, userid) => {
   postid = validation.validId(postid);
   userid = validation.validId(userid);
   const userCollection = await users();
-  //const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
-  //const userinfo = await userCollection.findOne({ _id: ObjectId(id) });
-  //if (!userinfo) throw "No user exists";
+  const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
+  if (!userinfo) throw "No user exists";
+  if (userinfo.savedPost.length > 0) {
+    for (i = 0; i < userinfo.savedPost.length; i++) {
+      if (userinfo.savedPost[i] == postid) throw "Cant save post again";
+    }
+  }
   const updatedInfo = await userCollection.updateOne(
     { _id: ObjectId(userid) },
     { $push: { savedPost: String(postid) } }
@@ -208,7 +214,8 @@ const getSavedPostByuserId = async (id) => {
   let result = [];
   if (userinfo.savedPost.length > 0) {
     for (i = 0; i < userinfo.savedPost.length; i++) {
-      result.push(await getPostById(userinfo.savedPost[i]));
+      const post = await getPostById(userinfo.savedPost[i]);
+      result.push(post);
     }
   }
   // const postCollection = await posts();
@@ -268,6 +275,63 @@ const addPostPicture = async (postid, postPicture) => {
     throw "could not update user";
   return await this.getPostById(postid);
 };
+const filterSearch= async(searchFilter)=>{
+//   searchFilter={
+//   "preference": {
+//     "drinking": false,
+//     "smoking": false,
+//     "food": [
+//         "veg"
+//     ],
+//     "budget": "1500$-2000$",
+//     "room": [
+//         "private",
+//         "sharing"
+//     ],
+//     "home_type": [
+//         "Condo",
+//         "Apartment"
+//     ],
+//     "location": [
+//         "Newport",
+//         "Hoboken"
+//     ]
+// }
+// }
+  //let allPost =  await getAllPosts()
+  const postCollection = await posts();
+  if(Object.keys(searchFilter).length === 0){
+    throw "Preference is not valid"
+  }
+  if(searchFilter["preference.drinking"]){
+    searchFilter["preference.drinking"] = {$all:searchFilter["preference.drinking"]}
+  }
+  if(searchFilter["preference.smoking"]){
+    searchFilter["preference.smoking"] = {$all:searchFilter["preference.smoking"]}
+  }
+  if(searchFilter["preference.food"]){
+    searchFilter["preference.food"] = {$all:searchFilter["preference.food"]}
+  }
+  if(searchFilter["preference.budget"]){
+    searchFilter["preference.budget"] = {$all:searchFilter["preference.budget"]}
+  }
+  if(searchFilter["preference.room"]){
+    searchFilter["preference.room"] = {$all:searchFilter["preference.room"]}
+  }
+  if(searchFilter["preference.home_type"]){
+    searchFilter["preference.home_type"] = {$all:searchFilter["preference.home_type"]}
+  }
+  if(searchFilter["preference.location"]){
+    searchFilter["preference.location"] = {$all:searchFilter["preference.location"]}
+  }
+  const filteredPost = await postCollection.find(searchFilter).toArray();
+  if(filteredPost.length===0){
+    return "No results found"
+  }
+  return filteredPost
+  
+
+}
 module.exports = {
   createPost,
   getAllPosts,
@@ -279,4 +343,5 @@ module.exports = {
   removeSavedPostByuserId,
   createSavedPost,
   addPostPicture,
+  filterSearch
 };

@@ -25,6 +25,16 @@
         </div>
         <div class="postcomments">
             <p>Enter a comment</p>
+            <div>
+                <form  id="comments-form"  method="POST"action="/comments/{{posts._id}}">
+                 <label class="commentText" for="commentText">comment text :</label>
+                  <input type="text" id="commentText" name="commentText"/>
+                    <button type="submit">Create</button>
+                </form>
+
+                 
+            </div>
+            <p>Comment list</p>
             <div class="comment-area">
                 {{#each posts.comments}}
                     {{!-- {{@key}} : {{this}}<br> --}}

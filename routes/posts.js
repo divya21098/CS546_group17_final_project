@@ -28,7 +28,7 @@ router.get("/postpic/:id", async (req, res) => {
   const profilepicData = getPost.postPicture;
   if (profilepicData == "") {
     return res.status(400).send({
-      message: "No Profile Pic Found!",
+      message: "No Post Pic Found!",
     });
   } else {
     res.contentType("image/jpeg");
@@ -49,9 +49,9 @@ router.route("/").get(async (req, res) => {
   }
 });
 
-router.route("/add") .get( async (req, res) => {
+router.route("/add").get(async (req, res) => {
   if (req.session.user) {
-    res.render("posts/createPost")
+    res.render("posts/createPost");
   } else {
     res.render("login", {});
   }
@@ -60,14 +60,14 @@ router.route("/add") .get( async (req, res) => {
 router.route("/add").post(upload.single("postPicture"), async (req, res) => {
   const info = req.body;
   let userId = req.session.user;
-  console.log(userId);
+  // console.log(userId);
   if (userId) {
     try {
       info.postTitle = validation.validString(info.postTitle);
       info.postBody = validation.validString(info.postBody);
       // info.postPicture = validation.validString(info.postPicture);
       var finalImg = "";
-      console.log(req.file);
+
       if (!req.file) {
         finalImg = "";
       } else {
@@ -105,10 +105,9 @@ router
     }
     try {
       const id = req.params.id;
-      console.log(id);
       const post = await posts.getPostById(id);
       //return res.status(200).json(post);
-      res.render("posts/postDetails", {posts : post});
+      res.render("posts/postDetails", { posts: post });
     } catch (e) {
       res.status(404).json({ error: "No post with id" });
     }
@@ -132,7 +131,7 @@ router
       res.status(401).json({ user: "not auth" });
     }
   })
-  .put(async (req, res) => {
+  .put(upload.single("postPicture"), async (req, res) => {
     const info = req.body;
     let userId = req.session.user;
     let updatedPostData = {};
@@ -145,7 +144,17 @@ router
         return res.status(400).json({ error: e });
       }
       try {
-        const { postTitle, postBody } = info;
+        if (!req.file) {
+          finalImg = "";
+        } else {
+          var img = fs.readFileSync(req.file.path);
+          var encode_image = img.toString("base64");
+          finalImg = {
+            contentType: req.file.mimetype,
+            image: Buffer.from(encode_image, "base64"),
+          };
+        }
+        const { postTitle, postBody, postPicture } = info;
         if (postTitle) {
           if (!validation.validString(postTitle)) throw "Title not valid";
           // postTitle = validation.trimString(postTitle);
@@ -155,6 +164,9 @@ router
           if (!validation.validString(postBody)) throw "Body not valid";
           // postBody = validation.trimString(postBody);
           updatedPostData.postBody = postBody;
+        }
+        if (postPicture) {
+          updatedPostData.postPicture = finalImg;
         }
         const post = await posts.updatePostbyId(
           postId,
@@ -169,37 +181,62 @@ router
       res.status(401).json({ user: "not auth" });
     }
   });
-router.route("/search").get(async (req, res) => {
+router.route("/search").post(async (req, res) => {
   const search = req.body;
-  if (!search.key) {
-    return res.redirect("/");
+  let errors=[]
+  // if (!search.key) {
+  //   return res.redirect("/");
+  // }
+  let b = {}
+  if(Object.keys(search).length === 0){
+    return res.status(401).json({"Enter some search":"Nothing"})
   }
-  if (search.preference.drinking) {
-    if (!validator.validBool(search.preference.drinking))
-      errors.push("Not a type boolean");
+  if(search.preference.drinking){
+    if(!validation.validBool(search.preference.drinking)) errors.push("Not a type boolean")
+    b["preference.drinking"] = search.preference.drinking
   }
-  if (search.preference.smoking) {
-    if (!validator.validBool(search.preference.smoking))
-      errors.push("Not a type boolean");
+  if(search.preference.smoking){
+    if(!validation.validBool(search.preference.smoking)) errors.push("Not a type boolean")
+    b["preference.smoking"] = search.preference.smoking
   }
-  try {
-    if (search.preference.food) {
-      validator.validArray(search.preference.food, "food");
-    }
-    if (search.preference.budget) {
-      console.log(search.preference.budget);
-    }
-    if (search.preference.room) {
-      validator.validArray(search.preference.room, "room");
-    }
-    if (search.preference.location) {
-      validator.validArray(search.preference.location, "location");
-    }
-    if (search.preference.home_type) {
-      validator.validArray(search.preference.home_type, "home_type");
-    }
-  } catch (e) {
-    errors.push(e);
+  try{
+  if(search.preference.food){
+    validation.validArray(search.preference.food,"food")
+    b["preference.food"] = search.preference.food
+    
   }
+  if(search.preference.budget){
+    console.log(search.preference.budget)
+    b["preference.budget"] = search.preference.budget
+  }
+  if(search.preference.room){
+    validation.validArray(search.preference.room,"room")
+    b["preference.room"] = search.preference.room
+  }
+  if(search.preference.location){
+    validation.validArray(search.preference.location,"location")
+    b["preference.location"] = search.preference.location
+  }
+  if(search.preference.home_type){
+    validation.validArray(search.preference.home_type,"home_type")
+    b["preference.home_type"] = search.preference.home_type
+  }
+}
+catch(e){
+  errors.push(e)
+  return res.status(400).json(e)
+}
+try{
+  let searchList= await posts.filterSearch(b) 
+  return res.status(200).json(searchList)
+}
+catch(e){
+  return res.status(500).json(e)
+//return res.render("",e)
+}
+
 });
+router.route("/search").get(async (req, res) => {
+  res.render("")
+})
 module.exports = router;

@@ -38,16 +38,16 @@ const createUser = async (
   //preference  in drop down box to be called on client side
   //gender - Male, Female, Others drop box
   if (!validator.validString(gender)) throw "Gender is not a valid string.";
-  // if (preference.length < 0) {
-  //   throw `There should be atleast one preference`;
-  // }
-  // if(preference.drinking){
-  //   if(!validator.validBool(preference.drinking)) throw "Not a type boolean"
+  if (preference.length < 0) {
+    throw `There should be atleast one preference`;
+  }
+  if(preference.drinking){
+    if(!validator.validString(preference.drinking)) throw "Not a type boolean"
 
-  // }
-  // if(preference.smoking){
-  //   if(!validator.validBool(preference.smoking))  throw "Not a type booolean"
-  // }
+  }
+  if(preference.smoking){
+    if(!validator.validString(preference.smoking))  throw "Not a type booolean"
+  }
 
   // if(preference.food){
   //   validator.validArray(preference.food,"food")
@@ -202,7 +202,7 @@ const updateUser = async (id, updatedUser) => {
   
     }
     if(updatedUser.preference.smoking){
-      if(!validator.validBool(updatedUser.preference.smoking)) throw "Not a type boolean"
+      if(!validator.validString(updatedUser.preference.smoking)) throw "Not a type boolean"
     }
     if(updatedUser.preference.food){
       validator.validArray(updatedUser.preference.food,"food")
