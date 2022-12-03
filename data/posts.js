@@ -11,8 +11,7 @@ const createPost = async (
   userId,
   postTitle,
   postBody,
-  postPicture,
-  mapCordinate
+  postPicture
 ) => {
   console.log("in post data");
 
@@ -26,6 +25,8 @@ const createPost = async (
   if (!postPicture || postPicture == "") {
     postPicture = "";
   }
+
+
   const date = new Date();
   let day = date.getDate();
   let month = String(date.getMonth() + 1).padStart(2, "0");
@@ -35,6 +36,9 @@ const createPost = async (
   let userinfo = await userData.getUserById(userId);
   if (userinfo === null) throw "user not found";
   preference = userinfo.preference;
+  let location = userinfo.preference.location;
+
+
   let newPost = {
     userId: userId,
     postTitle: postTitle,
@@ -43,6 +47,8 @@ const createPost = async (
     comments: [],
     preference: preference,
     postPicture: postPicture,
+    latitude: validation.map_cord(location)[0],
+    longitude: validation.map_cord(location)[1]
   };
 
   const postCollection = await posts();

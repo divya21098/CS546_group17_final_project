@@ -1,4 +1,5 @@
 const { ObjectId } = require("mongodb");
+const { parsePackageVersion } = require("mongodb/lib/utils");
 // Takes in a string argument.
 // Return true if the argument is non-empty, a string, and non-empty when trimmed; otherwise return false.
 const validString = (str) => {
@@ -67,9 +68,9 @@ function validDate(dateString) {
   return day > 0 && day <= monthLength[month - 1];
 }
 
-const validBool=(val)=>{
-  if( typeof val!=="boolean" ){
-    return false
+const validBool = (val) => {
+  if (typeof val !== "boolean") {
+    return false;
   }
   return true
 }
@@ -79,10 +80,28 @@ const validArray=(arr,name)=>{
   if(!Array.isArray(arr)){
     throw `Input ${name} is not of type array!`
   }
-  if(arr.length<0){
-    throw `Input ${name} array cannot be empty`
+  if (arr.length < 0) {
+    throw `Input ${name} array cannot be empty`;
   }
-}
+};
+
+const map_cord = (location) => {
+  if (location === "Hoboken") {
+    return [12.3, 33.5];
+  } else if (location === "Jersey City") {
+    return [12.3, 33.5];
+  } else if (location === "Weehawken") {
+    return [12.3, 33.5];
+  } else if (location === "Union City") {
+    return [12.3, 33.5];
+  } else if (location === "Journal Square") {
+    return [12.3, 33.5];
+  } else if (location === "Newport") {
+    return [12.3, 33.5];
+  } else {
+    return [40.732628, -74.037628]; //Random all new jersey
+  }
+};
 
 module.exports = {
   validString,
@@ -93,5 +112,6 @@ module.exports = {
   trimString,
   validDate,
   validBool,
-  validArray
+  validArray,
+  map_cord,
 };
