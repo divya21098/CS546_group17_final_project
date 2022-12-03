@@ -28,7 +28,7 @@ router.get("/postpic/:id", async (req, res) => {
   const profilepicData = getPost.postPicture;
   if (profilepicData == "") {
     return res.status(400).send({
-      message: "No Profile Pic Found!",
+      message: "No Post Pic Found!",
     });
   } else {
     res.contentType("image/jpeg");
@@ -105,7 +105,6 @@ router
     }
     try {
       const id = req.params.id;
-      // console.log(id);
       const post = await posts.getPostById(id);
       //return res.status(200).json(post);
       res.render("posts/postDetails", { posts: post });

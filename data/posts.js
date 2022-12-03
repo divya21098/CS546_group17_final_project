@@ -165,7 +165,6 @@ const updatePostbyId = async (postId, userId, updatedPost) => {
 };
 
 //list of post user see after login
-//list of post user see after login
 const getPostByuserId = async (id) => {
   //id = validation.checkId(id, 'ID');
   id = validation.validId(id);
@@ -188,9 +187,13 @@ const createSavedPost = async (postid, userid) => {
   postid = validation.validId(postid);
   userid = validation.validId(userid);
   const userCollection = await users();
-  //const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
-  //const userinfo = await userCollection.findOne({ _id: ObjectId(id) });
-  //if (!userinfo) throw "No user exists";
+  const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
+  if (!userinfo) throw "No user exists";
+  if (userinfo.savedPost.length > 0) {
+    for (i = 0; i < userinfo.savedPost.length; i++) {
+      if (userinfo.savedPost[i] == postid) throw "Cant save post again";
+    }
+  }
   const updatedInfo = await userCollection.updateOne(
     { _id: ObjectId(userid) },
     { $push: { savedPost: String(postid) } }
@@ -210,7 +213,8 @@ const getSavedPostByuserId = async (id) => {
   let result = [];
   if (userinfo.savedPost.length > 0) {
     for (i = 0; i < userinfo.savedPost.length; i++) {
-      result.push(await getPostById(userinfo.savedPost[i]));
+      const post = await getPostById(userinfo.savedPost[i]);
+      result.push(post);
     }
   }
   // const postCollection = await posts();
