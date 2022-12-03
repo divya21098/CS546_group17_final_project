@@ -1,5 +1,6 @@
 {{!-- all user handlebars --}}
 <main>
+<<<<<<< HEAD
     <div class="user-details-card">
         <div class="row">
             
@@ -19,3 +20,28 @@
         </div>
     </div>
 </main>
+=======
+    <div class="search-card">
+        <form id="search-form" method="POST" action="/search">
+            <input id="search-bar" type="text" name="search" class = "searchFields" placeholder="Search a user or post" />
+            <input type="submit" class = "btn" value="Search" />
+        </form>
+    </div>
+    {{#each user}}
+    <div class="user-details-card">
+        <div class="row">
+            <div class="col-sm">
+                {{image}}
+            </div>
+            <div class="col-sm">
+                <p>{{user.usernameInput}}</p>
+                <h2>{{user.emailInput}}</h2>
+                <p>{{user.phoneInput}}</p>
+                <p>{{user.genderInput}}</p>
+                <p>{{user.nationalityInput}}</p>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</main>
+>>>>>>> b9b22e2 (Added user handlebars)
