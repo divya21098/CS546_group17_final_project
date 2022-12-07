@@ -9,6 +9,7 @@ const bcrypt = require("bcryptjs");
 const userData = mongoCollections.users;
 const saltRounds = 10;
 const validator = require("../helper");
+const xss = require("xss");
 
 //POST METHOD for /register route
 router.post("/register", async (req, res) => {
@@ -91,16 +92,16 @@ router.post("/register", async (req, res) => {
   console.log("going to data");
   try {
     const user = await users.createUser(
-      firstName,
-      lastName,
-      emailId,
-      password,
-      age,
-      phoneNumber,
-      gender,
-      nationality,
-      aboutMe,
-      preference
+      xss(firstName),
+      xss(lastName),
+      xss(emailId),
+      xss(password),
+      xss(age),
+      xss(phoneNumber),
+      xss(gender),
+      xss(nationality),
+      xss(aboutMe),
+      xss(preference)
     );
     //return res.status(200).json({ user: "registered" });
     // req.session.user = user.__id.toString();

@@ -21,7 +21,11 @@
             <p>{{posts.postBody}}</p>
 
             <p>Photos :</p>
+
             <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto"></img>
+        </div>
+        <div class="saved-posts">
+            <button type="submit" formmethod="post" formaction="/routes/users.js/users/myProfile/savedPosts/{{posts._id}}">Save Post</button>
         </div>
         <div class="postcomments">
             <p>Enter a comment</p>
