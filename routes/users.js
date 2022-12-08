@@ -9,21 +9,22 @@ const bcrypt = require("bcryptjs");
 const userData = mongoCollections.users;
 const saltRounds = 10;
 const validator = require("../helper");
+const xss = require("xss");
 
 //POST METHOD for /register route
 router.post("/register", async (req, res) => {
   console.log(req.body);
   let errors = [];
-  let firstName = validator.trimString(req.body.firstName);
-  let lastName = validator.trimString(req.body.lastName);
-  let emailId = validator.trimString(req.body.emailId).toLowerCase();
-  let password = req.body.password;
-  let age = req.body.age;
-  let phoneNumber = validator.trimString(req.body.phoneNumber);
-  let gender = validator.trimString(req.body.gender);
-  let nationality = validator.trimString(req.body.nationality);
-  let aboutMe = validator.trimString(req.body.aboutMe);
-  let preference = req.body.preference;
+  let firstName = xss(validator.trimString(req.body.firstName));
+  let lastName = xss(validator.trimString(req.body.lastName));
+  let emailId = xss(validator.trimString(req.body.emailId).toLowerCase());
+  let password = xss(req.body.password);
+  let age = xss(req.body.age);
+  let phoneNumber = xss(validator.trimString(req.body.phoneNumber));
+  let gender = xss(validator.trimString(req.body.gender));
+  let nationality = xss(validator.trimString(req.body.nationality));
+  let aboutMe = xss(validator.trimString(req.body.aboutMe));
+  let preference = xss(req.body.preference);
 
   if (!validator.validString(firstName)) {
     errors.push("Please Enter valid First Name");
@@ -60,7 +61,7 @@ router.post("/register", async (req, res) => {
   }
   if (preference.smoking) {
     if (!validator.validString(preference.smoking))
-    errors.push("Please enter valid field");
+      errors.push("Please enter valid field");
   }
   try {
     if (preference.food) {
@@ -233,13 +234,13 @@ router.put("users/myProfileEdit", async (req, res) => {
     if (updatedUser.firstName) {
       if (!validator.validString(updatedUser.firstName))
         errors.push("First name is not a valid string");
-      updatedUser.firstName = validator.trimString(updatedUser.firstName);
+      updatedUser.firstName = xss(validator.trimString(updatedUser.firstName));
       updatedUserData.firstName = updatedUser.firstName;
     }
     if (updatedUser.lastName) {
       if (!validator.validString(updatedUser.lastName))
         errors.push("Last name is not a valid string");
-      updatedUser.lastName = validator.trimString(updatedUser.lastName);
+      updatedUser.lastName = xss(validator.trimString(updatedUser.lastName));
       updatedUserData.lastName = updatedUser.lastName;
     }
 
@@ -247,7 +248,7 @@ router.put("users/myProfileEdit", async (req, res) => {
       if (!validator.validAge(updatedUser.age))
         errors.push("Age must be a positive integer");
       //updatedUser.age = validator.trimString(updatedUser.age);
-      updatedUserData.age = updatedUser.age;
+      updatedUserData.age = xss(updatedUser.age);
     }
 
     if (updatedUser.phoneNumber) {
@@ -256,14 +257,16 @@ router.put("users/myProfileEdit", async (req, res) => {
       } catch (e) {
         errors.push(e);
       }
-      updatedUser.phoneNumber = validator.trimString(updatedUser.phoneNumber);
+      updatedUser.phoneNumber = xss(
+        validator.trimString(updatedUser.phoneNumber)
+      );
       updatedUserData.phoneNumber = updatedUser.phoneNumber;
     }
 
     if (updatedUser.aboutMe) {
       if (!validator.validString(updatedUser.aboutMe))
         errors.push("About  Me is not a valid string");
-      updatedUser.aboutMe = validator.trimString(updatedUser.aboutMe);
+      updatedUser.aboutMe = xss(validator.trimString(updatedUser.aboutMe));
       updatedUserData.aboutMe = updatedUser.aboutMe;
     }
 
@@ -271,7 +274,9 @@ router.put("users/myProfileEdit", async (req, res) => {
     if (updatedUser.nationality) {
       if (!validator.validString(updatedUser.nationality))
         errors.push("Nationality is not a valid string");
-      updatedUser.nationality = validator.trimString(updatedUser.nationality);
+      updatedUser.nationality = xss(
+        validator.trimString(updatedUser.nationality)
+      );
       updatedUserData.nationality = updatedUser.nationality;
     }
     //preference  in drop down box to be called on client side
@@ -279,7 +284,7 @@ router.put("users/myProfileEdit", async (req, res) => {
     if (updatedUser.gender) {
       if (!validator.validString(updatedUser.gender))
         errors.push("Gender is not a valid string");
-      updatedUser.gender = validator.trimString(updatedUser.gender);
+      updatedUser.gender = xss(validator.trimString(updatedUser.gender));
       updatedUserData.gender = updatedUser.gender;
     }
     if (updatedUser.preference) {
@@ -346,7 +351,6 @@ router.get("users/myProfile/posts", async (req, res) => {
 router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
   if (req.session.user) {
     try {
-      console.log(req.params.postid);
       let postid = req.params.postid;
       let all_post = await posts.createSavedPost(postid, req.session.user);
       return res.send(all_post);
