@@ -25,11 +25,22 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 router.get("/postpic/:id", async (req, res) => {
+  let errors = [];
+  if (
+    !req.params.id ||
+    typeof req.params.id != "string" ||
+    req.params.id.trim().length == 0 ||
+    !ObjectId.isValid(req.params.id)
+  ) {
+    errors.push("not valid string");
+  }
   req.params.id = validation.validId(req.params.id);
 
   const getPost = await posts.getPostById(req.params.id);
   const profilepicData = getPost.postPicture;
   if (profilepicData == "") {
+    errors.push("No Post Pic Found!");
+
     return res.status(400).send({
       message: "No Post Pic Found!",
     });
@@ -64,8 +75,24 @@ router.route("/add").post(upload.single("postPicture"), async (req, res) => {
   const info = req.body;
   let userId = req.session.user;
   info.postTitle = xss(info.postTitle);
+  let errors = [];
+
   // console.log(userId);
   if (userId) {
+    if (
+      !info.postTitle ||
+      typeof info.postTitle ||
+      info.postTitle.trim.length() == 0
+    ) {
+      errors.push("Please Enter post title");
+    }
+    if (
+      !info.postBody ||
+      typeof info.postBody ||
+      info.postBody.trim.length() == 0
+    ) {
+      errors.push("Please Enter valid post body");
+    }
     try {
       info.postTitle = xss(validation.validString(info.postTitle));
       info.postBody = xss(validation.validString(info.postBody));
@@ -94,20 +121,40 @@ router.route("/add").post(upload.single("postPicture"), async (req, res) => {
       //res.render("posts/index");
     } catch (e) {
       console.log(e);
+      //render error page
     }
   } else {
-    res.status(401).json({ user: "not auth" });
+    return res.status(401).render("/login", {
+      errors: errors,
+    });
+    // res.status(401).json({ user: "not auth" });
   }
 });
 router
   .route("/:id")
   .get(async (req, res) => {
+    if (
+      !req.params.id ||
+      typeof req.params.id != "string" ||
+      req.params.id.trim().length == 0 ||
+      !ObjectId.isValid(req.params.id)
+    ) {
+      errors.push("not valid string");
+    }
     try {
       req.params.id = validation.validId(req.params.id);
     } catch (e) {
       return res.status(400).json({ error: e });
     }
     try {
+      if (
+        !req.params.id ||
+        typeof req.params.id != "string" ||
+        req.params.id.trim().length == 0 ||
+        !ObjectId.isValid(req.params.id)
+      ) {
+        errors.push("not valid string");
+      }
       const id = req.params.id;
       const post = await posts.getPostById(id);
       //return res.status(200).json(post);
@@ -117,6 +164,14 @@ router
     }
   })
   .delete(async (req, res) => {
+    if (
+      !req.params.id ||
+      typeof req.params.id != "string" ||
+      req.params.id.trim().length == 0 ||
+      !ObjectId.isValid(req.params.id)
+    ) {
+      errors.push("not valid string");
+    }
     try {
       req.params.id = validation.validId(req.params.id);
     } catch (e) {
@@ -160,8 +215,15 @@ router
         }
         const { postTitle, postBody, postPicture } = info;
         if (postTitle) {
-          if (!validation.validString(postTitle)) throw "Title not valid";
-          updatedPostData.postTitle = postTitle;
+          if (
+            !info.postTitle ||
+            typeof info.postTitle ||
+            info.postTitle.trim.length() == 0
+          ) {
+            errors.push("Please Enter post title");
+          }
+          // if (!validation.validString(postTitle)) throw "Title not valid";
+          updatedPostData.postTitle = validation.validString(postTitle);
         }
         if (postBody) {
           if (!validation.validString(postBody)) throw "Body not valid";
@@ -175,7 +237,8 @@ router
           userId,
           updatedPostData
         );
-        res.status(200).json(post);
+        // res.status(200).json(post);
+        res.status(200).render()
       } catch (e) {
         res.status(500).json({ error: e });
       }

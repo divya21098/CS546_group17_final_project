@@ -188,11 +188,18 @@ const createSavedPost = async (postid, userid) => {
   const userCollection = await users();
   const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
   if (!userinfo) throw "No user exists";
-  if (userinfo.savedPost.length > 0) {
-    for (i = 0; i < userinfo.savedPost.length; i++) {
-      if (userinfo.savedPost[i] == postid) throw "Cant save post again";
+  if (userinfo.postId.length > 0) {
+    for (i = 0; i < userinfo.postId.length; i++) {
+      if ((userinfo.postId = postid)) throw "cant save own post";
     }
   }
+
+  if (userinfo.postId)
+    if (userinfo.savedPost.length > 0) {
+      for (i = 0; i < userinfo.savedPost.length; i++) {
+        if (userinfo.savedPost[i] == postid) throw "Cant save post again";
+      }
+    }
   const updatedInfo = await userCollection.updateOne(
     { _id: ObjectId(userid) },
     { $push: { savedPost: String(postid) } }

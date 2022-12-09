@@ -24,7 +24,7 @@ router.post("/register", async (req, res) => {
   let gender = xss(validator.trimString(req.body.gender));
   let nationality = xss(validator.trimString(req.body.nationality));
   let aboutMe = xss(validator.trimString(req.body.aboutMe));
-  let preference = xss(req.body.preference);
+  let preference = req.body.preference;
 
   if (!validator.validString(firstName)) {
     errors.push("Please Enter valid First Name");
@@ -67,9 +67,9 @@ router.post("/register", async (req, res) => {
     if (preference.food) {
       validator.validArray(preference.food, "food");
     }
-    if (preference.budget) {
-      console.log(preference.budget);
-    }
+    // if (preference.budget) {
+    //   console.log(preference.budget);
+    // }
     if (preference.room) {
       validator.validArray(preference.room, "room");
     }
@@ -82,6 +82,8 @@ router.post("/register", async (req, res) => {
   } catch (e) {
     errors.push(e);
   }
+  // render err  hbd
+
   // if (errors.length > 0) {
   //   return res.status(400).render("/register", {
   //     authenticated: false,
@@ -194,15 +196,18 @@ router.post("/login", async (req, res) => {
 });
 
 //GET METHOD for myProfle route
-router.get("users/myProfile", async (req, res) => {
+router.get("/users/myProfile", async (req, res) => {
   if (req.session.user) {
+    let errors = [];
+
     const userInfo = await users.getUserById(req.session.user);
     // return res.status(200).json(userInfo);
     console.log(userInfo);
     return res.render("users/index", { userInfo: userInfo });
   } else {
     console.log("err");
-    res.render("login", { errors: errors });
+    // { errors: errors }
+    res.render("login");
   }
 });
 
@@ -217,7 +222,7 @@ router.get("users/myProfile", async (req, res) => {
 // });
 
 // PUT METHOD for myProfileEdit route
-router.put("users/myProfileEdit", async (req, res) => {
+router.put("/users/myProfileEdit", async (req, res) => {
   if (req.session.user) {
     let updatedUser = req.body;
     let updatedUserData = {};
@@ -333,7 +338,7 @@ router.put("users/myProfileEdit", async (req, res) => {
 });
 
 //GET METHOD for myProfile/posts
-router.get("users/myProfile/posts", async (req, res) => {
+router.get("/users/myProfile/posts", async (req, res) => {
   if (req.session.user) {
     try {
       let all_post = await posts.getPostByuserId(req.session.user);
@@ -400,14 +405,13 @@ router.put("/users/myProfile/savedPosts/:postid", async (req, res) => {
   }
 });
 
-router.get("/users/recommendation",async(req,res)=>{
-  if(req.session.user){
-    let userList = await users.userRecommendation(req.session.user)
-    return res.status(200).json(userList)
+router.get("/users/recommendation", async (req, res) => {
+  if (req.session.user) {
+    let userList = await users.userRecommendation(req.session.user);
+    return res.status(200).json(userList);
+  } else {
+    return res.status(403).json({ error: "Not aunthencticated" });
   }
-  else{
-    return res.status(403).json({error:"Not aunthencticated"})
-  }
-})
+});
 
 module.exports = router;
