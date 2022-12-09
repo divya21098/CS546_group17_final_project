@@ -152,7 +152,6 @@ router.get("/login", async (req, res) => {
 router.post("/login", async (req, res) => {
   const emailId = validator.trimString(req.body.emailId);
   const password = req.body.password;
-  console.log(req.body);
   let errors = [];
   try{
   if (!validator.validEmail(emailId)) {
@@ -413,5 +412,15 @@ router.put("/users/myProfile/savedPosts/:postid", async (req, res) => {
     return res.status(401).json("Not Authenticated");
   }
 });
+
+router.get("/users/recommendation",async(req,res)=>{
+  if(req.session.user){
+    let userList = await users.userRecommendation(req.session.user)
+    return res.status(200).json(userList)
+  }
+  else{
+    return res.status(403).json({error:"Not aunthencticated"})
+  }
+})
 
 module.exports = router;
