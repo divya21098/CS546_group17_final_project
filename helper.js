@@ -14,12 +14,16 @@ const validAge = (age) => {
   return true;
 };
 
+const validPassword = (password)=>{
+  if(!validString(password)) return false
+const passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+return passRegex.test(password)
+}
 // Takes in a string argument.
 // Return true if the argument is a valid email using regex expression.
 const validEmail = (email) => {
   if (!validString(email)) return false;
-  const re =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re = /^[A-Za-z0-9._%+-]+@stevens\.edu$/
   return re.test(String(email).toLowerCase());
 };
 
@@ -93,5 +97,6 @@ module.exports = {
   trimString,
   validDate,
   validBool,
-  validArray
+  validArray,
+  validPassword
 };

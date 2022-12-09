@@ -1,13 +1,13 @@
 <main>
     <div class="user-saved-posts-list">
-         <ul>  
+        <ul>  
             {{#each allPost}}              
             <li>
             <h2>{{this.postTitle}}</h2>
             <p>{{this.postDate}}</p>
-               <p>Preferences :</p>
+            <p>Preferences :</p>
             {{#each this.preference}}
-             {{@key}} : {{this}} <br>
+            {{@key}} : {{this}} <br>
             {{/each}}
             <p>Apartment Details :</p>
             <p>{{this.postBody}}</p>

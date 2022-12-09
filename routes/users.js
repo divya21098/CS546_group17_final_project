@@ -81,13 +81,14 @@ router.post("/register", async (req, res) => {
   } catch (e) {
     errors.push(e);
   }
-  // if (errors.length > 0) {
-  //   return res.status(400).render("/register", {
-  //     authenticated: false,
-  //     title: "Register",
-  //     errors: errors
-  //   });
-  // }
+  if (errors.length > 0) {
+    return res.status(400).render("/register", {
+      authenticated: false,
+      title: "Register",
+      errors: errors,
+      hasErrors : true
+    });
+  }
   console.log("going to data");
   try {
     const user = await users.createUser(
@@ -153,23 +154,38 @@ router.post("/login", async (req, res) => {
   const password = req.body.password;
   console.log(req.body);
   let errors = [];
-
+  try{
   if (!validator.validEmail(emailId)) {
     errors.push("Please Enter valid email id");
   }
-  //if (!validator.validPassword(password)) errors.push("Invalid password.");
+}
+catch{
+  errors.push("Please Enter valid email id");
+}
 
+  if(!(password)){
+    errors.push("Please enter valid password")
+  }
+if (errors.length > 0) {
+  return res.status(401).render("login", {
+    errors: errors,
+    hasErrors : true
+  });
+  }
+  //if (!validator.validPassword(password)) errors.push("Invalid password.");
+  errors=[]
   const userCollection = await userData();
   const myUser = await userCollection.findOne({
     emailId: emailId.toLowerCase(),
   });
 
   if (!myUser) errors.push("Username or password does not match.");
-  // if (errors.length > 0) {
-  // return res.status(401).render("users/login", {
-  //   errors: errors,
-  // });
-  // }
+  if (errors.length > 0) {
+  return res.status(401).render("login", {
+    errors: errors,
+    hasErrors : true
+  });
+  }
 
   let match = await bcrypt.compare(password, myUser.password);
 
@@ -187,8 +203,9 @@ router.post("/login", async (req, res) => {
     // res.render('posts/index');
   } else {
     errors.push("Username or password does not match");
-    return res.status(403).render("/login", {
+    return res.status(403).render("login", {
       errors: errors,
+      hasErrors : true
     });
   }
 });
