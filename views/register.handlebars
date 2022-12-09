@@ -1,34 +1,55 @@
 <main>
     <div class="register-page">
         <form id="registration-form" method="POST" action="/register">
+        <div class="common-div">
             <label class="firstName" for="firstName">Enter firstname :</label>
-            <input type="text" id="firstName" name="firstName" required/></br></br>
+            <input type="text" id="firstName" name="firstName"/></br></br>
+            <div id="no-first-name" class="div-text" hidden>Please enter your first name</div>
+        </div>
 
+        <div class="common-div">
             <label class="lastName" for="lastName">Enter lastname :</label>
-            <input type="text" id="lastName" name="lastName" required/></br></br>
+            <input type="text" id="lastName" name="lastName"/></br></br>
+            <div id="no-last-name" class="div-text" hidden>Please enter your last name</div>
+        </div>
 
+        <div class="common-div">
             <label class="emailId" for="emailId">Enter email :</label>
-            <input type="email" id="emailId" pattern=".+@stevens\.edu" name="emailId" required/></br></br>
+            <input type="email" id="emailId" pattern=".+@stevens\.edu" name="emailId"/></br></br>
+            <div id="no-email" class="div-text" hidden>Please enter your email</div>
+        </div>
 
+        <div class="common-div">
             <label class="password" for="password">Enter password :</label>
-            <input type="password" id="password" name="password" required/></br></br>
+            <input type="password" id="password" name="password"/></br></br>
+            <div id="no-password" class="div-text" hidden>Please enter your password</div>
+        </div>
 
+        <div class="common-div">
             <label class="age" for="age">Enter Age :</label>
-            <input type="number" id="age" min="22" max="80" name="age" required/></br></br>
+            <input type="number" id="age" min="22" max="80" name="age"/></br></br>
+            <div id="no-age" class="div-text" hidden>Please enter your age</div>
+        </div>
 
+        <div class="common-div"></div>
             <label class="phoneNumber" for="phoneNumber">Enter Phone :</label>
-            <input type="number" id="phoneNumber" name="phoneNumber" required/></br></br>
+            <input type="number" id="phoneNumber" name="phoneNumber"/></br></br>
+            <div id="no-phone" class="div-text" hidden>Please enter your phone number</div>
 
+        <div class="common-div">
             <label class="gender" for="gender">Gender :</label>
-            <select id="gender" name="gender" required>
+            <select id="gender" name="gender">
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
                 <option value="dontdisclose">Don't wish to disclose</option>
-            </select></br></br>
+            </select>
+            <div id="no-gender" class="div-text" hidden>Please select a gender</div>
+        </div>
 
+        <div class="common-div">
             <label class="nationality" for="nationality">Enter nationality :</label>
-            <select id="nationallity" name="nationality" required>
+            <select id="nationality" name="nationality">
                 <option value="">Other</option>
                 <option value="afghan">Afghan</option>
                 <option value="albanian">Albanian</option>
@@ -222,10 +243,15 @@
                 <option value="yemenite">Yemenite</option>
                 <option value="zambian">Zambian</option>
                 <option value="zimbabwean">Zimbabwean</option>
-            </select></br></br>
+            </select>
+            <div id="no-nationality" class="div-text" hidden>Please select a nationality</div>
+        </div>
 
+        <div class="common-div">
             <label class="aboutMe" for="aboutMe" name="aboutMe">About me :</label>
-            <textarea id="aboutMe" name="aboutMe" rows="10" cols="30" required></textarea></br></br>
+            <textarea id="aboutMe" name="aboutMe" rows="10" cols="30"></textarea>
+            <div id="no-aboutme" class="div-text" hidden>Please enter something about yourself</div>
+        </div>
 
                 {{!-- <label class="preference" id="preference" name="preference">Preferences :</label>
 
@@ -274,13 +300,13 @@
 
                 <label class="preference" id="preference" name="preference">Preferences :</label>
 
-            <input type="checkbox" id="drinking" name="preference[drinking]" value="drinking" checked>
+            <input type="radio" id="drinking" name="preference[drinking]" value="drinking" checked>
             <label for="drinking"> Drinking</label><br>
-            <input type="checkbox" id="nodrinking" name="preference[drinking]" value="nodrinking">
+            <input type="radio" id="nodrinking" name="preference[drinking]" value="nodrinking">
             <label for="nodrinking"> No Drinking</label><br>
-            <input type="checkbox" id="smoking" name="preference[smoking]" value="smoking" checked>
+            <input type="radio" id="smoking" name="preference[smoking]" value="smoking" checked>
             <label for="smoking"> Smoking</label><br>
-            <input type="checkbox" id="nosmoking" name="preference[smoking]" value="nosmoking">
+            <input type="radio" id="nosmoking" name="preference[smoking]" value="nosmoking">
             <label for="nosmoking"> No Smoking</label><br>
             <input type="checkbox" id="vegetarian" name="preference[food]" value="vegetarian" checked>
             <label for="vegetarian"> Vegetarian</label><br><br>
@@ -306,8 +332,7 @@
             <label for="townhouse"> Townhouse</label><br><br>
             <input type="checkbox" id="studioapt" name="preference[home_type]" value="studioapt">
             <label for="studioapt"> Studio Apartment</label><br><br>
-            <input type="checkbox" id="hoboken" name="preference[location]" value="hoboken" checked>
-            <label for="hoboken"> Hoboken </label><br><br>
+            {{!-- <label for="hoboken"> Hoboken </label><br><br>
             <input type="checkbox" id="jerseyCity" name="preference[location]" value="jerseyCity">
             <label for="jerseyCity"> Jersey City </label><br><br>
             <input type="checkbox" id="journalsq" name="preference[location]" value="journalsq">
@@ -315,10 +340,29 @@
             <input type="checkbox" id="weehawken" name="preference[location]" value="weehawken">
             <label for="weehawken"> Weehawken </label><br><br>
             <input type="checkbox" id="unionCity" name="preference[location]" value="unionCity">
-            <label for="unionCity"> Union City </label><br><br>
+            <label for="unionCity"> Union City </label><br><br> --}}
 
-            <button type="submit">Register</button>
+            <label for="preference[location]" name="preference[location]"></label>
+            <select name="preference[location]" id="location">
+                <option value="jerseyCity">Jersey City</option>
+                <option value="hoboken">Hoboken</option>
+                <option value="journalsq">Journal Square</option>
+                <option value="weehawken">Weehawken</option>
+                <option value="unioncity">Union City</option>
+                <option value="newport">Newport</option>
+            </select>
+            <button type="submit" id="buttonregister">Register</button>
         </form>
         <a href="/login">Already have an account? Click here to log-in</a>
     </div>
+    {{#if hasErrors}}
+    <ul class="error-list">
+        {{#each errors}}
+        <li>
+            {{this}}
+        </li>
+        {{/each}}
+    </ul>
+    {{/if}}
+    {{!-- <script src="../public/js/errors.js"></script> --}}
 </main>

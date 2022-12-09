@@ -1,13 +1,32 @@
 <main>
     <div class="login-page">
         <form id="login-form" method="POST" action="/login">
+
+        <div class="common-div">
             <label class="emailId" for="emailId">Enter email:</label>
             <input type="email" id="emailId" name="emailId"/>
+            <div id="no-email" class="div-text" hidden>Please enter your email</div>
+        </div>
+
+            <div class="common-div">
             <label class="password" for="password">Enter password:</label>
             <input type="password" id="password" name="password"/>
+            <div id="no-password" class="div-text" hidden>Please enter your password</div>
+            </div>
+
             <button type="submit">Login</button>
         </form>
 
         <a href="/register">Click here to register!</a>
+
+        {{#if hasErrors}}
+            <ul id="error-list" class="error-list">
+            {{#each errors}}
+            <li>
+            {{this}}
+            </li>
+            {{/each}}
+            </ul>
+        {{/if}}
     </div>
 </main>
