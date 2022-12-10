@@ -90,7 +90,19 @@ router.post("/register", async (req, res) => {
       hasErrors: true,
     });
   }
-  console.log("going to data");
+  const allUsers = await users.getAllUsers()
+  if (allUsers.length !== 0) {
+    allUsers.forEach((user) => {
+      if (user.emailId === validator.trimString(emailId))
+        errors=[]
+        errors.push("An account is already created with the given email id")
+    });
+    return res.status(403).render("register",{
+      authenticated:false,
+      title:"Register",
+      errors:errors
+    });
+  }
   try {
     const user = await users.createUser(
       firstName,
@@ -106,11 +118,10 @@ router.post("/register", async (req, res) => {
     );
     //return res.status(200).json({ user: "registered" });
     // req.session.user = user.__id.toString();
-    // res.redirect("/login");
-    res.render("login");
+    res.redirect("/login");
+    return res.status(201).render("login");
   } catch (e) {
-    console.log(e);
-    res.render("register");
+    res.status(500).render("register");
     // errors.push(e);
     // return res.status(400).render("/register", {
     //   errors: errors,
@@ -121,22 +132,22 @@ router.post("/register", async (req, res) => {
 // get Logout
 router.get("/logout", async (req, res) => {
   req.session.destroy();
-  res.redirect("/");
+  return res.redirect("/")
 });
 
 // GET METHOD for /register route
 router.get("/register", async (req, res) => {
   if (req.session.user) {
-    res.redirect("/postList");
+    return res.redirect("/posts");
   } else {
-    res.render("register", {});
+    return res.render("register", {});
   }
 });
 
 // GET METHOD for /login route
 router.get("/login", async (req, res) => {
   if (req.session.user) {
-    res.redirect("/postList");
+    res.redirect("/posts");
     res.render("posts/index.handlebars");
   } else {
     res.render("login", {});
@@ -156,17 +167,17 @@ router.post("/login", async (req, res) => {
   let errors = [];
   try {
     if (!validator.validEmail(emailId)) {
-      errors.push("Please Enter valid email id");
+      errors.push("Email id cannot be empty");
     }
   } catch (e) {
-    errors.push("Please Enter valid email id");
+    errors.push("Email id cannot be empty");
   }
 
   if (!password) {
-    errors.push("Please enter valid password");
+    errors.push("Password cannot be empty");
   }
   if (errors.length > 0) {
-    return res.status(401).render("login", {
+    return res.status(400).render("login", {
       errors: errors,
       hasErrors: true,
     });
@@ -177,7 +188,7 @@ router.post("/login", async (req, res) => {
     emailId: emailId.toLowerCase(),
   });
 
-  if (!myUser) errors.push("Username or password does not match.");
+  if (!myUser) errors.push("Emailid or password does not match.");
   if (errors.length > 0) {
     return res.status(401).render("login", {
       errors: errors,
@@ -200,8 +211,8 @@ router.post("/login", async (req, res) => {
     //res.status(200).json(myUser);
     // res.render('posts/index');
   } else {
-    errors.push("Username or password does not match");
-    return res.status(403).render("login", {
+    errors.push("Emailid or password does not match");
+    return res.status(401).render("login", {
       errors: errors,
       hasErrors: true,
     });
@@ -218,9 +229,8 @@ router.get("/users/myProfile", async (req, res) => {
     console.log(userInfo);
     return res.render("users/index", { userInfo: userInfo });
   } else {
-    console.log("err");
-    // { errors: errors }
-    res.render("login");
+    res.redirect('/login')
+    return res.render("login", {});
   }
 });
 
@@ -235,7 +245,7 @@ router.get("/users/myProfile", async (req, res) => {
 // });
 
 // PUT METHOD for myProfileEdit route
-router.put("/users/myProfileEdit", async (req, res) => {
+router.post("/users/myProfileEdit", async (req, res) => {
   if (req.session.user) {
     let updatedUser = req.body;
     let updatedUserData = {};
@@ -316,9 +326,9 @@ router.put("/users/myProfileEdit", async (req, res) => {
       if (updatedUser.preference.food) {
         validator.validArray(updatedUser.preference.food, "food");
       }
-      if (updatedUser.preference.budget) {
-        console.log(updatedUser.preference.budget);
-      }
+      // if (updatedUser.preference.budget) {
+      //   console.log(updatedUser.preference.budget);
+      // }
       if (updatedUser.preference.room) {
         validator.validArray(updatedUser.preference.room, "room");
       }
@@ -346,7 +356,7 @@ router.put("/users/myProfileEdit", async (req, res) => {
       return res.render("users/editUser");
     }
   } else {
-    return res.status(401).json({ "not auth": "6" });
+    return res.render("login", {});
   }
 });
 
@@ -384,7 +394,8 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
       return res.render("error", {});
     }
   }
-  return res.status(401).json("Not Authenticated");
+  res.redirect('/login')
+  return res.render("login", {});
 });
 
 //GET METHOD for myProfile/savedPosts
@@ -400,10 +411,14 @@ router.get("/users/myProfile/savedPosts", async (req, res) => {
       // return res.render("error", {});
     }
   }
+  else{
+    res.redirect('/login')
+    return res.render("login", {});
+  }
 });
 
 //PUT METHOD for myProfile/savedPosts
-router.put("/users/myProfile/savedPosts/:postid", async (req, res) => {
+router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
   if (req.session.user) {
     try {
       let postid = req.params.postid;
@@ -420,7 +435,8 @@ router.put("/users/myProfile/savedPosts/:postid", async (req, res) => {
       // return res.render("error", {});
     }
   } else {
-    return res.status(401).json("Not Authenticated");
+    res.redirect('/login')
+    return res.render("login", {});
   }
 });
 
