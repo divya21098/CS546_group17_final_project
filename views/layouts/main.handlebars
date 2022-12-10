@@ -12,7 +12,6 @@
 
 <body>
     <header>
-<<<<<<< HEAD
     <nav>
         <li><a href="/">Home</a></li>
         <li><a href="/posts" id="postList">Posts</a></li>
@@ -24,27 +23,6 @@
         <li><a href="/login" id="login">Posts</a></li>
         {{/if}}
     </nav>
-=======
-        <nav>
-            <li><a href="/">Home</a></li>
-            <li><a href="/postList" id="postList">Posts</a></li>
-
-            {{#if userLoggedIn}}
-            <li><a href="/creatPost" id="createPost">Posts</a></li>
-            <li><a href="/profile" id="users">Profile</a></li>
-            <li><a href="/logout" id="logout">Logout</a></li>
-
-            <!--
-            <a href="#" class="btn btn-info btn-lg pull-right">
-                <span class="glyphicon glyphicon-log-out"></span> Log out
-            </a>
-            -->
-
-            {{else}}
-            <li><a href="/login" id="login">Posts</a></li>
-            {{/if}}
-        </nav>
->>>>>>> c33a091 (Fixed Outer Handlebars and Integrated Bootstrap)
     </header>
 
     {{{body}}}
