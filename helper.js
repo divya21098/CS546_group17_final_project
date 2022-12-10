@@ -117,9 +117,6 @@ module.exports = {
   validDate,
   validBool,
   validArray,
-<<<<<<< HEAD
-  validPassword
-=======
-  map_cord,
->>>>>>> 827ded97fd49a10746c289ced11d978701e595a9
+  validPassword,
+  map_cord
 };
