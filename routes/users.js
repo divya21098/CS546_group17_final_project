@@ -82,15 +82,14 @@ router.post("/register", async (req, res) => {
   } catch (e) {
     errors.push(e);
   }
-  // render err  hbd
-
-  // if (errors.length > 0) {
-  //   return res.status(400).render("/register", {
-  //     authenticated: false,
-  //     title: "Register",
-  //     errors: errors
-  //   });
-  // }
+  if (errors.length > 0) {
+    return res.status(400).render("/register", {
+      authenticated: false,
+      title: "Register",
+      errors: errors,
+      hasErrors: true,
+    });
+  }
   console.log("going to data");
   try {
     const user = await users.createUser(
@@ -155,23 +154,36 @@ router.post("/login", async (req, res) => {
   const emailId = validator.trimString(req.body.emailId);
   const password = req.body.password;
   let errors = [];
-
-  if (!validator.validEmail(emailId)) {
+  try {
+    if (!validator.validEmail(emailId)) {
+      errors.push("Please Enter valid email id");
+    }
+  } catch (e) {
     errors.push("Please Enter valid email id");
   }
-  //if (!validator.validPassword(password)) errors.push("Invalid password.");
 
+  if (!password) {
+    errors.push("Please enter valid password");
+  }
+  if (errors.length > 0) {
+    return res.status(401).render("login", {
+      errors: errors,
+      hasErrors: true,
+    });
+  }
+  //if (!validator.validPassword(password)) errors.push("Invalid password.");
   const userCollection = await userData();
   const myUser = await userCollection.findOne({
     emailId: emailId.toLowerCase(),
   });
 
   if (!myUser) errors.push("Username or password does not match.");
-  // if (errors.length > 0) {
-  // return res.status(401).render("users/login", {
-  //   errors: errors,
-  // });
-  // }
+  if (errors.length > 0) {
+    return res.status(401).render("login", {
+      errors: errors,
+      hasErrors: true,
+    });
+  }
 
   let match = await bcrypt.compare(password, myUser.password);
 
@@ -189,8 +201,9 @@ router.post("/login", async (req, res) => {
     // res.render('posts/index');
   } else {
     errors.push("Username or password does not match");
-    return res.status(403).render("/login", {
+    return res.status(403).render("login", {
       errors: errors,
+      hasErrors: true,
     });
   }
 });
@@ -353,19 +366,25 @@ router.get("/users/myProfile/posts", async (req, res) => {
 
 //POST METHOD for myProfile/savedPosts
 router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
+  //check if post id valid n if exists
+
   if (req.session.user) {
     try {
-      let postid = req.params.postid;
+      let postid = validator.validId(req.params.postid);
+      let post = await posts.getPostById(postid);
+      if (!post) throw "post doesnt exists";
       let all_post = await posts.createSavedPost(postid, req.session.user);
+      //create handlebar which says post saved
       return res.send(all_post);
       // return res.render("users/userSavedPost", { allPost: all_post });
-    } catch {
-      console.log("err");
+    } catch (e) {
+      console.log(e);
+      //render handlebar that says user cant save own post
 
-      // return res.render("error", {});
+      return res.render("error", {});
     }
   }
-  return res.status(400).json({ hi: "NOT AUTH" });
+  return res.status(401).json("Not Authenticated");
 });
 
 //GET METHOD for myProfile/savedPosts

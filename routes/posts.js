@@ -53,19 +53,44 @@ router.get("/postpic/:id", async (req, res) => {
 router.route("/").get(async (req, res) => {
   try {
     const postList = await posts.getAllPosts();
-
-    // res.json(postList);
     res.render("posts/index", { posts: postList });
-
-    //res.json(postList);
   } catch (e) {
     res.status(404).send();
   }
 });
 
 router.route("/add").get(async (req, res) => {
+  console.log("edit");
   if (req.session.user) {
     res.render("posts/createPost");
+  } else {
+    res.render("login", {});
+  }
+});
+router.route("/delete/:id").get(async (req, res) => {
+  errors = [];
+  if (
+    !req.params.id ||
+    typeof req.params.id != "string" ||
+    req.params.id.trim().length == 0 ||
+    !ObjectId.isValid(req.params.id)
+  ) {
+    errors.push("not valid string");
+  }
+  try {
+    req.params.id = validation.validId(req.params.id);
+  } catch (e) {
+    return res.status(400).json({ error: e });
+  }
+  if (req.session.user) {
+    try {
+      const id = req.params.id;
+      const post = await posts.getPostById(id);
+      //return res.status(200).json(post);
+      res.render("posts/deletePost", { post: post });
+    } catch (e) {
+      res.status(404).json({ error: "No post with id" });
+    }
   } else {
     res.render("login", {});
   }
@@ -74,22 +99,20 @@ router.route("/add").get(async (req, res) => {
 router.route("/add").post(upload.single("postPicture"), async (req, res) => {
   const info = req.body;
   let userId = req.session.user;
-  info.postTitle = xss(info.postTitle);
   let errors = [];
 
-  // console.log(userId);
   if (userId) {
     if (
       !info.postTitle ||
-      typeof info.postTitle ||
-      info.postTitle.trim.length() == 0
+      typeof info.postTitle != "string" ||
+      info.postTitle.trim().length == 0
     ) {
       errors.push("Please Enter post title");
     }
     if (
       !info.postBody ||
-      typeof info.postBody ||
-      info.postBody.trim.length() == 0
+      typeof info.postBody != "string" ||
+      info.postBody.trim().length == 0
     ) {
       errors.push("Please Enter valid post body");
     }
@@ -123,77 +146,99 @@ router.route("/add").post(upload.single("postPicture"), async (req, res) => {
       console.log(e);
       //render error page
     }
+
+    if (errors.length > 0) {
+      return res.status(400).render("posts/createPost", {
+        authenticated: false,
+        title: "Register",
+        errors: errors,
+        hasErrors: true,
+      });
+    }
   } else {
-    return res.status(401).render("/login", {
+    return res.status(401).render("login", {
       errors: errors,
+      hasErrors: true,
     });
     // res.status(401).json({ user: "not auth" });
   }
 });
+router.route("/:id").get(async (req, res) => {
+  errors = [];
+  if (
+    !req.params.id ||
+    typeof req.params.id != "string" ||
+    req.params.id.trim().length == 0 ||
+    !ObjectId.isValid(req.params.id)
+  ) {
+    errors.push("not valid string");
+  }
+  try {
+    req.params.id = validation.validId(req.params.id);
+  } catch (e) {
+    return res.status(400).json({ error: e });
+  }
+  try {
+    const id = req.params.id;
+    const post = await posts.getPostById(id);
+    //return res.status(200).json(post);
+    res.render("posts/postDetails", { posts: post });
+  } catch (e) {
+    res.status(404).json({ error: "No post with id" });
+  }
+});
+router.route("/delete/:id").post(async (req, res) => {
+  if (
+    !req.params.id ||
+    typeof req.params.id != "string" ||
+    req.params.id.trim().length == 0 ||
+    !ObjectId.isValid(req.params.id)
+  ) {
+    errors.push("not valid string");
+  }
+  try {
+    req.params.id = validation.validId(req.params.id);
+  } catch (e) {
+    return res.status(400).json({ error: e });
+  }
+  let userId = req.session.user;
+  if (userId) {
+    try {
+      const postid = req.params.id;
+      const post = await posts.removePostById(postid, userId);
+      const postList = await posts.getAllPosts();
+      return res.status(200).render("posts/index", { posts: postList });
+
+      // res.render("users/userPost", { all_post: post });
+    } catch (e) {
+      return res.status(404).json({ error: "No post with id" });
+    }
+  } else {
+    return res.status(401).json({ user: "not auth" });
+  }
+});
+router.route("/edit/:id").get(async (req, res) => {
+  console.log("edit");
+  if (req.session.user) {
+    res.render("posts/editPost", { id: req.params.id });
+  } else {
+    res.render("login", {});
+  }
+});
 router
-  .route("/:id")
-  .get(async (req, res) => {
-    if (
-      !req.params.id ||
-      typeof req.params.id != "string" ||
-      req.params.id.trim().length == 0 ||
-      !ObjectId.isValid(req.params.id)
-    ) {
-      errors.push("not valid string");
-    }
-    try {
-      req.params.id = validation.validId(req.params.id);
-    } catch (e) {
-      return res.status(400).json({ error: e });
-    }
-    try {
-      if (
-        !req.params.id ||
-        typeof req.params.id != "string" ||
-        req.params.id.trim().length == 0 ||
-        !ObjectId.isValid(req.params.id)
-      ) {
-        errors.push("not valid string");
-      }
-      const id = req.params.id;
-      const post = await posts.getPostById(id);
-      //return res.status(200).json(post);
-      res.render("posts/postDetails", { posts: post });
-    } catch (e) {
-      res.status(404).json({ error: "No post with id" });
-    }
-  })
-  .delete(async (req, res) => {
-    if (
-      !req.params.id ||
-      typeof req.params.id != "string" ||
-      req.params.id.trim().length == 0 ||
-      !ObjectId.isValid(req.params.id)
-    ) {
-      errors.push("not valid string");
-    }
-    try {
-      req.params.id = validation.validId(req.params.id);
-    } catch (e) {
-      return res.status(400).json({ error: e });
-    }
-    let userId = req.session.user;
-    if (userId) {
-      try {
-        const postid = req.params.id;
-        const movie = await posts.removePostById(postid, userId);
-        res.status(200).json(movie);
-      } catch (e) {
-        res.status(404).json({ error: "No post with id" });
-      }
-    } else {
-      res.status(401).json({ user: "not auth" });
-    }
-  })
-  .put(upload.single("postPicture"), async (req, res) => {
+  .route("/edit/:id")
+  .post(upload.single("postPicture"), async (req, res) => {
     const info = req.body;
     let userId = req.session.user;
     let updatedPostData = {};
+    if (
+      !req.params.id ||
+      typeof req.params.id != "string" ||
+      req.params.id.trim().length == 0 ||
+      !ObjectId.isValid(req.params.id)
+    ) {
+      errors.push("not valid string");
+    }
     if (userId) {
       console.log("in put post route");
 
@@ -213,7 +258,7 @@ router
             image: Buffer.from(encode_image, "base64"),
           };
         }
-        const { postTitle, postBody, postPicture } = info;
+        const { postTitle, postBody, aptPhotos } = info;
         if (postTitle) {
           if (
             !info.postTitle ||
@@ -229,23 +274,27 @@ router
           if (!validation.validString(postBody)) throw "Body not valid";
           updatedPostData.postBody = postBody;
         }
-        if (postPicture) {
-          updatedPostData.postPicture = finalImg;
+        if (aptPhotos) {
+          updatedPostData.aptPhotos = finalImg;
         }
         const post = await posts.updatePostbyId(
           postId,
           userId,
           updatedPostData
         );
+        const postList = await posts.getAllPosts();
         // res.status(200).json(post);
-        res.status(200).render()
+        res.status(200).render("posts/index", { posts: postList });
       } catch (e) {
+        //add res.render
         res.status(500).json({ error: e });
       }
     } else {
+      //handle errors
       res.status(401).json({ user: "not auth" });
     }
   });
+
 router.route("/search").post(async (req, res) => {
   const search = req.body;
   let errors = [];

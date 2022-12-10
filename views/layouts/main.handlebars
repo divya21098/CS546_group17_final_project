@@ -8,9 +8,9 @@
     <header>
     <nav>
         <li><a href="/">Home</a></li>
-        <li><a href="/postList" id="postList">Posts</a></li>
+        <li><a href="/posts" id="postList">Posts</a></li>
         {{#if userLoggedIn}}
-        <li><a href="/creatPost" id="createPost">Posts</a></li>
+        <li><a href="posts/creatPost" id="createPost">Create Posts</a></li>
         <li><a href="/profile" id="users">Profile</a></li>
         <li><a href="/logout" id="logout"></a></li>
         {{else}}
@@ -19,5 +19,9 @@
     </nav>
     </header>
     {{{body}}}
+
+    <script src="/public/js/register.js"></script>
+    <script src="/public/js/login.js"></script>
+
 </body>
 </html>

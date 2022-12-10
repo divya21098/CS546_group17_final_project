@@ -1,3 +1,6 @@
-<main>
-    <p>The post has successfully been deleted</p>
+ <main>
+    <form method="post" action="/posts/delete/{{post._id}}">
+        <button type="submit" >Delete Post</button>
+    </form>
 </main>
+{{!-- add button which call delete route on click --}}

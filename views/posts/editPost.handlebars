@@ -1,61 +1,16 @@
 <main>
     <div class="container-post">
         <div class="block-posts">
-            <form id="posts-form" method="POST" action="/createPost">
+            <form id="posts-form" method="POST" action="/posts/edit/{{id}}">
             <!-- Input to add Post Title -->
-            <label class="enterUser" for="usernameInput">Post Title :</label>
-            <input type="text" id="usernameInput" name="usernameInput"/>
-            <!-- Input to add price -->
-            <label class="aptPrice" for="aptPrice">Price :</label>
-            <input type="text" id="aptPrice" name="aptPrice"/>
-            <!-- Input to add location dropdown -->
-            <label class="location" for="location" name="location">Location :</label>
-            <select id="location" name="location">
-                <option value="jerseycity">Jersey City</option>
-                <option value="weehawken">Weehawken</option>
-                <option value="unioncity">Union City</option>
-                <option value="hoboken">Hoboken</option>
-                <option value="newyorkcity">New York City</option>
-            </select>
+            <label class="enterUser" for="postTitle">Post Title :</label>
+            <input type="text" id="postTitle" name="postTitle"/>
 
-            <!-- Input to add preferences checkboxes -->
-            <label class="preferences" id="preferences" name="preferences">Preferences :</label>
-            <input type="checkbox" id="drinking" name="drinking" value="drinking">
-            <label for="drinking"> No Drinking</label><br>
-            <input type="checkbox" id="smoking" name="smoking" value="smoking">
-            <label for="smoking"> No Smoking</label><br>
-            <input type="checkbox" id="vegetarian" name="vegetarian" value="vegetarian">
-            <label for="vegetarian"> Vegetarian</label><br><br>
-            <input type="checkbox" id="vegetarian" name="nonvegetarian" value="nonvegetarian">
-            <label for="nonvegetarian"> Non Vegetarian</label><br><br>
-            <input type="checkbox" id="vegan" name="vegan" value="vegan">
-            <label for="vegan"> Vegan</label><br><br>
-            <input type="checkbox" id="eggitarian" name="eggitarian" value="eggitarian">
-            <label for="eggitarian"> Eggitarian</label><br><br>
-            <input type="checkbox" id="male" name="male" value="male">
-            <label for="male"> Male</label><br><br>
-            <input type="checkbox" id="female" name="female" value="female">
-            <label for="female"> Female</label><br><br>
-            <label for="privateroom"> Private Room</label><br><br>
-            <input type="checkbox" id="sharedroom" name="sharedroom" value="sharedroom">
-            <label for="sharedroom"> Shared Room</label><br><br>
-            <input type="checkbox" id="condos" name="condos" value="condos">
-            <label for="condos"> Condo</label><br><br>
-            <input type="checkbox" id="apartments" name="apartments" value="apartments">
-            <label for="apartments"> Apartment</label><br><br>
-            <input type="checkbox" id="townhouse" name="townhouse" value="townhouse">
-            <label for="townhouse"> Townhouse</label><br><br>
-            <input type="checkbox" id="studioapt" name="studioapt" value="studioapt">
-            <label for="studioapt"> Studio Apartment</label><br><br>
+            <label class="enterUser" for="">Post Body :</label>
+            <input type="text" id="postBody" name="postBody"/>
 
-
-            <!-- Input to add apartment details -->
-            <label class="apartmentDetails" for="apartmentDetails" name="apartmentDetails">Apartment Details :</label>
-            <textarea id="apartmentDetails" name="apartmentDetails" rows="10" cols="30"></textarea>
-
-            <!-- Input to add photos -->
-            <label class="aptPhotos" for="aptPhotos">Post Title :</label>
-            <input type="file" id="aptPhotos" name="aptPhotos"/>
+            <label class="aptPhotos" for="postPicture">Post pic :</label>
+            <input type="file" id="postPicture" name="postPicture"/>
 
             <!-- Edit Button-->
             <button type="submit">Edit Post</button>
