@@ -91,19 +91,19 @@ const validArray=(arr,name)=>{
 
 const map_cord = (location) => {
   if (location === "Hoboken") {
-    return [12.3, 33.5];
+    return [40.745255, -74.034775];
   } else if (location === "Jersey City") {
-    return [12.3, 33.5];
+    return [40.71907, -74.050552];
   } else if (location === "Weehawken") {
-    return [12.3, 33.5];
+    return [40.7683, -74.0190];
   } else if (location === "Union City") {
-    return [12.3, 33.5];
+    return [40.77954, -74.023751];
   } else if (location === "Journal Square") {
-    return [12.3, 33.5];
+    return [40.734572, -74.063154];
   } else if (location === "Newport") {
-    return [12.3, 33.5];
+    return [40.727123, -74.038300];
   } else {
-    return [40.732628, -74.037628]; //Random all new jersey
+    return [39.833851, -74.871826]; //Random all new jersey
   }
 };
 
