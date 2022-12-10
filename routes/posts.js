@@ -178,6 +178,8 @@ router.route("/:id").get(async (req, res) => {
   } catch (e) {
     return res.status(400).json({ error: e });
   }
+  let userId = req.session.user;
+  if(userId){
   try {
     const id = req.params.id;
     const post = await posts.getPostById(id);
@@ -185,6 +187,10 @@ router.route("/:id").get(async (req, res) => {
     res.render("posts/postDetails", { posts: post });
   } catch (e) {
     res.status(404).json({ error: "No post with id" });
+  }
+  }
+  else{
+    return res.redirect('/login')
   }
 });
 router.route("/delete/:id").post(async (req, res) => {

@@ -355,7 +355,7 @@ router.post("/users/myProfileEdit", async (req, res) => {
       //return res.render("users/index", { userInfo: userInfo });
     } catch (e) {
       // return res.status(400).json(e);
-      return res.status(400).render("users/editUser");
+      return res.status(500).render("error");
     }
   } else {
     return res.render("login");
@@ -370,7 +370,7 @@ router.get("/users/myProfile/posts", async (req, res) => {
       // return res.status(200).json(all_post);
       return res.render("users/userPost", { all_post: all_post });
     } catch {
-      return res.render("error")
+      return res.status(500).render("error")
       // return res.render("error", {});
     }
   }
