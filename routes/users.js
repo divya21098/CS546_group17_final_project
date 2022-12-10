@@ -118,8 +118,8 @@ router.post("/register", async (req, res) => {
     );
     //return res.status(200).json({ user: "registered" });
     // req.session.user = user.__id.toString();
-    res.redirect("/login");
-    return res.status(201).render("login");
+    return res.redirect("/login");
+    //return res.status(201).render("login");
   } catch (e) {
     res.status(500).render("register");
     // errors.push(e);
@@ -147,10 +147,10 @@ router.get("/register", async (req, res) => {
 // GET METHOD for /login route
 router.get("/login", async (req, res) => {
   if (req.session.user) {
-    res.redirect("/posts");
-    res.render("posts/index.handlebars");
+    return res.redirect("/posts");
+    //res.render("posts/index.handlebars");
   } else {
-    res.render("login", {});
+    return res.render("login", {});
   }
 });
 
@@ -207,7 +207,7 @@ router.post("/login", async (req, res) => {
       req.session.previousRoute = "";
       // return res.redirect(prev);
     }
-    res.redirect("/posts");
+    return res.redirect("/posts");
     //res.status(200).json(myUser);
     // res.render('posts/index');
   } else {
@@ -222,27 +222,29 @@ router.post("/login", async (req, res) => {
 //GET METHOD for myProfle route
 router.get("/users/myProfile", async (req, res) => {
   if (req.session.user) {
-    let errors = [];
-
+    try{
     const userInfo = await users.getUserById(req.session.user);
     // return res.status(200).json(userInfo);
-    console.log(userInfo);
     return res.render("users/index", { userInfo: userInfo });
+    }
+    catch{
+      return res.status(500).render("error")
+    }
   } else {
-    res.redirect('/login')
-    return res.render("login", {});
+    return res.redirect('/login')
+    //return res.status(401).render("login", {});
   }
 });
 
 // // get
-// router.get("/myProfileEdit", async (req, res) => {
-//   if (req.session.user) {
-//     const userInfo = await users.getUserById(req.session.user);
-//     return res.render("users/userEdit", { userInfo: userInfo });
-//   } else {
-//     res.render("/login", {});
-//   }
-// });
+router.get("/users/myProfileEdit", async (req, res) => {
+  if (req.session.user) {
+    const userInfo = await users.getUserById(req.session.user);
+    return res.render("users/editUser", { userInfo: userInfo });
+  } else {
+    return res.redirect('/login');
+  }
+});
 
 // PUT METHOD for myProfileEdit route
 router.post("/users/myProfileEdit", async (req, res) => {
@@ -316,11 +318,11 @@ router.post("/users/myProfileEdit", async (req, res) => {
     }
     if (updatedUser.preference) {
       if (updatedUser.preference.drinking) {
-        if (!validator.validBool(updatedUser.preference.drinking))
+        if (!validator.validString(updatedUser.preference.drinking))
           errors.push("Not a type boolean");
       }
       if (updatedUser.preference.smoking) {
-        if (!validator.validBool(updatedUser.preference.smoking))
+        if (!validator.validString(updatedUser.preference.smoking))
           errors.push("Not a type boolean");
       }
       if (updatedUser.preference.food) {
@@ -333,7 +335,7 @@ router.post("/users/myProfileEdit", async (req, res) => {
         validator.validArray(updatedUser.preference.room, "room");
       }
       if (updatedUser.preference.location) {
-        validator.validArray(updatedUser.preference.location, "location");
+        validator.validString(updatedUser.preference.location, "location");
       }
       if (updatedUser.preference.home_type) {
         validator.validArray(updatedUser.preference.home_type, "home_type");
@@ -349,14 +351,14 @@ router.post("/users/myProfileEdit", async (req, res) => {
     try {
       let userInfo = await users.updateUser(req.session.user, updatedUserData);
       // return res.status(200).json(userInfo);
-
-      return res.render("users/index", { userInfo: userInfo });
+      return res.redirect("/users/myProfile")
+      //return res.render("users/index", { userInfo: userInfo });
     } catch (e) {
       // return res.status(400).json(e);
-      return res.render("users/editUser");
+      return res.status(400).render("users/editUser");
     }
   } else {
-    return res.render("login", {});
+    return res.render("login");
   }
 });
 
@@ -368,10 +370,11 @@ router.get("/users/myProfile/posts", async (req, res) => {
       // return res.status(200).json(all_post);
       return res.render("users/userPost", { all_post: all_post });
     } catch {
-      console.log("err");
+      return res.render("error")
       // return res.render("error", {});
     }
   }
+  return res.redirect("/login")
 });
 
 //POST METHOD for myProfile/savedPosts
@@ -388,14 +391,13 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
       return res.send(all_post);
       // return res.render("users/userSavedPost", { allPost: all_post });
     } catch (e) {
-      console.log(e);
       //render handlebar that says user cant save own post
 
-      return res.render("error", {});
+      return res.status(400).render("error");
     }
   }
-  res.redirect('/login')
-  return res.render("login", {});
+  return res.redirect('/login')
+  //return res.render("login", {});
 });
 
 //GET METHOD for myProfile/savedPosts
@@ -426,17 +428,17 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
         postid,
         req.session.user
       );
-      return res.send(all_post);
+      //return res.send(all_post);
 
-      // return res.render("users/userPosts", { allPost: all_post });
+      return res.render("users/userPosts", { allPost: all_post });
     } catch {
       console.log("err");
 
       // return res.render("error", {});
     }
   } else {
-    res.redirect('/login')
-    return res.render("login", {});
+    return res.redirect('/login')
+    //return res.render("login", {});
   }
 });
 
