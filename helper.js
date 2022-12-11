@@ -103,7 +103,7 @@ const map_cord = (location) => {
   } else if (location === "Newport") {
     return [40.727123, -74.038300];
   } else {
-    return [39.833851, -74.871826]; //Random all new jersey
+    return [39.833851, -74.871826]; //Random complete new jersey
   }
 };
 

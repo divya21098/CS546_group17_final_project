@@ -90,19 +90,24 @@ router.post("/register", async (req, res) => {
       hasErrors: true,
     });
   }
+  
   const allUsers = await users.getAllUsers()
   if (allUsers.length !== 0) {
     allUsers.forEach((user) => {
-      if (user.emailId === validator.trimString(emailId))
+      if (user.emailId === validator.trimString(emailId)){
         errors=[]
         errors.push("An account is already created with the given email id")
+      }
     });
+    if(errors.length>0){
     return res.status(403).render("register",{
       authenticated:false,
       title:"Register",
       errors:errors
     });
   }
+  }
+
   try {
     const user = await users.createUser(
       firstName,
