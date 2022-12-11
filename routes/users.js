@@ -230,7 +230,7 @@ router.get("/users/myProfile", async (req, res) => {
     try{
     const userInfo = await users.getUserById(req.session.user);
     // return res.status(200).json(userInfo);
-    return res.render("users/index", { userInfo: userInfo });
+    return res.render("users/index", { userInfo: userInfo, userLoggedIn:true});
     }
     catch{
       return res.status(500).render("error")
@@ -245,7 +245,7 @@ router.get("/users/myProfile", async (req, res) => {
 router.get("/users/myProfileEdit", async (req, res) => {
   if (req.session.user) {
     const userInfo = await users.getUserById(req.session.user);
-    return res.render("users/editUser", { userInfo: userInfo });
+    return res.render("users/editUser", { userInfo: userInfo,userLoggedIn:true});
   } else {
     return res.redirect('/login');
   }
@@ -373,7 +373,7 @@ router.get("/users/myProfile/posts", async (req, res) => {
     try {
       let all_post = await posts.getPostByuserId(req.session.user);
       // return res.status(200).json(all_post);
-      return res.render("users/userPost", { all_post: all_post });
+      return res.render("users/userPost", { all_post: all_post, userLoggedIn:true });
     } catch {
       return res.status(500).render("error")
       // return res.render("error", {});
@@ -393,8 +393,8 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
       if (!post) throw "post doesnt exists";
       let all_post = await posts.createSavedPost(postid, req.session.user);
       //create handlebar which says post saved
-      return res.send(all_post);
-      // return res.render("users/userSavedPost", { allPost: all_post });
+      //return res.send(all_post);
+      return res.render("users/userSavedPost", { allPost: all_post , userLoggedIn:true});
     } catch (e) {
       //render handlebar that says user cant save own post
 
@@ -411,7 +411,7 @@ router.get("/users/myProfile/savedPosts", async (req, res) => {
     try {
       let all_post = await posts.getSavedPostByuserId(req.session.user);
       // return res.send(all_post);
-      return res.render("users/userSavedPost", { allPost: all_post });
+      return res.render("users/userSavedPost", { allPost: all_post, userLoggedIn:true });
     } catch {
       console.log("Post no longer available!");
 
@@ -435,7 +435,7 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
       );
       //return res.send(all_post);
 
-      return res.render("users/userPosts", { allPost: all_post });
+      return res.render("users/userPosts", { allPost: all_post, userLoggedIn:true });
     } catch {
       console.log("err");
 
