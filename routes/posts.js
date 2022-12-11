@@ -52,8 +52,15 @@ router.get("/postpic/:id", async (req, res) => {
 
 router.route("/").get(async (req, res) => {
   try {
+    let userId = req.session.user;
+    
     const postList = await posts.getAllPosts();
-    res.render("posts/index", { posts: postList });
+    if(userId){
+    res.render("posts/index", { posts: postList, userLoggedIn:true });
+    }
+    else{
+      res.render("posts/index", { posts: postList, userLoggedIn:false });
+    }
   } catch (e) {
     res.status(404).send();
   }
@@ -62,9 +69,9 @@ router.route("/").get(async (req, res) => {
 router.route("/add").get(async (req, res) => {
   console.log("edit");
   if (req.session.user) {
-    res.render("posts/createPost");
+    res.render("posts/createPost",{userLoggedIn:true });
   } else {
-    res.render("login", {});
+    res.redirect("/login");
   }
 });
 router.route("/delete/:id").get(async (req, res) => {
