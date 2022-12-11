@@ -145,7 +145,7 @@ router.get("/register", async (req, res) => {
   if (req.session.user) {
     return res.redirect("/posts");
   } else {
-    return res.render("register", {});
+    return res.render("register", {userLoggedIn:false});
   }
 });
 
@@ -155,7 +155,7 @@ router.get("/login", async (req, res) => {
     return res.redirect("/posts");
     //res.render("posts/index.handlebars");
   } else {
-    return res.render("login", {});
+    return res.render("login", {userLoggedIn:false});
   }
 });
 
@@ -398,7 +398,7 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
     } catch (e) {
       //render handlebar that says user cant save own post
 
-      return res.status(400).render("error");
+      return res.status(400).render("error",);
     }
   }
   return res.redirect('/login')
