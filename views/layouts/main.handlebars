@@ -16,11 +16,11 @@
         <li><a href="/">Home</a></li>
         <li><a href="/posts" id="postList">Posts</a></li>
         {{#if userLoggedIn}}
-        <li><a href="posts/creatPost" id="createPost">Create Posts</a></li>
-        <li><a href="/profile" id="users">Profile</a></li>
-        <li><a href="/logout" id="logout"></a></li>
+        <li><a href="/posts/add" id="createPost">Create Posts</a></li>
+        <li><a href="/users/myProfile" id="users">Profile</a></li>
+        <li><a href="/logout" id="logout">Logout</a></li>
         {{else}}
-        <li><a href="/login" id="login">Posts</a></li>
+        <li><a href="/login" id="login">Login</a></li>
         {{/if}}
     </nav>
     </header>
