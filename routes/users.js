@@ -127,7 +127,7 @@ router.get("/logout", async (req, res) => {
 // GET METHOD for /register route
 router.get("/register", async (req, res) => {
   if (req.session.user) {
-    res.redirect("/postList");
+    res.redirect("/posts");
   } else {
     res.render("register", {});
   }
@@ -136,7 +136,7 @@ router.get("/register", async (req, res) => {
 // GET METHOD for /login route
 router.get("/login", async (req, res) => {
   if (req.session.user) {
-    res.redirect("/postList");
+    res.redirect("/posts");
     res.render("posts/index.handlebars");
   } else {
     res.render("login", {});
