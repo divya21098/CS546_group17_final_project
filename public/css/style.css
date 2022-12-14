@@ -57,3 +57,26 @@ nav li {
 /* .div-text{
   font-style: italic;
 } */
+
+.test {
+  /*   border-color: black;
+    border: 2px solid; */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: fit-content;
+    block-size: fit-content;
+  }
+  
+  .aptPhoto {
+    display: block;
+    margin-top: auto;
+    margin-right: auto;
+    height: 10rem;
+    width: 12rem;
+  }
+  
+  .postBodyText {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
