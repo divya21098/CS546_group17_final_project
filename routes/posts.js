@@ -191,7 +191,7 @@ router.route("/:id").get(async (req, res) => {
     const id = req.params.id;
     const post = await posts.getPostById(id);
     //return res.status(200).json(post);
-    res.render("posts/postDetails", { posts: post });
+    res.render("posts/postDetails", { posts: post, userLoggedIn:true });
   } catch (e) {
     res.status(404).json({ error: "No post with id" });
   }

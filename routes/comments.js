@@ -55,7 +55,8 @@ router
           commentInfo.userId,
           commentInfo.commentText.trim()
         );
-        res.render("posts/postDetails", { posts: post });
+        //res.render("posts/postDetails", { posts: post,userLoggedIn:true });
+        res.redirect("/posts/"+req.params.postId)
       } catch (e) {
         res.status(400).json({ error: "Comment cannot be created" });
       }
