@@ -2,40 +2,34 @@
     <div class="outer-card">
         <div class="saved-posts">
             <form method="post" action="/users/myProfile/savedPosts/{{posts._id}}">
-            <button type="submit" >Save Post</button>
+                <button type="submit">Save Post</button>
             </form>
         </div>
         <div class="post-details">
             <h2>{{posts.postTitle}}</h2>
             <p>{{posts.userId}}</p>
             <p>{{posts.postDate}}</p>
-            {{!-- <p>{{posts.preference}}</p> --}}
+
             <p>Preferences :</p>
             {{#each posts.preference}}
-                {{!-- <p>{{this.drinking}}</p>
-                <p>{{this.smoking}}</p>
-                <p>{{this.food}}</p>
-                <p>{{this.budget}}</p>
-                <p>{{this.room}}</p>
-                <p>{{this.home_type}}</p>
-                <p>{{this.location}}</p> --}}
-                {{@key}} : {{this}} <br>
+            {{@key}} : {{this}} <br>
             {{/each}}
 
             <p>Apartment Details :</p>
             <p>{{posts.postBody}}</p>
 
             <p>Photos :</p>
-            <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto"></img>
+            <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto" />
         </div>
-                <div id="gmap" style="height:400px; width:100%;"></div> <!-- Some restaurants already have a pin on Google maps, and manual pin is somewhat inaccurate due to our estimation -->
+
+        <div id="gmap" style="height:400px; width:100%;"></div>
 
         <div class="postcomments">
             <p>Enter a comment</p>
             <div>
-                <form  id="comments-form"  method="POST" action="/comments/{{posts._id}}">
+                <form id="comments-form" method="POST" action="/comments/{{posts._id}}">
                     <label class="commentText" for="commentText">comment text :</label>
-                    <input type="text" id="commentText" name="commentText"/>
+                    <input type="text" id="commentText" name="commentText" />
                     <button type="submit">Create</button>
                 </form>
 
@@ -43,8 +37,8 @@
             <p>Comment list</p>
             <div class="comment-area">
                 {{#each posts.comments}}
-                        {{@key}} : {{this.userId}}<br>
-                        {{this.commentText}}<br>
+                {{@key}} : {{this.userId}}<br>
+                {{this.commentText}}<br>
                 {{/each}}
             </div>
         </div>

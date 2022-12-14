@@ -1,32 +1,49 @@
 <main>
-    <div class="container-post">
-        <div class="block-posts">
-            <form id="posts-form" method="POST" action="/posts/add" enctype="multipart/form-data">
-            <!-- Input to add Post Title -->
-            <label class="postTitle" for="postTitle">Post Title :</label>
-            <input type="text" id="postTitle" name="postTitle"/>
-            <!-- Input to add location dropdown -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
 
-            <label class="postBody" for="postBody" name="postBody">Apartment Details :</label>
-            <textarea id="postBody" name="postBody" rows="10" cols="30"></textarea>
+                <h1>Create post</h1>
 
-            <!-- Input to add photos -->
-            <label class="postPicture" for="postPicture" accept="image/*">Upload Photo :</label>
-            <input type="file" id="postPicture" name="postPicture"/>
+                <form id="posts-form" method="POST" action="/posts/add" enctype="multipart/form-data">
 
-            <!-- Create Post Button-->
-            <button type="submit">Create</button>
-            </form>
-        </div>
-         {{#if hasErrors}}
+                    <!-- Input to add Post Title -->
+                    <div class="form-group">
+                        <label class="postTitle" for="postTitle">Post Title</label>
+                        <input type="text" class="form-control" id="postTitle" name="postTitle" />
+                    </div>
+
+                    <!-- Input to add Apartment/ Post Details -->
+                    <div class="form-group">
+                        <label class="postBody" for="postBody" name="postBody">Post Description</label>
+                        <textarea rows="10" class="form-control" id="postBody" name="postBody"></textarea>
+                    </div>
+
+                    <!-- Input to upload picture for the Post -->
+                    <div class="form-group">
+                        <label class="form-label postPicture" for="postPicture">Upload Photo</label>
+                        <input type="file" class="form-control" id="postPicture" name="postPicture" accept="image/*" />
+                    </div>
+
+                    <!-- Create Post Button-->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">
+                            Create
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+            {{#if hasErrors}}
             <ul id="error-list" class="error-list">
-            {{#each errors}}
-            <li>
-            {{this}}
-            </li>
-            {{/each}}
+                {{#each errors}}
+                <li>
+                    {{this}}
+                </li>
+                {{/each}}
             </ul>
-        {{/if}}
+            {{/if}}
+        </div>
     </div>
-    
+
 </main>
