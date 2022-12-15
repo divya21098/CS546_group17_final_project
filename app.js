@@ -4,12 +4,15 @@ const session = require("express-session");
 const configRoutes = require("./routes");
 const exphbs = require("express-handlebars");
 const static = express.static(__dirname + '/public');
+const H = require('just-handlebars-helpers');
+const Handlebars = require('handlebars');
 
 app.use('/public',static);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.engine("handlebars", exphbs.engine({defaultLayout : "main"}));
 app.set("view engine", "handlebars");
+H.registerHelpers(Handlebars);
 
 
 app.use(

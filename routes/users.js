@@ -103,7 +103,8 @@ router.post("/register", async (req, res) => {
     return res.status(403).render("register",{
       authenticated:false,
       title:"Register",
-      errors:errors
+      errors:errors,
+      hasErrors: true,
     });
   }
   }
@@ -246,6 +247,7 @@ router.get("/users/myProfileEdit", async (req, res) => {
   if (req.session.user) {
     const userInfo = await users.getUserById(req.session.user);
     return res.render("users/editUser", { userInfo: userInfo,userLoggedIn:true});
+    //return res.redirect("/users/myProfile")
   } else {
     return res.redirect('/login');
   }
@@ -279,6 +281,9 @@ router.post("/users/myProfileEdit", async (req, res) => {
     }
 
     if (updatedUser.age) {
+      if (typeof updatedUser.age === "string") {
+        updatedUser.age = parseInt(updatedUser.age);
+      }
       if (!validator.validAge(updatedUser.age))
         errors.push("Age must be a positive integer");
       //updatedUser.age = validator.trimString(updatedUser.age);
@@ -351,6 +356,7 @@ router.post("/users/myProfileEdit", async (req, res) => {
       // return res.status(200).json(errors);
       return res.status(400).render("users/editUser", {
         errors: errors,
+        hasErrors:true
       });
     }
     try {
