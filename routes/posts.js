@@ -22,7 +22,7 @@ var storage = multer.diskStorage({
     cb(null, file.fieldname + "-" + Date.now());
   },
 });
-var upload = multer({ storage: storage });
+var upload =  multer({ storage: storage });
 
 router.get("/postpic/:id", async (req, res) => {
   let errors = [];
@@ -53,13 +53,12 @@ router.get("/postpic/:id", async (req, res) => {
 router.route("/").get(async (req, res) => {
   try {
     let userId = req.session.user;
-    
+
     const postList = await posts.getAllPosts();
-    if(userId){
-    res.render("posts/index", { posts: postList, userLoggedIn:true });
-    }
-    else{
-      res.render("posts/index", { posts: postList, userLoggedIn:false });
+    if (userId) {
+      res.render("posts/index", { posts: postList, userLoggedIn: true });
+    } else {
+      res.render("posts/index", { posts: postList, userLoggedIn: false });
     }
   } catch (e) {
     res.status(404).send();
@@ -69,7 +68,7 @@ router.route("/").get(async (req, res) => {
 router.route("/add").get(async (req, res) => {
   console.log("edit");
   if (req.session.user) {
-    res.render("posts/createPost",{userLoggedIn:true });
+    res.render("posts/createPost", { userLoggedIn: true });
   } else {
     res.redirect("/login");
   }
@@ -186,18 +185,25 @@ router.route("/:id").get(async (req, res) => {
     return res.status(400).json({ error: e });
   }
   let userId = req.session.user;
-  if(userId){
-  try {
-    const id = req.params.id;
-    const post = await posts.getPostById(id);
-    //return res.status(200).json(post);
-    res.render("posts/postDetails", { posts: post, userLoggedIn:true });
-  } catch (e) {
-    res.status(404).json({ error: "No post with id" });
-  }
-  }
-  else{
-    return res.redirect('/login')
+  let canComment = false;
+
+  if (userId) {
+    try {
+      let canComment = true;
+
+      const id = req.params.id;
+      const post = await posts.getPostById(id);
+      //return res.status(200).json(post);
+      res.render("posts/postDetails", {
+        posts: post,
+        canComment: canComment,
+        userLoggedIn: true,
+      });
+    } catch (e) {
+      res.status(404).json({ error: "No post with id" });
+    }
+  } else {
+    return res.redirect("/login");
   }
 });
 router.route("/delete/:id").post(async (req, res) => {
