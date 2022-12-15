@@ -233,7 +233,9 @@ router.route("/delete/:id").post(async (req, res) => {
 router.route("/edit/:id").get(async (req, res) => {
   console.log("edit");
   if (req.session.user) {
-    res.render("posts/editPost", { id: req.params.id });
+    const id = req.params.id;
+    const post = await posts.getPostById(id);
+    res.render("posts/editPost", { id: req.params.id, postInfo : post});
   } else {
     res.render("login", {});
   }
@@ -246,7 +248,6 @@ router
     let updatedPostData = {};
     if (
       !req.params.id ||
-      typeof req.params.id != "string" ||
       req.params.id.trim().length == 0 ||
       !ObjectId.isValid(req.params.id)
     ) {
@@ -274,9 +275,7 @@ router
         const { postTitle, postBody, aptPhotos } = info;
         if (postTitle) {
           if (
-            !info.postTitle ||
-            typeof info.postTitle ||
-            info.postTitle.trim.length() == 0
+            !validation.validString(postTitle) 
           ) {
             errors.push("Please Enter post title");
           }
