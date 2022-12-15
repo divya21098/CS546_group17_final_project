@@ -1,23 +1,22 @@
 <main>
     <div class="container">
         <div class="row">
-            
             <div class="col-md-8 col-md-offset-2">
 
-                <h1>Edit post</h1>
+                <h1>Update post</h1>
 
-                <form id="posts-form" method="POST" action="/posts/edit/{{id}}">
+                <form id="posts-form" method="POST" action="/posts/edit/{{postInfo._id}}" enctype="multipart/form-data">
 
                     <!-- Input to add Post Title -->
                     <div class="form-group">
                         <label class="postTitle" for="postTitle">Post Title</label>
-                        <input type="text" class="form-control" id="postTitle" name="postTitle" />
+                        <input type="text" class="form-control" id="postTitle" name="postTitle" value="{{postInfo.postTitle}}"/>
                     </div>
 
                     <!-- Input to add Apartment/ Post Details -->
                     <div class="form-group">
                         <label class="postBody" for="postBody" name="postBody">Post Description</label>
-                        <textarea rows="10" class="form-control" id="postBody" name="postBody"></textarea>
+                        <textarea rows="10" class="form-control" id="postBody" name="postBody">{{postInfo.postBody}}</textarea>
                     </div>
 
                     <!-- Input to upload picture for the Post -->
@@ -26,17 +25,25 @@
                         <input type="file" class="form-control" id="postPicture" name="postPicture" accept="image/*" />
                     </div>
 
-                    <!-- Edit Button -->
+                    <!-- Create Post Button-->
                     <div class="form-group">
                         <button type="submit" class="btn btn-success">
-                            <span class="glyphicon glyphicon-edit"></span>
-                            Edit Post
+                            Update Post
                         </button>
                     </div>
 
                 </form>
-
             </div>
+            {{!-- {{#if hasErrors}}
+            <ul id="error-list" class="error-list">
+                {{#each errors}}
+                <li>
+                    {{this}}
+                </li>
+                {{/each}}
+            </ul>
+            {{/if}} --}}
         </div>
     </div>
+
 </main>
