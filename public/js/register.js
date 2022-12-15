@@ -12,6 +12,7 @@ const newAboutMe = document.getElementById("aboutMe");
 const errorFirstName = document.getElementById("no-first-name");
 const errorLastName = document.getElementById("no-last-name");
 const errorEmail = document.getElementById("no-email");
+const errorRegisteredEmail = document.getElementById("registered-email")
 const errorPassword = document.getElementById("no-password");
 const errorAge = document.getElementById("no-age");
 const errorPhoneNumber = document.getElementById("no-phone");
@@ -39,7 +40,8 @@ if(registrationForm){
             else{
                 errorEmail.hidden = false;
             }
-
+            errorEmail.hidden = newEmail.value;
+            
             if(newPassword.value){
                 errorPassword.hidden = !passRegex.test(newPassword.value);
             }

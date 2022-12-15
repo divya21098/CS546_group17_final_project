@@ -157,6 +157,9 @@ const updateUser = async (id, updatedUser) => {
   }
 
   if (updatedUser.age) {
+    if (typeof updatedUser.age === "string") {
+      updatedUser.age = parseInt(updatedUser.age);
+    }
     if (!validator.validAge(updatedUser.age))
       throw "Age must be a positive integer";
     //updatedUser.age = validator.trimString(updatedUser.age);

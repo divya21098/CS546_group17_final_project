@@ -1,29 +1,41 @@
 <main>
-    <div class="outer-card">
-        <div class="saved-posts">
-            <form method="post" action="/users/myProfile/savedPosts/{{posts._id}}">
-            <button type="submit" >Save Post</button>
-            </form>
-        </div>
-        <div class="post-details">
-            <h2>{{posts.postTitle}}</h2>
-            <p>{{posts.userId}}</p>
-            <p>{{posts.postDate}}</p>
-            {{!-- <p>{{posts.preference}}</p> --}}
-            <p>Preferences :</p>
-            {{#each posts.preference}}
-                {{!-- <p>{{this.drinking}}</p>
-                <p>{{this.smoking}}</p>
-                <p>{{this.food}}</p>
-                <p>{{this.budget}}</p>
-                <p>{{this.room}}</p>
-                <p>{{this.home_type}}</p>
-                <p>{{this.location}}</p> --}}
-                {{@key}} : {{this}} <br>
-            {{/each}}
 
-            <p>Apartment Details :</p>
-            <p>{{posts.postBody}}</p>
+    <div class="container">
+
+        <div class="card mt-3 mb-3 shadow-sm p-3 mb-5 bg-white rounded">
+            <div class="card-body">
+                <div class="outer-card">
+                    <div class="saved-posts">
+                        <form method="post" action="/users/myProfile/savedPosts/{{posts._id}}">
+                            <button class="btn btn-success" type="submit"><i class="bi bi-save"></i> Save Post</button>
+                        </form>
+                    </div>
+                    <div class="post-details">
+
+                        <br>
+
+                        <div class="flex-container">
+
+                            <div class="flex-child magenta">
+                                <h2>{{posts.postTitle}}</h2>
+                            </div>
+
+                            <div class="flex-child green pull-right">
+                                <p class="text-end">{{posts.userId}}</p>
+                            </div>
+
+                        </div>
+
+
+                        <p>{{posts.postDate}}</p>
+
+                        <p>Preferences :</p>
+                        {{#each posts.preference}}
+                        {{@key}} : {{this}} <br>
+                        {{/each}}
+
+                        <p>Apartment Details :</p>
+                        <p>{{posts.postBody}}</p>
 
             <p>Photos :</p>
             <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto"></img>
@@ -31,9 +43,6 @@
                 <div id="gmap" style="height:400px; width:100%;"></div> <!-- Some restaurants already have a pin on Google maps, and manual pin is somewhat inaccurate due to our estimation -->
 
         <div class="postcomments">
-            <input type="hidden" name="post_id" id="post_id" value="{{posts._id}}" />
-            {{#if canComment}}
-
             <p>Enter a comment</p>
             <div>
                 <form  id="comments-form"  method="POST" action="/comments/{{posts._id}}">
@@ -41,14 +50,10 @@
                     <input type="text" id="commentText" name="commentText"/>
                     <button type="submit">Create</button>
                 </form>
+
             </div>
-            <div id="empty-comment" hidden></div>
-
-            {{/if}}
-
             <p>Comment list</p>
-            
-            <div id="comment-area">
+            <div class="comment-area">
                 {{#each posts.comments}}
                         {{@key}} : {{this.userId}}<br>
                         {{this.commentText}}<br>
@@ -57,6 +62,6 @@
         </div>
     </div>
 
-    <script src="/public/js/maps.js" latitude={{posts.latitude}} longitude={{posts.longitude}}></script>
+    <script src="/public/js/maps.js" latitude={{posts.latitude}} longitude={{posts.longitude}}>
 
 </main>

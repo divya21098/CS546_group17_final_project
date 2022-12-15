@@ -1,20 +1,49 @@
 <main>
-    <div class="container-post">
-        <div class="block-posts">
-            <form id="posts-form" method="POST" action="/posts/edit/{{id}}">
-            <!-- Input to add Post Title -->
-            <label class="enterUser" for="postTitle">Post Title :</label>
-            <input type="text" id="postTitle" name="postTitle"/>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
 
-            <label class="enterUser" for="">Post Body :</label>
-            <input type="text" id="postBody" name="postBody"/>
+                <h1>Update post</h1>
 
-            <label class="aptPhotos" for="postPicture">Post pic :</label>
-            <input type="file" id="postPicture" name="postPicture"/>
+                <form id="posts-form" method="POST" action="/posts/edit/{{postInfo._id}}" enctype="multipart/form-data">
 
-            <!-- Edit Button-->
-            <button type="submit">Edit Post</button>
-            </form>
+                    <!-- Input to add Post Title -->
+                    <div class="form-group">
+                        <label class="postTitle" for="postTitle">Post Title</label>
+                        <input type="text" class="form-control" id="postTitle" name="postTitle" value="{{postInfo.postTitle}}"/>
+                    </div>
+
+                    <!-- Input to add Apartment/ Post Details -->
+                    <div class="form-group">
+                        <label class="postBody" for="postBody" name="postBody">Post Description</label>
+                        <textarea rows="10" class="form-control" id="postBody" name="postBody">{{postInfo.postBody}}</textarea>
+                    </div>
+
+                    <!-- Input to upload picture for the Post -->
+                    <div class="form-group">
+                        <label class="form-label postPicture" for="postPicture">Upload Photo</label>
+                        <input type="file" class="form-control" id="postPicture" name="postPicture" accept="image/*" />
+                    </div>
+
+                    <!-- Create Post Button-->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">
+                            Update Post
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+            {{!-- {{#if hasErrors}}
+            <ul id="error-list" class="error-list">
+                {{#each errors}}
+                <li>
+                    {{this}}
+                </li>
+                {{/each}}
+            </ul>
+            {{/if}} --}}
         </div>
     </div>
+
 </main>
