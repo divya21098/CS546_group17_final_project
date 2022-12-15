@@ -1,6 +1,78 @@
-{{!-- all handlerbars --}}
+<!-- all handlerbars -->
 <main>
-    <div class="search-card">
+
+    <div class="container test">
+
+
+        <div class="card search search-card mt-5">
+            <div class="card-body">
+
+                <div class="input-group md-form form-sm form-1 pl-0">
+                    <div class="input-group-prepend">
+
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+
+                    </div>
+                    <input id="search-bar" name="search" class="form-control searchFields" type="text"
+                        placeholder="Search a user or post" aria-label="Search">
+                    <input class="btn btn-primary" type="submit" value="Search">
+                </div>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        {{#each posts}}
+        <div class="card post-details-card mb-3">
+            <div class="card-body">
+
+
+
+
+                <div class="row">
+                    <div class="col-sm">
+                        <!--  <img src="/posts/postpic/{{this._id}}" alt="Apartment Photo" class="aptPhoto" /> -->
+                        <img src="https://images.adsttc.com/media/images/5f51/a5d9/b357/65fa/5600/025b/large_jpg/Ozkiniai_eksterjeras_132.jpg?1599186382"
+                            alt="Apartment Photo" class="aptPhoto" />
+                    </div>
+                    <div class="col-sm">
+
+                        <!-- <h2>Apartment</h2> -->
+
+                        <!-- <p class="text-end">{{this.userId}}</p> -->
+                        <a href="/posts/{{this._id}}">
+                            <h2>{{this.postTitle}}</h2>
+                        </a>
+                        <p>Location:{{this.preference.location}}</p>
+                        <p class="postBodyText">{{this.postBody}} </p>
+
+                        <!--  <p class="postBodyText">{{this.postBody}} 
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown 
+                            printer took a galley of type and scrambled it to make a type specimen book.</p>
+                        -->
+
+                        <p>Date Posted:{{this.postDate}}</p>
+                    </div>
+                    <div class="col-sm">
+                        <p class="text-end">{{this.userId}}</p>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        {{/each}}
+
+    </div>
+
+    <!-- <div class="search-card">
         <form id="search-form" method="POST" action="/search">
             <input id="search-bar" type="text" name="search" class = "searchFields" placeholder="Search a user or post" />
             <input type="submit" class = "btn" value="Search" />
@@ -21,5 +93,5 @@
             </div>
         </div>
     </div>
-    {{/each}}
+    {{/each}} -->
 </main>
