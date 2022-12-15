@@ -43,6 +43,7 @@
                 <div id="gmap" style="height:400px; width:100%;"></div> <!-- Some restaurants already have a pin on Google maps, and manual pin is somewhat inaccurate due to our estimation -->
 
         <div class="postcomments">
+             {{#if canComment}}
             <p>Enter a comment</p>
             <div>
                 <form  id="comments-form"  method="POST" action="/comments/{{posts._id}}">
@@ -52,6 +53,8 @@
                 </form>
 
             </div>
+               {{/if}}
+
             <p>Comment list</p>
             <div class="comment-area">
                 {{#each posts.comments}}
