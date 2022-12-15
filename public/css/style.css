@@ -80,3 +80,35 @@ nav li {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .flex-container {
+    display: flex;
+}
+
+.flex-child {
+    flex: 1;
+
+}
+
+.flex-child:first-child {
+    margin-right: 20px;
+} 
+
+.px-2 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.card-map{
+  height:400px; 
+  width:100%;
+}
+
+.aptPhoto{
+  height: 200px;
+  width: auto;
+}
+
+:root {
+  font-size: 100%;
+}

@@ -1,47 +1,99 @@
 <main>
-    <div class="outer-card">
-        <div class="saved-posts">
-            <form method="post" action="/users/myProfile/savedPosts/{{posts._id}}">
-                <button type="submit">Save Post</button>
-            </form>
-        </div>
-        <div class="post-details">
-            <h2>{{posts.postTitle}}</h2>
-            <p>{{posts.userId}}</p>
-            <p>{{posts.postDate}}</p>
 
-            <p>Preferences :</p>
-            {{#each posts.preference}}
-            {{@key}} : {{this}} <br>
-            {{/each}}
+    <div class="container">
 
-            <p>Apartment Details :</p>
-            <p>{{posts.postBody}}</p>
+        <div class="card mt-3 mb-3 shadow-sm p-3 mb-5 bg-white rounded">
+            <div class="card-body">
+                <div class="outer-card">
+                    <div class="saved-posts">
+                        <form method="post" action="/users/myProfile/savedPosts/{{posts._id}}">
+                            <button class="btn btn-success" type="submit"><i class="bi bi-save"></i> Save Post</button>
+                        </form>
+                    </div>
+                    <div class="post-details">
 
-            <p>Photos :</p>
-            <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto" />
-        </div>
+                        <br>
 
-        <div id="gmap" style="height:400px; width:100%;"></div>
+                        <div class="flex-container">
 
-        <div class="postcomments">
-            <p>Enter a comment</p>
-            <div>
-                <form id="comments-form" method="POST" action="/comments/{{posts._id}}">
-                    <label class="commentText" for="commentText">comment text :</label>
-                    <input type="text" id="commentText" name="commentText" />
-                    <button type="submit">Create</button>
-                </form>
+                            <div class="flex-child magenta">
+                                <h2>{{posts.postTitle}}</h2>
+                            </div>
 
+                            <div class="flex-child green pull-right">
+                                <p class="text-end">{{posts.userId}}</p>
+                            </div>
+
+                        </div>
+
+
+                        <p>{{posts.postDate}}</p>
+
+                        <p>Preferences :</p>
+                        {{#each posts.preference}}
+                        {{@key}} : {{this}} <br>
+                        {{/each}}
+
+                        <p>Apartment Details :</p>
+                        <p>{{posts.postBody}}</p>
+
+                        <p>Photos :</p>
+
+                        <!--
+
+                        <img src="https://q-xx.bstatic.com/xdata/images/hotel/max1024x768/279319209.jpg?k=fa11770fb7da068fd656ebc055c3acdd4f364be2fa2ced61638cb46bdcfd7dc0&o="
+                            alt="Apartment Photo" class="aptPhoto mb-2" />
+
+                        -->
+
+                        <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto mb-2" />
+                    </div>
+
+                    <div class="card card-map mb-2 mx-auto" id="gmap"></div>
+
+                    <div class="card postcomments px-2">
+
+                        <div class="mt-2">
+
+                            <form id="comments-form" method="POST" action="/comments/{{posts._id}}">
+
+                                <div class="form-group">
+                                    <label class="commentText" for="commentText"><strong>Enter a
+                                            comment</strong></label>
+
+
+                                    <div class="input-group mb-3">
+                                        <br>
+                                        <input type="text" class="form-control" id="commentText" name="commentText"
+                                            placeholder="Enter comment here" />
+                                        <div class="input-group-append">
+                                            <span class="input-group-button" id="basic-addon2"><button type="submit"
+                                                    class="btn btn-primary">Create</button></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </form>
+
+                        </div>
+
+                        <div class=" card comment-area px-2 mt-2 mb-2">
+                            {{#each posts.comments}}
+                            {{@key}} : {{this.userId}}<br>
+                            {{this.commentText}}<br>
+                            <hr>
+                            {{/each}}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p>Comment list</p>
-            <div class="comment-area">
-                {{#each posts.comments}}
-                {{@key}} : {{this.userId}}<br>
-                {{this.commentText}}<br>
-                {{/each}}
-            </div>
         </div>
+
+
+
+
     </div>
 
     <script src="/public/js/maps.js" latitude={{posts.latitude}} longitude={{posts.longitude}}></script>
