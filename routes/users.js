@@ -400,14 +400,18 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
       let all_post = await posts.createSavedPost(postid, req.session.user);
       //create handlebar which says post saved
       //return res.send(all_post);
-      return res.render("users/userSavedPost", { allPost: all_post , userLoggedIn:true});
+      //return res.render("users/userSavedPost", { allPost: all_post , userLoggedIn:true});
+      // return alert("Post Saved");
+      return res.redirect("/posts/" + postid);
     } catch (e) {
       //render handlebar that says user cant save own post
 
       return res.status(400).render("error",);
     }
   }
+  else{
   return res.redirect('/login')
+  }
   //return res.render("login", {});
 });
 
@@ -417,7 +421,8 @@ router.get("/users/myProfile/savedPosts", async (req, res) => {
     try {
       let all_post = await posts.getSavedPostByuserId(req.session.user);
       // return res.send(all_post);
-      return res.render("users/userSavedPost", { allPost: all_post, userLoggedIn:true });
+      //return res.render("users/userSavedPost", { allPost: all_post, userLoggedIn:true });
+      //alert("Post Saved");
     } catch {
       console.log("Post no longer available!");
 
@@ -441,7 +446,7 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
       );
       //return res.send(all_post);
 
-      return res.render("users/userPosts", { allPost: all_post, userLoggedIn:true });
+      //return res.render("users/userPost", { allPost: all_post, userLoggedIn:true });
     } catch {
       console.log("err");
 
