@@ -49,22 +49,23 @@ router
         return res.status(404).json({ error: "No post with id" });
       }
       try {
-        console.log("in comm create routes");
+        // console.log("in comm create routes");
         const post = await commentData.createComment(
           req.params.postId,
           commentInfo.userId,
           commentInfo.commentText.trim()
         );
         var allcomm = post["comments"];
-        console.log(allcomm);
+        
         let lastelm = allcomm.slice(-1);
-        console.log(lastelm);
-        //console.log(post)
-        res.render("partials/comments", {
+        // console.log(lastelm);
+        // console.log(post)
+        return res.render("partials/comments", {
           layout: null,
           posts: lastelm[0],
           userLoggedIn: true,
         });
+        //return res.render('posts/createPost')
         //return res.redirect("/posts/" + req.params.postId);
       } catch (e) {
         res.status(400).json({ error: "Comment cannot be created" });
