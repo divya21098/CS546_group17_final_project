@@ -168,3 +168,25 @@ img {
   -ms-transform-origin: 0 0;
   transform-origin: 0 0;
 } */
+
+.fontDate {
+  font-family: "Courier New", monospace;
+}
+
+.fit-contents-p {
+  line-height: 0;
+}
+
+.textIndent {
+  text-indent: 5%;
+}
+
+.divHidden {
+  background-color: white;
+  visibility: hidden;
+}
+
+.bg-Index{
+  background-image: url('https://ca-times.brightspotcdn.com/dims4/default/e5f45ec/2147483647/strip/true/crop/2000x1125+0+0/resize/1440x810!/quality/80/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb8%2F7b%2Fd99744af36549bab5a47b89f2448%2Fla-fi-co-living-pictures-20160317-008');
+  height: 100vh;
+}

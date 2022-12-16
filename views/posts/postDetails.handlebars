@@ -6,9 +6,27 @@
             <div class="card-body">
                 <div class="outer-card">
                     <div class="saved-posts">
-                        <form method="post" action="/users/myProfile/savedPosts/{{posts._id}}">
-                            <button class="btn btn-success" type="submit"><i class="bi bi-save"></i> Save Post</button>
+
+                        <div id="box" class="divHidden"></div>
+             
+                        <form method="post" action="/users/myProfile/savedPosts/{{posts._id}}" target="frame">
+
+                            <button id="btn" class="btn btn-success pull-right" type="submit" onclick="showAlert();"><i
+                                    class="bi bi-save"></i> Save
+                                Post</button><br><br>
+
+
+                            <div class="container" style="display:none;" id="myAlert">
+                                <div class="alert alert-success alert-dismissable" id="myAlert2">
+                                    <button type="button" class="close" data-dismiss="alert"
+                                        aria-hidden="true">&times;</button>
+                                    This post has been saved!
+                                </div>
+
+                            </div>
+
                         </form>
+
                     </div>
                     <div class="post-details">
 
@@ -27,15 +45,17 @@
                         </div>
 
 
-                        <p>{{posts.postDate}}</p>
+                        <p class="fontDate"><em>Date Posted: </em>{{posts.postDate}}</p>
 
-                        <p>Preferences :</p>
+                        <p>Preferences : </p>
                         {{#each posts.preference}}
-                        {{@key}} : {{this}} <br>
+                        <p class="fit-contents-p textIndent">
+                            {{@key}} : {{this}} <br>
+                        </p>
                         {{/each}}
 
                         <p>Apartment Details :</p>
-                        <p>{{posts.postBody}}</p>
+                        <p class="textIndent">{{posts.postBody}}</p>
 
                         <p>Photos :</p>
 
@@ -97,11 +117,33 @@
             </div>
         </div>
 
-
+        <iframe name="frame" style="display: none;"></iframe>
 
 
     </div>
 
-    <script src="/public/js/maps.js" latitude={{posts.latitude}} longitude={{posts.longitude}}>
+    <script src="/public/js/maps.js" latitude={{posts.latitude}} longitude={{posts.longitude}}></script>
+
+    <script>
+        function showAlert() {
+            if ($("#myAlert").find("div#myAlert2").length == 0) {
+                $("#myAlert").append("<div class='alert alert-success alert-dismissable' id='myAlert2'> <button type='button' class='close' data-dismiss='alert'  aria-hidden='true'>&times;</button> Success! message sent successfully.</div>");
+            }
+            $("#myAlert").css("display", "");
+        }
+
+        const btn = document.getElementById('btn');
+
+        btn.addEventListener('click', () => {
+            // 👇️ hide button (still takes up space on page)
+            btn.style.visibility = 'hidden';
+
+            // 👇️ show div
+            const box = document.getElementById('box');
+            box.style.visibility = 'visible';
+        });
+    </script>
+
+
 
 </main>
