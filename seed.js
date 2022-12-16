@@ -1,74 +1,314 @@
 const dbConnection = require("./config/mongoConnection");
 const posts = require("./data/posts");
 const comments = require("./data/comments");
-const users  = require("./data/users");
-// const { createUser } = require("./data/users");
-// const { post } = require("./routes/posts");
-// const reviews = require("../data/reviews")
+const users = require("./data/users");
 
 const main = async () => {
   const db = await dbConnection.dbConnection();
-  // await db.dropDatabase();
-//   try {
-//     // const post = await posts.createPost("divya", "test1");
-//     // console.log(await posts.getPostById("6380d2ff87039e2ff5827cb3"));
-//     // console.log(await posts.removePostById("637ec2aae471a43138a3ac9e"));
-//     // console.log(await posts.getAllPosts());
-//     // const comment = await comments.createComment(
-//     //   "6380d2ff87039e2ff5827cb3",
-//     //   "harsh",
-//     //   "Its a not good place."
-//     // );
-//     console.log(await comments.getAllComments("6380d2ff87039e2ff5827cb3"));
-//     console.log(await comments.removeComment("6380d36a8dd7380708d0aab5"));
-//   } catch (e) {
-//     console.log(e);
-//   }
+  await db.dropDatabase();
+  //CREATE USER 1
+  const user_1 = await users.createUser(
+    "Divya",
+    "Kamath",
+    "dkamath@stevens.edu",
+    "Test@123",
+    24,
+    "5512478554",
+    "F",
+    "American",
+    "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
+    {
+      "drinking": "Drinking",
+      "smoking": "No Smoking",
+      "food": ["Non Vegetarian"],
+      "room": ["Private Room", "Shared Room"],
+      "home_type": ["Apartment"],
+      "location": "Hoboken"
+    }
+  );
+  //CREATE USER 2
+  const user_2 = await users.createUser(
+    "Kunal",
+    "Mandalya",
+    "kmandaly@stevens.edu",
+    "Test@123",
+    24,
+    "5512478555",
+    "M",
+    "Indian",
+    "I am from India. I am in my first year of Masters. I like to play badminton and go out for drinks in weekend.",
+    {
+      "drinking": "Drinking",
+      "smoking": "No Smoking",
+      "food": ["Vegetarian"],
+      "room": ["Private Room"],
+      "home_type": ["Apartment"],
+      "location": "Jersey City"
+    }
+  );
+  //CREATE USER 3
+  const user_3 = await users.createUser(
+    "Dhriti",
+    "Shah",
+    "dhah@stevens.edu",
+    "Test@123",
+    22,
+    "5514329765",
+    "F",
+    "Indian",
+    "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
+    {
+      "drinking": "Drinking",
+      "smoking": "No Smoking",
+      "food": ["Vegetarian"],
+      "room": ["Private Room", "Shared Room"],
+      "home_type": ["Apartment","Townhouse"],
+      "location": "Hoboken"
+    }
+  );
 
-<<<<<<< HEAD
-//   await dbConnection.closeConnection();
-// };
+  //CREATE USER 4
+  const user_4 = await users.createUser(
+    "Harsh",
+    "Kumar",
+    "harshkumar@stevens.edu",
+    "Test@123",
+    22,
+    "2045512471",
+    "M",
+    "Indian",
+    "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
+    {
+      "drinking": "No Drinking",
+      "smoking": "No Smoking",
+      "food": ["Vegetarian","Non Vegetarian"],
+      "room": ["Shared Room"],
+      "home_type": ["Apartment"],
+      "location": "Newport"
+    }
+  );
 
-// try {
-//   const user = await users.createUser(
-//     "dhriti",
-//     "shah",
-//     "dshah@stevens.edu",
-//     "qwerty@123",
-//     60,
-//     "5512478555",
-//     "F",
-//     "Nigerian",
-//     "I am a good gul, I am happy!",
-//     "drinking"
-//   );
+  //CREATE USER 5
+  const user_5 = await users.createUser(
+    "Vismay",
+    "Rathod",
+    "vrathod@stevens.edu",
+    "Test@123",
+    22,
+    "2048885555",
+    "M",
+    "Indian",
+    "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
+    {
+      "drinking": "Drinking",
+      "smoking": "Smoking",
+      "food": ["Vegetarian"],
+      "room": ["Private Room"],
+      "home_type": ["Apartment","Condos"],
+      "location": "Newport"
+    }
+  );
 
-//   console.log(user);
-// } catch (e) {
-//   console.log(e);
-// }
-//   console.log("Done seeding database");
-//   await dbConnection.closeConnection();
-// }
+  //CREATE USER 6
+  const user_6 = await users.createUser(
+    "Soham",
+    "Mehta",
+    "sohamm@stevens.edu",
+    "Test@123",
+    23,
+    "5512340987",
+    "M",
+    "Indian",
+    "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
+    {
+      "drinking": "Drinking",
+      "smoking": "No Smoking",
+      "food": ["Vegetarian","Non Vegetarian"],
+      "room": ["Shared Room","Private Room"],
+      "home_type": ["Apartment","Studio Apartment"],
+      "location": "Hoboken"
+    }
+  );
 
-try {
-  console.log(await posts.getPostByuserId("6384227c1854524310cea020"));
-} catch (e) {
-  console.log(e);
-}
-  console.log("Done seeding database");
-  await dbConnection.closeConnection();
-}
+  //CREATE USER 7
+  const user_7 = await users.createUser(
+    "Chinmay",
+    "Kamath",
+    "ckamath@stevens.edu",
+    "Test@123",
+    23,
+    "5516382491",
+    "M",
+    "Indian",
+    "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
+    {
+      "drinking": "No Drinking",
+      "smoking": "Smoking",
+      "food": ["Non Vegetarian"],
+      "room": ["Shared Room"],
+      "home_type": ["Apartment"],
+      "location": "Union City"
+    }
+  );
 
-main();
+  //CREATE USER 8
+  const user_8 = await users.createUser(
+    "Krushali",
+    "Patel",
+    "krupatel@stevens.edu",
+    "Test@123",
+    22,
+    "5512476888",
+    "F",
+    "Indian",
+    "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
+    {
+      "drinking": "No Drinking",
+      "smoking": "No Smoking",
+      "food": ["Vegetarian"],
+      "room": ["Private Room"],
+      "home_type": ["Apartment","Condos","Studio Apartment"],
+      "location": "Weehawken"
+    }
+  );
 
+  //CREATE USER 9
+  const user_9 = await users.createUser(
+    "Preeti",
+    "Roomate",
+    "preeti@stevens.edu",
+    "Test@123",
+    24,
+    "5512578663",
+    "F",
+    "American",
+    "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
+    {
+      "drinking": "Drinking",
+      "smoking": "No Smoking",
+      "food": ["Non Vegetarian"],
+      "room": ["Private Room", "Shared Room"],
+      "home_type": ["Apartment"],
+      "location": "Hoboken"
+    }
+  );
 
+  //CREATE USER 10
+  const user_10 = await users.createUser(
+    "Rahul",
+    "Kumar",
+    "rahulkumar@stevens.edu",
+    "Test@123",
+    22,
+    "5513892743",
+    "M",
+    "Indian",
+    "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
+    {
+      "drinking": "No Drinking",
+      "smoking": "No Smoking",
+      "food": ["Vegetarian","Non Vegetarian"],
+      "room": ["Shared Room"],
+      "home_type": ["Apartment"],
+      "location": "Newport"
+    }
+  );
+  
+  //GET USER ID FOR USER 1
+  const user_1_id = user_1._id.toString()
+  //GET USER ID FOR USER 2
+  const user_2_id = user_2._id.toString()
+  //GET USER ID FOR USER 3
+  const user_3_id = user_3._id.toString()
+  //GET USER ID FOR USER 4
+  const user_4_id = user_4._id.toString()
+  //GET USER ID FOR USER 5
+  const user_5_id = user_5._id.toString()
+  //GET USER ID FOR USER 6
+  const user_6_id = user_6._id.toString()
+  //GET USER ID FOR USER 7
+  const user_7_id = user_7._id.toString()
+  //GET USER ID FOR USER 8
+  const user_8_id = user_8._id.toString()
+  //GET USER ID FOR USER 9
+  const user_9_id = user_9._id.toString()
+  //GET USER ID FOR USER 10
+  const user_10_id = user_10._id.toString()
 
+  // CREATE POST BY USER 1
+  const posts1_user1 = await posts.createPost(
+    user_1_id,
+    "Looking for apartment",
+    "Looking for a private/shared room for short-term or month-to-month sublease starting 1st Jan around JSQ in Jersey city. Budget: $400-800. I work full-time at Goldman (3-5 days in office), am vegetarian, don't smoke/drink, keep myself & my space clean, won't invite any guests, and will respect your privacy.Thanks!",
+    ""
+  );
 
+  // CREATE POST BY USER 2
+  const posts1_user2 = await posts.createPost(
+    user_2_id,
+    "Looking for roomate",
+    "Looking for female roommate for a master bedroom which is shared with 2 other girls in a 3b/2bath apartment from December 26. Rent $420+utilities, Mixed accomodation, preferably South Indians, 15 mins from Journal Square Path"
+  );
 
+  // CREATE POST BY USER 3
+  const posts1_user3 = await posts.createPost(
+    user_3_id,
+    "Finding someone to occupy my apartment for temporary basis",
+    "Looking for a private/shared room for short-term or month-to-month sublease starting 1st Jan around JSQ in Jersey city. Budget: $400-800. I work full-time at Goldman (3-5 days in office), am vegetarian, don't smoke/drink, keep myself & my space clean, won't invite any guests, and will respect your privacy.Thanks!",
+    ""
+  );
 
-=======
+  // CREATE POST BY USER 4
+  const posts1_user4 = await posts.createPost(
+    user_4_id,
+    "Need for apartment",
+    "Hi, I am looking for a 1 bhk apartment for rent near Jersey City starting  January 5th. Please let me know if there are any available.",
+    ""
+  );
+
+  // CREATE POST BY USER 6
+  const posts1_user6 = await posts.createPost(
+    user_6_id,
+    "Ping me if you are looking for apartment",
+    "Hello everyone, A spacious one master bed room with attached bathroom in 3bhk  available for moving in from January . Available for both sharing or occupying the whole room in Hobokne only for boys . Dm for more details",
+    ""
+  );
+
+  // CREATE POST BY USER 7
+  const posts1_user7 = await posts.createPost(
+    user_7_id,
+    "Help needede to search for apartment",
+    "Hello Everyone, I am looking for a furnished short term stay with Kitchen for a month, starting from 1st January to 31st January. Anything near Hoboken or Union City with public transport connectivity works for me. Please help me with any lead",
+    ""
+  );
+
+  // CREATE POST BY USER 8
+  const posts1_user8 = await posts.createPost(
+    user_8_id,
+    "Room available, looking for roomate",
+    "Hello everyone, 1bed/1bath is available for $1200 monthly. 2bed/2bath - $2300 - Available Now - Furnished: fully and well furnished-Laundry on -Parking: yes available Flexible for any length of stay! The apartment includes: - Equipped kitchen (gas stove, oven, microwave, fridge and dishwasher) - Furnished with TV, storage, bookshelves - Washer/dryer - Radiator for heating (included) - Window A/C unit and box fan for cooling (included) - WiFi included, Gas and electricity is all available.",
+    "",
+  );
+
+  // CREATE POST BY USER 10
+  const posts1_user10 = await posts.createPost(
+    user_10_id,
+    "Looking apartement in Newport area",
+    "Hi Everyone! Looking for a private room with a private or shared bath in Newport/areas near path stations from Mid Jan (dates flexible). My budget is 1000-1200$. Please let me know if anything is available",
+    ""
+  );
+  
+  // userId,
+  // postTitle,
+  // postBody,
+  // postPicture,
+  // latitude,
+  // longitude
+
+  console.log("Done seeding....");
   await dbConnection.closeConnection();
 };
-main();
->>>>>>> 7616a0aff4547afb0f89f233c32bc3167b14d1ae
+
+main().catch((error) => {
+  console.log(error);
+});

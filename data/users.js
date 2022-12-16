@@ -157,6 +157,9 @@ const updateUser = async (id, updatedUser) => {
   }
 
   if (updatedUser.age) {
+    if (typeof updatedUser.age === "string") {
+      updatedUser.age = parseInt(updatedUser.age);
+    }
     if (!validator.validAge(updatedUser.age))
       throw "Age must be a positive integer";
     //updatedUser.age = validator.trimString(updatedUser.age);
@@ -252,27 +255,74 @@ const updateUser = async (id, updatedUser) => {
   return await getUserById(id);
 };
 
-// const checkUser = async (emailId, password) => {
-//   if (!validator.validEmail(emailId)) throw "Email is not a valid string.";
 
-//   const userCollection = await users();
-//   const user = await userCollection.findOne({
-//     emailId: emailId.toLowerCase(),
-//   });
-//   if (!user) {
-//     throw "Either the username or password is invalid";
-//   }
-
-//   let comp = await bcrypt.compare(password, user.password);
-//   if (!comp) {
-//     throw "Either the username or password is invalid";
-//   }
-//   return { authenticatedUser: true };
-// };
+const userRecommendation = async (id) => {
+  if (!validator.validString(id)) throw "id must be given";
+  validator.validId(id);
+  id = validator.trimString(id);
+  let searchFilter = await getUserById(id)
+  let recommendList={}
+  let recarr=[]
+  if(searchFilter===null){
+    throw 'Invalid'
+  }
+  if(Object.keys(searchFilter.preference).length === 0){
+    throw "Preference is not valid"
+  }
+  if(searchFilter.preference["drinking"]){
+    recommendList["preference.drinking"] = searchFilter.preference["drinking"]
+    recarr.push(recommendList)
+  }
+  if(searchFilter.preference["smoking"]){
+    recommendList={}
+    recommendList["preference.smoking"] = searchFilter.preference["smoking"]
+    recarr.push(recommendList)
+  }
+  if(searchFilter.preference["food"]){
+    recommendList={}
+    recommendList["preference.food"] = {$all:searchFilter.preference["food"]}
+    recarr.push(recommendList)
+  }
+  if(searchFilter.preference["budget"]){
+    recommendList={}
+    recommendList["preference.budget"] = searchFilter.preference["budget"]
+    recarr.push(recommendList)
+  }
+  if(searchFilter.preference["room"]){
+    recommendList={}
+    recommendList["preference.room"] = {$all:searchFilter.preference["room"]}
+    recarr.push(recommendList)
+  }
+  if(searchFilter.preference["home_type"]){
+    recommendList={}
+    recommendList["preference.home_type"] = {$all:searchFilter.preference["home_type"]}
+    recarr.push(recommendList)
+  }
+  if(searchFilter.preference["location"]){
+    recommendList={}
+    recommendList["preference.location"] = searchFilter.preference["location"]
+    recarr.push(recommendList)
+  }
+  
+  const userCollection = await users();
+  const recommendUsers = await userCollection.find({$or:recarr}).toArray();
+  if(recommendUsers==="null"){
+    throw "At the moment we were not able to recommend you the users. Please come back later."
+  }
+  for(let i=0;i<recommendUsers.length;i++){
+    if(recommendUsers[i]._id===id){
+      recommendUsers.splice(i)
+        break
+    }
+}
+  return recommendUsers
+  
+};
 
 module.exports = {
   createUser,
   getAllUsers,
   getUserById,
   updateUser,
+  userRecommendation
 };

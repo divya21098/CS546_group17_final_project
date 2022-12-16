@@ -1,4 +1,5 @@
 const { ObjectId } = require("mongodb");
+const { parsePackageVersion } = require("mongodb/lib/utils");
 // Takes in a string argument.
 // Return true if the argument is non-empty, a string, and non-empty when trimmed; otherwise return false.
 const validString = (str) => {
@@ -14,12 +15,16 @@ const validAge = (age) => {
   return true;
 };
 
+const validPassword = (password)=>{
+  if(!validString(password)) return false
+const passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+return passRegex.test(password)
+}
 // Takes in a string argument.
 // Return true if the argument is a valid email using regex expression.
 const validEmail = (email) => {
   if (!validString(email)) return false;
-  const re =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re = /^[A-Za-z0-9._%+-]+@stevens\.edu$/
   return re.test(String(email).toLowerCase());
 };
 
@@ -67,9 +72,9 @@ function validDate(dateString) {
   return day > 0 && day <= monthLength[month - 1];
 }
 
-const validBool=(val)=>{
-  if( typeof val!=="boolean" ){
-    return false
+const validBool = (val) => {
+  if (typeof val !== "boolean") {
+    return false;
   }
   return true
 }
@@ -79,10 +84,28 @@ const validArray=(arr,name)=>{
   if(!Array.isArray(arr)){
     throw `Input ${name} is not of type array!`
   }
-  if(arr.length<0){
-    throw `Input ${name} array cannot be empty`
+  if (arr.length < 0) {
+    throw `Input ${name} array cannot be empty`;
   }
-}
+};
+
+const map_cord = (location) => {
+  if (location === "Hoboken") {
+    return [40.745255, -74.034775];
+  } else if (location === "Jersey City") {
+    return [40.71907, -74.050552];
+  } else if (location === "Weehawken") {
+    return [40.7683, -74.0190];
+  } else if (location === "Union City") {
+    return [40.77954, -74.023751];
+  } else if (location === "Journal Square") {
+    return [40.734572, -74.063154];
+  } else if (location === "Newport") {
+    return [40.727123, -74.038300];
+  } else {
+    return [39.833851, -74.871826]; //Random complete new jersey
+  }
+};
 
 module.exports = {
   validString,
@@ -93,5 +116,7 @@ module.exports = {
   trimString,
   validDate,
   validBool,
-  validArray
+  validArray,
+  validPassword,
+  map_cord
 };

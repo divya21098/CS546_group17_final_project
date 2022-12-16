@@ -7,25 +7,19 @@ const userData = require("./users");
 // const users = mongoCollections.users;
 const validation = require("../helper");
 
-const createPost = async (
-  userId,
-  postTitle,
-  postBody,
-  postPicture,
-  mapCordinate
-) => {
+const createPost = async (userId, postTitle, postBody, postPicture) => {
   console.log("in post data");
 
   if (
     !validation.validString(postTitle) ||
     !validation.validString(postBody) ||
     !validation.validId(userId)
-    // !validation.validString(postPicture)
   )
     throw "All fields need to have valid values";
   if (!postPicture || postPicture == "") {
     postPicture = "";
   }
+
   const date = new Date();
   let day = date.getDate();
   let month = String(date.getMonth() + 1).padStart(2, "0");
@@ -35,6 +29,8 @@ const createPost = async (
   let userinfo = await userData.getUserById(userId);
   if (userinfo === null) throw "user not found";
   preference = userinfo.preference;
+  let location = userinfo.preference.location;
+
   let newPost = {
     userId: userId,
     postTitle: postTitle,
@@ -43,6 +39,8 @@ const createPost = async (
     comments: [],
     preference: preference,
     postPicture: postPicture,
+    latitude: validation.map_cord(location)[0],
+    longitude: validation.map_cord(location)[1],
   };
 
   const postCollection = await posts();
@@ -109,7 +107,6 @@ const removePostById = async (postid, userid) => {
         userinfo.postId.splice(i, 1);
       }
     }
-    console.log(userinfo);
     await userData.updateUser(userid, { postId: userinfo.postId });
   }
 
@@ -190,11 +187,18 @@ const createSavedPost = async (postid, userid) => {
   const userCollection = await users();
   const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
   if (!userinfo) throw "No user exists";
-  if (userinfo.savedPost.length > 0) {
-    for (i = 0; i < userinfo.savedPost.length; i++) {
-      if (userinfo.savedPost[i] == postid) throw "Cant save post again";
+  if (userinfo.postId.length > 0) {
+    for (i = 0; i < userinfo.postId.length; i++) {
+      if (userinfo.postId == postid) throw "cant save own post";
     }
   }
+
+  if (userinfo.postId)
+    if (userinfo.savedPost.length > 0) {
+      for (i = 0; i < userinfo.savedPost.length; i++) {
+        if (userinfo.savedPost[i] == postid) throw "Cant save post again";
+      }
+    }
   const updatedInfo = await userCollection.updateOne(
     { _id: ObjectId(userid) },
     { $push: { savedPost: String(postid) } }
@@ -275,63 +279,71 @@ const addPostPicture = async (postid, postPicture) => {
     throw "could not update user";
   return await this.getPostById(postid);
 };
-const filterSearch= async(searchFilter)=>{
-//   searchFilter={
-//   "preference": {
-//     "drinking": false,
-//     "smoking": false,
-//     "food": [
-//         "veg"
-//     ],
-//     "budget": "1500$-2000$",
-//     "room": [
-//         "private",
-//         "sharing"
-//     ],
-//     "home_type": [
-//         "Condo",
-//         "Apartment"
-//     ],
-//     "location": [
-//         "Newport",
-//         "Hoboken"
-//     ]
-// }
-// }
+const filterSearch = async (searchFilter) => {
+  //   searchFilter={
+  //   "preference": {
+  //     "drinking": false,
+  //     "smoking": false,
+  //     "food": [
+  //         "veg"
+  //     ],
+  //     "budget": "1500$-2000$",
+  //     "room": [
+  //         "private",
+  //         "sharing"
+  //     ],
+  //     "home_type": [
+  //         "Condo",
+  //         "Apartment"
+  //     ],
+  //     "location": [
+  //         "Newport",
+  //         "Hoboken"
+  //     ]
+  // }
+  // }
   //let allPost =  await getAllPosts()
   const postCollection = await posts();
-  if(Object.keys(searchFilter).length === 0){
-    throw "Preference is not valid"
+  if (Object.keys(searchFilter).length === 0) {
+    throw "Preference is not valid";
   }
-  if(searchFilter["preference.drinking"]){
-    searchFilter["preference.drinking"] = {$all:searchFilter["preference.drinking"]}
+  if (searchFilter["preference.drinking"]) {
+    searchFilter["preference.drinking"] = {
+      $all: searchFilter["preference.drinking"],
+    };
   }
-  if(searchFilter["preference.smoking"]){
-    searchFilter["preference.smoking"] = {$all:searchFilter["preference.smoking"]}
+  if (searchFilter["preference.smoking"]) {
+    searchFilter["preference.smoking"] = {
+      $all: searchFilter["preference.smoking"],
+    };
   }
-  if(searchFilter["preference.food"]){
-    searchFilter["preference.food"] = {$all:searchFilter["preference.food"]}
+  if (searchFilter["preference.food"]) {
+    searchFilter["preference.food"] = { $all: searchFilter["preference.food"] };
   }
-  if(searchFilter["preference.budget"]){
-    searchFilter["preference.budget"] = {$all:searchFilter["preference.budget"]}
+  if (searchFilter["preference.budget"]) {
+    searchFilter["preference.budget"] = {
+      $all: searchFilter["preference.budget"],
+    };
   }
-  if(searchFilter["preference.room"]){
-    searchFilter["preference.room"] = {$all:searchFilter["preference.room"]}
+  if (searchFilter["preference.room"]) {
+    searchFilter["preference.room"] = { $all: searchFilter["preference.room"] };
   }
-  if(searchFilter["preference.home_type"]){
-    searchFilter["preference.home_type"] = {$all:searchFilter["preference.home_type"]}
+  if (searchFilter["preference.home_type"]) {
+    searchFilter["preference.home_type"] = {
+      $all: searchFilter["preference.home_type"],
+    };
   }
-  if(searchFilter["preference.location"]){
-    searchFilter["preference.location"] = {$all:searchFilter["preference.location"]}
+  if (searchFilter["preference.location"]) {
+    searchFilter["preference.location"] = {
+      $all: searchFilter["preference.location"],
+    };
   }
   const filteredPost = await postCollection.find(searchFilter).toArray();
-  if(filteredPost.length===0){
-    return "No results found"
+  if (filteredPost.length === 0) {
+    return "No results found";
   }
-  return filteredPost
-  
-
-}
+  return filteredPost;
+};
 module.exports = {
   createPost,
   getAllPosts,
@@ -343,5 +355,5 @@ module.exports = {
   removeSavedPostByuserId,
   createSavedPost,
   addPostPicture,
-  filterSearch
+  filterSearch,
 };

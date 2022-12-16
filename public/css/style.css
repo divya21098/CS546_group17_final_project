@@ -1,1 +1,170 @@
 /*all css */
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  /* padding-top: 15px; */
+  /* background: url("../images/testbg.png"); */
+  background-size: 100%;
+  background-attachment: fixed;
+}
+
+/* .navbar{
+    padding: 0;
+} */
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+}
+nav a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 15px 25px;
+  text-align: center;
+
+  margin: 0;
+  font-family: sans-serif;
+}
+nav a:hover {
+  background-color: green;
+  color: #ffffff;
+}
+
+/* .menu li {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.menu {
+    display: inline-block;
+}
+
+.menu a::after {
+    display: inline-block;
+    color: #000;
+    font-size: 80%;
+    font-weight: bold;
+    padding: 0 3px;
+} */
+
+nav li {
+  display: inline;
+}
+
+/* .div-text{
+  font-style: italic;
+} */
+
+.test {
+  /*   border-color: black;
+    border: 2px solid; */
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: fit-content;
+  block-size: fit-content;
+}
+
+.aptPhoto {
+  display: block;
+  margin-top: auto;
+  margin-right: auto;
+  height: 10rem;
+  width: 12rem;
+}
+
+.postBodyText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.flex-child {
+  flex: 1;
+}
+
+.flex-child:first-child {
+  margin-right: 20px;
+}
+
+.px-2 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.card-map {
+  height: 400px;
+  width: 100%;
+}
+
+.aptPhoto {
+  height: 200px;
+  width: auto;
+}
+
+:root {
+  font-size: 100%;
+}
+
+/* .mask-custom {
+  backdrop-filter: contrast(90%) brightness(120%) saturate(85%) sepia(0%)
+    hue-rotate(20deg) grayscale(0%) invert(0%) blur(0px);
+  mix-blend-mode: darken;
+  background: linear-gradient(
+    to right,
+    rgba(66, 10, 14, 0.2) 1,
+    rgba(66, 10, 14, 0)
+  );
+  opacity: 1;
+} */
+
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.HoverDiv {
+  position: relative;
+  overflow: visible;
+  width: 360px;
+  margin: 10px;
+}
+
+.HoverDiv img {
+  max-width: 100%;
+  text-align: center;
+  -moz-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.HoverDiv:hover img {
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+img {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 5px;
+  transition: 0.3s;
+  position: relative;
+  z-index: 1;
+}
+
+/* img:hover {
+  -webkit-transform: skewX(-20deg);
+  -ms-transform: skewX(-20deg);
+  transform: skewX(-20deg);
+  -webkit-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  transform-origin: 0 0;
+} */
