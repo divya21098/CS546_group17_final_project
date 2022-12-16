@@ -33,6 +33,7 @@
             <li><a href="/posts" id="postList">Posts</a></li>
             {{#if userLoggedIn}}
             <li><a href="/posts/add" id="createPost">Create Posts</a></li>
+            <li><a href="/posts/filter">Search</a></li>
             <li><a href="/users/myProfile" id="users">Profile</a></li>
             <li><a href="/logout" id="logout">Logout</a></li>
             {{else}}
@@ -43,9 +44,12 @@
 
     {{{body}}}
 
-
-     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    <script src="/public/js/register.js"></script>
+    <script src="/public/js/login.js"></script>
+    <script src="/public/js/savedPost.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>

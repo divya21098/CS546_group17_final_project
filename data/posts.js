@@ -309,33 +309,37 @@ const filterSearch = async (searchFilter) => {
   }
   if (searchFilter["preference.drinking"]) {
     searchFilter["preference.drinking"] = {
-      $all: searchFilter["preference.drinking"],
+    $all: [searchFilter["preference.drinking"]],
     };
   }
   if (searchFilter["preference.smoking"]) {
     searchFilter["preference.smoking"] = {
-      $all: searchFilter["preference.smoking"],
+      $all: [searchFilter["preference.smoking"]],
     };
   }
   if (searchFilter["preference.food"]) {
-    searchFilter["preference.food"] = { $all: searchFilter["preference.food"] };
+    if (typeof (searchFilter["preference.food"])==="string")
+      searchFilter["preference.food"] = { $all: [searchFilter["preference.food"]] };
+    else
+      searchFilter["preference.food"] = { $all: searchFilter["preference.food"]};
+
   }
-  if (searchFilter["preference.budget"]) {
-    searchFilter["preference.budget"] = {
-      $all: searchFilter["preference.budget"],
-    };
-  }
+  
   if (searchFilter["preference.room"]) {
-    searchFilter["preference.room"] = { $all: searchFilter["preference.room"] };
+    if (typeof (searchFilter["preference.room"])==="string" )
+      searchFilter["preference.room"] = { $all: [searchFilter["preference.room"]] };
+    else
+      searchFilter["preference.room"] = { $all: searchFilter["preference.room"] }
   }
   if (searchFilter["preference.home_type"]) {
-    searchFilter["preference.home_type"] = {
-      $all: searchFilter["preference.home_type"],
-    };
-  }
+    if (typeof (searchFilter["preference.home_type"])==="string" )
+      searchFilter["preference.home_type"] = {$all: [searchFilter["preference.home_type"]]};
+    else
+    searchFilter["preference.home_type"] = {$all: searchFilter["preference.home_type"]}
+  }  
   if (searchFilter["preference.location"]) {
     searchFilter["preference.location"] = {
-      $all: searchFilter["preference.location"],
+      $all: [searchFilter["preference.location"]],
     };
   }
   const filteredPost = await postCollection.find(searchFilter).toArray();
