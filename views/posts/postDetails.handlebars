@@ -8,7 +8,7 @@
                     <div class="saved-posts">
 
                         <div id="box" class="divHidden"></div>
-             
+
                         <form method="post" action="/users/myProfile/savedPosts/{{posts._id}}" target="frame">
 
                             <button id="btn" class="btn btn-success pull-right" type="submit" onclick="showAlert();"><i
@@ -59,62 +59,82 @@
 
                         <p>Photos :</p>
 
+                        <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto"></img>
+                    </div>
+                </div>
+                <div class="card card-map mb-2 mx-auto" id="gmap" style="height:400px; width:100%;"></div>
 
-                        <div class="HoverDiv">
+                <!-- Some restaurants already have a pin on Google maps, and manual pin is somewhat inaccurate due to our estimation -->
+                {{!-- <div class="HoverDiv">
 
-                            <!--
+                    <!--
 
                         <img src="https://q-xx.bstatic.com/xdata/images/hotel/max1024x768/279319209.jpg?k=fa11770fb7da068fd656ebc055c3acdd4f364be2fa2ced61638cb46bdcfd7dc0&o="
                             alt="Apartment Photo" class="aptPhoto mb-2" />
 
                         -->
 
-                            <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto mb-2" />
+                    <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto mb-2" />
 
-                        </div>
+                </div> --}}
+                <div class="card postcomments px-2">
+                    <input type="hidden" name="post_id" id="post_id" value="{{posts._id}}" />
+                    {{#if canComment}}
+                    <p>Enter a comment</p>
+                    <div class="mt-2">
+                        <form id="comments-form" method="POST" action="/comments/{{posts._id}}">
+                            <div class="form-group">
 
+                                <label class="commentText" for="commentText">comment text :</label>
+                                <input type="text" id="commentText" name="commentText" />
+                                <button type="submit">Create</button>
+                            </div>
+
+                        </form>
                     </div>
-
-                    <div class="card card-map mb-2 mx-auto" id="gmap"></div>
-
-                    <div class="card postcomments px-2">
-
-                        <div class="mt-2">
-
-                            <form id="comments-form" method="POST" action="/comments/{{posts._id}}">
-
-                                <div class="form-group">
-                                    <label class="commentText" for="commentText"><strong>Enter a
-                                            comment</strong></label>
+                    <div id="empty-comment" hidden></div>
+                    {{/if}}
+                </div>
 
 
-                                    <div class="input-group mb-3">
-                                        <br>
-                                        <input type="text" class="form-control" id="commentText" name="commentText"
-                                            placeholder="Enter comment here" />
-                                        <div class="input-group-append">
-                                            <span class="input-group-button" id="basic-addon2"><button type="submit"
-                                                    class="btn btn-primary">Create</button></span>
-                                        </div>
+                <div class="card postcomments px-2">
+
+                    {{!-- <div class="mt-2">
+
+                        <form id="comments-form" method="POST" action="/comments/{{posts._id}}">
+
+                            <div class="form-group">
+                                <label class="commentText" for="commentText"><strong>Enter a
+                                        comment</strong></label>
+
+
+                                <div class="input-group mb-3">
+                                    <br>
+                                    <input type="text" class="form-control" id="commentText" name="commentText"
+                                        placeholder="Enter comment here" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-button" id="basic-addon2"><button type="submit"
+                                                class="btn btn-primary">Create</button></span>
                                     </div>
-
                                 </div>
 
+                            </div>
 
-                            </form>
 
-                        </div>
+                        </form>
 
-                        <div class=" card comment-area px-2 mt-2 mb-2">
-                            {{#each posts.comments}}
-                            {{@key}} : {{this.userId}}<br>
-                            {{this.commentText}}<br>
-                            <hr>
-                            {{/each}}
-                        </div>
+                    </div> --}}
+
+                    <div class=" card comment-area px-2 mt-2 mb-2" id="comment-area">
+                        {{#each posts.comments}}
+                        {{@key}} : {{this.userId}}<br>
+                        {{this.commentText}}<br>
+                        <hr>
+                        {{/each}}
                     </div>
                 </div>
             </div>
+            </d iv>
         </div>
 
         <iframe name="frame" style="display: none;"></iframe>

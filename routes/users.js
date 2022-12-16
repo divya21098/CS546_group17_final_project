@@ -62,6 +62,7 @@ router.post("/register", async (req, res) => {
   if (preference.smoking) {
     if (!validator.validString(preference.smoking))
       errors.push("Please enter valid field");
+    errors.push("Please enter valid field");
   }
   try {
     if (preference.food) {
@@ -83,44 +84,44 @@ router.post("/register", async (req, res) => {
     errors.push(e);
   }
   if (errors.length > 0) {
-    return res.status(400).render("/register", {
+    return res.status(400).render("register", {
       authenticated: false,
       title: "Register",
       errors: errors,
       hasErrors: true,
     });
   }
-  
-  const allUsers = await users.getAllUsers()
+
+  const allUsers = await users.getAllUsers();
   if (allUsers.length !== 0) {
     allUsers.forEach((user) => {
-      if (user.emailId === validator.trimString(emailId)){
-        errors=[]
-        errors.push("An account is already created with the given email id")
+      if (user.emailId === validator.trimString(emailId)) {
+        errors = [];
+        errors.push("An account is already created with the given email id");
       }
     });
-    if(errors.length>0){
-    return res.status(403).render("register",{
-      authenticated:false,
-      title:"Register",
-      errors:errors,
-      hasErrors: true,
-    });
-  }
+    if (errors.length > 0) {
+      return res.status(403).render("register", {
+        authenticated: false,
+        title: "Register",
+        errors: errors,
+        hasErrors: true,
+      });
+    }
   }
 
   try {
     const user = await users.createUser(
-      firstName,
-      lastName,
-      emailId,
-      password,
-      age,
-      phoneNumber,
-      gender,
-      nationality,
-      aboutMe,
-      preference
+      xss(firstName),
+      xss(lastName),
+      xss(emailId),
+      xss(password),
+      xss(age),
+      xss(phoneNumber),
+      xss(gender),
+      xss(nationality),
+      xss(aboutMe),
+      xss(preference)
     );
     //return res.status(200).json({ user: "registered" });
     // req.session.user = user.__id.toString();
@@ -138,7 +139,7 @@ router.post("/register", async (req, res) => {
 // get Logout
 router.get("/logout", async (req, res) => {
   req.session.destroy();
-  return res.redirect("/")
+  return res.redirect("/");
 });
 
 // GET METHOD for /register route
@@ -146,7 +147,7 @@ router.get("/register", async (req, res) => {
   if (req.session.user) {
     return res.redirect("/posts");
   } else {
-    return res.render("register", {userLoggedIn:false});
+    return res.render("register", { userLoggedIn: false });
   }
 });
 
@@ -156,7 +157,7 @@ router.get("/login", async (req, res) => {
     return res.redirect("/posts");
     //res.render("posts/index.handlebars");
   } else {
-    return res.render("login", {userLoggedIn:false});
+    return res.render("login", { userLoggedIn: false });
   }
 });
 
@@ -228,16 +229,18 @@ router.post("/login", async (req, res) => {
 //GET METHOD for myProfle route
 router.get("/users/myProfile", async (req, res) => {
   if (req.session.user) {
-    try{
-    const userInfo = await users.getUserById(req.session.user);
-    // return res.status(200).json(userInfo);
-    return res.render("users/index", { userInfo: userInfo, userLoggedIn:true});
-    }
-    catch{
-      return res.status(500).render("error")
+    try {
+      const userInfo = await users.getUserById(req.session.user);
+      // return res.status(200).json(userInfo);
+      return res.render("users/index", {
+        userInfo: userInfo,
+        userLoggedIn: true,
+      });
+    } catch {
+      return res.status(500).render("error");
     }
   } else {
-    return res.redirect('/login')
+    return res.redirect("/login");
     //return res.status(401).render("login", {});
   }
 });
@@ -246,10 +249,13 @@ router.get("/users/myProfile", async (req, res) => {
 router.get("/users/myProfileEdit", async (req, res) => {
   if (req.session.user) {
     const userInfo = await users.getUserById(req.session.user);
-    return res.render("users/editUser", { userInfo: userInfo,userLoggedIn:true});
+    return res.render("users/editUser", {
+      userInfo: userInfo,
+      userLoggedIn: true,
+    });
     //return res.redirect("/users/myProfile")
   } else {
-    return res.redirect('/login');
+    return res.redirect("/login");
   }
 });
 
@@ -356,13 +362,13 @@ router.post("/users/myProfileEdit", async (req, res) => {
       // return res.status(200).json(errors);
       return res.status(400).render("users/editUser", {
         errors: errors,
-        hasErrors:true
+        hasErrors: true,
       });
     }
     try {
       let userInfo = await users.updateUser(req.session.user, updatedUserData);
       // return res.status(200).json(userInfo);
-      return res.redirect("/users/myProfile")
+      return res.redirect("/users/myProfile");
       //return res.render("users/index", { userInfo: userInfo });
     } catch (e) {
       // return res.status(400).json(e);
@@ -379,13 +385,16 @@ router.get("/users/myProfile/posts", async (req, res) => {
     try {
       let all_post = await posts.getPostByuserId(req.session.user);
       // return res.status(200).json(all_post);
-      return res.render("users/userPost", { all_post: all_post, userLoggedIn:true });
+      return res.render("users/userPost", {
+        all_post: all_post,
+        userLoggedIn: true,
+      });
     } catch {
-      return res.status(500).render("error")
+      return res.status(500).render("error");
       // return res.render("error", {});
     }
   }
-  return res.redirect("/login")
+  return res.redirect("/login");
 });
 
 //POST METHOD for myProfile/savedPosts
@@ -406,7 +415,7 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
     } catch (e) {
       //render handlebar that says user cant save own post
 
-      return res.status(400).render("error",);
+      return res.status(400).render("error");
     }
   }
   else{
@@ -428,9 +437,8 @@ router.get("/users/myProfile/savedPosts", async (req, res) => {
 
       // return res.render("error", {});
     }
-  }
-  else{
-    res.redirect('/login')
+  } else {
+    res.redirect("/login");
     return res.render("login", {});
   }
 });
@@ -453,15 +461,18 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
       // return res.render("error", {});
     }
   } else {
-    return res.redirect('/login')
+    return res.redirect("/login");
     //return res.render("login", {});
   }
 });
-
+router.post("/users/recommendation", async (req, res) => {})
 router.get("/users/recommendation", async (req, res) => {
   if (req.session.user) {
     let userList = await users.userRecommendation(req.session.user);
-    return res.status(200).json(userList);
+    return res.status(200).render("users/userRec", {
+      userRec: userList,
+      userLoggedIn: true,
+    });
   } else {
     return res.status(403).json({ error: "Not aunthencticated" });
   }
