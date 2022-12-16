@@ -84,7 +84,7 @@ router.post("/register", async (req, res) => {
     errors.push(e);
   }
   if (errors.length > 0) {
-    return res.status(400).render("/register", {
+    return res.status(400).render("register", {
       authenticated: false,
       title: "Register",
       errors: errors,
