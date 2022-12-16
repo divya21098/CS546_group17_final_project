@@ -50,6 +50,75 @@ router.get("/postpic/:id", async (req, res) => {
   }
 });
 
+router.route("/filter").get(async (req, res) => {
+  let userId = req.session.user;
+  if(userId){
+  return res.render("search",{userLoggedIn:true});
+  }
+  else{
+    return res.redirect("/login");
+  }
+});
+
+
+router.route("/filter").post(async (req, res) => {
+let userId = req.session.user;
+if(userId){
+const search = req.body;
+let errors = [];
+// if (!search.key) {
+//   return res.redirect("/");
+// }
+var b = {};
+if (Object.keys(search).length === 0) {
+  return res.status(401).json({ "Enter some search": "Nothing" });
+}
+if (search.preference.drinking) {
+  if (!validation.validString(search.preference.drinking))
+    errors.push("Not a valid input");
+  b["preference.drinking"] = search.preference.drinking;
+}
+if (search.preference.smoking) {
+  if (!validation.validString(search.preference.smoking))
+    errors.push("Not a valid input");
+  b["preference.smoking"] = search.preference.smoking;
+}
+try {
+  if (search.preference.food) {
+    validation.validArray(search.preference.food, "food");
+    b["preference.food"] = search.preference.food;
+  }
+  if (search.preference.room) {
+    validation.validArray(search.preference.room, "room");
+    b["preference.room"] = search.preference.room;
+  }
+  if (search.preference.location) {
+    validation.validArray(search.preference.location, "location");
+    b["preference.location"] = search.preference.location;
+  }
+  if (search.preference.home_type) {
+    validation.validArray(search.preference.home_type, "home_type");
+    b["preference.home_type"] = search.preference.home_type;
+  }
+  
+} catch (e) {
+  errors.push(e);
+  return res.render("error",{userLoggedIn:true});
+}
+}
+else{
+  return res.render("login")
+}
+try {
+  let searchList = await posts.filterSearch(b);
+  return res.render("posts/searchDetails",{searchList:searchList,userLoggedIn:true})
+} catch (e) {
+  return res.render("error", {userLoggedIn:true});
+  //return res.render("",e)
+}
+});
+
+
 router.route("/").get(async (req, res) => {
   try {
     let userId = req.session.user;
@@ -313,60 +382,5 @@ router
     }
   });
 
-router.route("/search").post(async (req, res) => {
-  const search = req.body;
-  let errors = [];
-  // if (!search.key) {
-  //   return res.redirect("/");
-  // }
-  let b = {};
-  if (Object.keys(search).length === 0) {
-    return res.status(401).json({ "Enter some search": "Nothing" });
-  }
-  if (search.preference.drinking) {
-    if (!validation.validBool(search.preference.drinking))
-      errors.push("Not a type boolean");
-    b["preference.drinking"] = search.preference.drinking;
-  }
-  if (search.preference.smoking) {
-    if (!validation.validBool(search.preference.smoking))
-      errors.push("Not a type boolean");
-    b["preference.smoking"] = search.preference.smoking;
-  }
-  try {
-    if (search.preference.food) {
-      validation.validArray(search.preference.food, "food");
-      b["preference.food"] = search.preference.food;
-    }
-    if (search.preference.budget) {
-      console.log(search.preference.budget);
-      b["preference.budget"] = search.preference.budget;
-    }
-    if (search.preference.room) {
-      validation.validArray(search.preference.room, "room");
-      b["preference.room"] = search.preference.room;
-    }
-    if (search.preference.location) {
-      validation.validArray(search.preference.location, "location");
-      b["preference.location"] = search.preference.location;
-    }
-    if (search.preference.home_type) {
-      validation.validArray(search.preference.home_type, "home_type");
-      b["preference.home_type"] = search.preference.home_type;
-    }
-  } catch (e) {
-    errors.push(e);
-    return res.status(400).json(e);
-  }
-  try {
-    let searchList = await posts.filterSearch(b);
-    return res.status(200).json(searchList);
-  } catch (e) {
-    return res.status(500).json(e);
-    //return res.render("",e)
-  }
-});
-router.route("/search").get(async (req, res) => {
-  res.render("");
-});
+  
 module.exports = router;
