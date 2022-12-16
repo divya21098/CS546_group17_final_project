@@ -189,7 +189,7 @@ const createSavedPost = async (postid, userid) => {
   if (!userinfo) throw "No user exists";
   if (userinfo.postId.length > 0) {
     for (i = 0; i < userinfo.postId.length; i++) {
-      if ((userinfo.postId == postid)) throw "cant save own post";
+      if (userinfo.postId == postid) throw "cant save own post";
     }
   }
 
