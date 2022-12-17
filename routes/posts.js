@@ -342,6 +342,7 @@ router
     const info = req.body;
     let userId = req.session.user;
     let updatedPostData = {};
+    errors = []
     if (
       !req.params.id ||
       req.params.id.trim().length == 0 ||
