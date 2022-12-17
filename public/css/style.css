@@ -327,10 +327,12 @@ h1 {
   height: 5px;
 }
 
-
-
 .navbar {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+}
+
+.black{
+  color: #000;
 }
