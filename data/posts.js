@@ -74,6 +74,8 @@ const getAllPosts = async () => {
   //convert id to string
   for (let post of postList) {
     post._id = post._id.toString();
+    let u =  await userData.getUserById(post.userId)
+    post.userId = u.firstName+" "+u.lastName
   }
   if (postList.length == 0) return [];
   // console.log(postList.sort((a, b) => a.postDate - b.postDate));
@@ -84,6 +86,8 @@ const getPostById = async (id) => {
   const postId = validation.validId(id);
   const postCollection = await posts();
   const post = await postCollection.findOne({ _id: ObjectId(postId) });
+  let u =  await userData.getUserById(post.userId)
+  post.userId = u.firstName+" "+u.lastName
   if (post === null) throw "No post with that id";
   return post;
 };
