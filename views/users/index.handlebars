@@ -16,4 +16,29 @@
             </div>
         </div>
     </div>
+
+    <div class="userPostDisplay">
+        <button id="allUserPostsButton">Your Posts</button>
+        <button id="allUserSavedPostsButton">Your Saved Posts</button>
+        <div class="your-posts" id="yourPosts" style="display: none;">
+            {{#each userInfo.postId}}
+                <a href="http://localhost:3000/posts/{{this}}">{{this}} </a>
+            {{/each}}
+        </div>
+        <div class="your-saved-posts" id="yourSavedPosts" style="display: none;">
+            {{#each userInfo.savedPost}}
+                <a href="http://localhost:3000/users/myProfile/savedPost/{{this}}">{{this}} </a>
+            {{/each}}        </div>
+    </div>
+
+    <script>
+        document.getElementById("allUserPostsButton").addEventListener("click", function(){
+            document.getElementById("yourPosts").style.display = 'block';
+            document.getElementById("yourSavedPosts").style.display = 'none';
+        });
+        document.getElementById("allUserSavedPostsButton").addEventListener("click", function(){
+            document.getElementById("yourPosts").style.display = 'none';
+            document.getElementById("yourSavedPosts").style.display = 'block';
+        });
+    </script>
 </main>

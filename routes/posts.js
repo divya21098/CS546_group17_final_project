@@ -320,6 +320,7 @@ router.route("/edit/:id").get(async (req, res) => {
 router
   .route("/edit/:id")
   .post(upload.single("postPicture"), async (req, res) => {
+    console.log("inside post edit ")
     const info = req.body;
     let userId = req.session.user;
     let updatedPostData = {};

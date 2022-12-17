@@ -312,9 +312,6 @@ router.post("/users/editProfile", async (req, res) => {
       );
       updatedUserData.phoneNumber = updatedUser.phoneNumber;
     }
-    else{
-      errors.push("Phone Number cannot be empty");
-    }
 
     if (updatedUser.aboutMe) {
       if (!validator.validString(updatedUser.aboutMe))

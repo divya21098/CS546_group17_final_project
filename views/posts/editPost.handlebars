@@ -5,7 +5,7 @@
 
                 <h1>Update post</h1>
 
-                <form id="edit-posts-form" method="POST" action="/posts/edit/{{postInfo._id}}" enctype="multipart/form-data">
+                <form id="editPostsForm">
 
                     <!-- Input to add Post Title -->
                     <div class="form-group">
@@ -40,7 +40,7 @@
 
                 </form>
             </div>
-            {{!-- {{#if hasErrors}}
+            {{#if hasErrors}}
             <ul id="error-list" class="error-list">
                 {{#each errors}}
                 <li>
@@ -48,8 +48,7 @@
                 </li>
                 {{/each}}
             </ul>
-            {{/if}} --}}
+            {{/if}}
         </div>
     </div>
-
 </main>
