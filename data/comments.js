@@ -2,6 +2,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const { ObjectId } = require("mongodb");
 const validation = require("../helper");
+const userData = require("./users");
 // const comments = mongoCollections.comments;
 const users = mongoCollections.users;
 const posts = mongoCollections.posts;
@@ -19,12 +20,13 @@ const createComment = async (postId, userId, commentText) => {
   });
 
   if (samePost === null) throw "Post to which comment added doesnt exist";
-
+  let u = await userData.getUserById(userId)
+  userId = u.firstName+" "+u.lastName
   let newComment = {
     // postId: postId,
     _id: new ObjectId(),
 
-    userId: userId,
+    userId: userId ,
     commentText: commentText,
   };
   const postsCollection = await posts();
