@@ -104,7 +104,8 @@ router.route("/filter").post(async (req, res) => {
       return res.render("error", { userLoggedIn: true });
     }
   } else {
-    return res.render("login");
+    
+    return res.redirect("login");
   }
   try {
     let searchList = await posts.filterSearch(b);
@@ -130,7 +131,7 @@ router.route("/").get(async (req, res) => {
       res.render("posts/index", { posts: postList, userLoggedIn: false });
     }
   } catch (e) {
-    res.status(404).send();
+    res.status(500).render("error");
   }
 });
 
@@ -152,11 +153,18 @@ router.route("/delete/:id").get(async (req, res) => {
   ) {
     errors.push("not valid string");
   }
-  try {
-    req.params.id = validation.validId(req.params.id);
-  } catch (e) {
-    return res.status(400).json({ error: e });
+  if (errors.length > 0) {
+    // return res.status(200).json(errors);
+    return res.status(400).render("posts/deletePost", {
+      errors: errors,
+      hasErrors: true,
+    });
   }
+  // try {
+  //   req.params.id = validation.validId(req.params.id);
+  // } catch (e) {
+  //   return res.status(400).json({ error: e });
+  // }
   if (req.session.user) {
     try {
       const id = req.params.id;
@@ -164,10 +172,10 @@ router.route("/delete/:id").get(async (req, res) => {
       //return res.status(200).json(post);
       res.render("posts/deletePost", { post: post });
     } catch (e) {
-      res.status(404).json({ error: "No post with id" });
+      return res.status(500).render("error");
     }
   } else {
-    res.render("login", {});
+    res.redirect("login");
   }
 });
 
@@ -190,6 +198,13 @@ router.route("/add").post(upload.single("postPicture"), async (req, res) => {
       info.postBody.trim().length == 0
     ) {
       errors.push("Please Enter valid post body");
+    }
+    if (errors.length > 0) {
+      // return res.status(200).json(errors);
+      return res.status(400).render("posts/createPost", {
+        errors: errors,
+        hasErrors: true,
+      });
     }
     try {
       info.postTitle = xss(validation.validString(info.postTitle));
@@ -214,28 +229,17 @@ router.route("/add").post(upload.single("postPicture"), async (req, res) => {
         postBody,
         finalImg
       );
-      //return res.status(200).json(post);
-      return res.redirect("/posts");
-      //res.render("posts/index");
-    } catch (e) {
-      console.log(e);
-      //render error page
-    }
 
-    if (errors.length > 0) {
-      return res.status(400).render("posts/createPost", {
-        authenticated: false,
-        title: "Register",
-        errors: errors,
-        hasErrors: true,
-      });
+      return res.redirect("/posts");
+    } catch (e) {
+      return res.status(500).render("error");
+      //render error page
     }
   } else {
     return res.status(401).render("login", {
       errors: errors,
       hasErrors: true,
     });
-    // res.status(401).json({ user: "not auth" });
   }
 });
 router.route("/:id").get(async (req, res) => {
@@ -248,11 +252,18 @@ router.route("/:id").get(async (req, res) => {
   ) {
     errors.push("not valid string");
   }
-  try {
-    req.params.id = validation.validId(req.params.id);
-  } catch (e) {
-    return res.status(400).json({ error: e });
+  if (errors.length > 0) {
+    // return res.status(200).json(errors);
+    return res.status(400).render("error", {
+      errors: errors,
+      hasErrors: true,
+    });
   }
+  // try {
+  //   req.params.id = validation.validId(req.params.id);
+  // } catch (e) {
+  //   return res.status(400).json({ error: e });
+  // }
   let userId = req.session.user;
   let canComment = false;
 
@@ -269,7 +280,7 @@ router.route("/:id").get(async (req, res) => {
         userLoggedIn: true,
       });
     } catch (e) {
-      res.status(404).json({ error: "No post with id" });
+      return res.status(500).render("error");
     }
   } else {
     return res.redirect("/login");
@@ -278,10 +289,19 @@ router.route("/:id").get(async (req, res) => {
 router.route("/delete/:id").post(async (req, res) => {
   console.log("in del");
 
-  try {
-    id = validation.validId(req.params.id);
-  } catch (e) {
-    return res.status(400).json({ error: e });
+  if (
+    !req.params.id ||
+    req.params.id.trim().length == 0 ||
+    !ObjectId.isValid(req.params.id)
+  ) {
+    errors.push("not valid string");
+  }
+  if (errors.length > 0) {
+    // return res.status(200).json(errors);
+    return res.status(400).render("posts/editPost", {
+      errors: errors,
+      hasErrors: true,
+    });
   }
   let userId = req.session.user;
   if (userId) {
@@ -290,13 +310,12 @@ router.route("/delete/:id").post(async (req, res) => {
       const post = await posts.removePostById(postid, userId);
       const postList = await posts.getAllPosts();
       return res.status(200).render("posts/index", { posts: postList });
-
-      // res.render("users/userPost", { all_post: post });
     } catch (e) {
-      return res.status(404).json({ error:e});
+      //render error page
+      return res.status(500).render("error");
     }
   } else {
-    return res.status(401).json({ user: "not auth" });
+    return res.redirect("/login");
   }
 });
 router.route("/edit/:id").get(async (req, res) => {
@@ -306,7 +325,7 @@ router.route("/edit/:id").get(async (req, res) => {
     const post = await posts.getPostById(id);
     res.render("posts/editPost", { id: req.params.id, postInfo: post });
   } else {
-    res.render("login", {});
+    res.redirect("login");
   }
 });
 router
@@ -322,14 +341,22 @@ router
     ) {
       errors.push("not valid string");
     }
+    if (errors.length > 0) {
+      // return res.status(200).json(errors);
+      return res.status(400).render("posts/editPost", {
+        errors: errors,
+        hasErrors: true,
+      });
+    }
+
     if (userId) {
       console.log("in put post route");
 
-      try {
-        postId = validation.validId(req.params.id);
-      } catch (e) {
-        return res.status(400).json({ error: e });
-      }
+      // try {
+      //   postId = validation.validId(req.params.id);
+      // } catch (e) {
+      //   return res.status(400).json({ error: e });
+      // }
       try {
         if (!req.file) {
           finalImg = "";
@@ -366,11 +393,11 @@ router
         res.status(200).render("posts/index", { posts: postList });
       } catch (e) {
         //add res.render
-        res.status(500).json({ error: e });
+        return res.status(500).render("error");
       }
     } else {
       //handle errors
-      res.status(401).json({ user: "not auth" });
+      return res.redirect("/login");
     }
   });
 

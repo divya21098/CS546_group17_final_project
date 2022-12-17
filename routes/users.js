@@ -417,9 +417,8 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
 
       return res.status(400).render("error");
     }
-  }
-  else{
-  return res.redirect('/login')
+  } else {
+    return res.redirect("/login");
   }
   //return res.render("login", {});
 });
@@ -430,7 +429,10 @@ router.get("/users/myProfile/savedPosts", async (req, res) => {
     try {
       let all_post = await posts.getSavedPostByuserId(req.session.user);
       // return res.send(all_post);
-      //return res.render("users/userSavedPost", { allPost: all_post, userLoggedIn:true });
+      return res.render("users/index", {
+        allPost: all_post,
+        userLoggedIn: true,
+      });
       //alert("Post Saved");
     } catch {
       console.log("Post no longer available!");
@@ -465,7 +467,7 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
     //return res.render("login", {});
   }
 });
-router.post("/users/recommendation", async (req, res) => {})
+router.post("/users/recommendation", async (req, res) => {});
 router.get("/users/recommendation", async (req, res) => {
   if (req.session.user) {
     let userList = await users.userRecommendation(req.session.user);

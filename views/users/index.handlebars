@@ -10,9 +10,13 @@
                 <p>{{userInfo.aboutMe}}</p>
                 <p> {{userInfo.nationality}}</p>
                 <p>Preferences</p>
-                    {{#each userInfo.preference}}
-                        {{@key}} : {{this}} <br>
-                    {{/each}}
+                {{#each userInfo.preference}}
+                {{@key}} : {{this}} <br>
+                {{/each}}
+                <p>Saved Post</p>
+                {{#each userInfo.savedPost}}
+                {{@key}} : {{this}} <br>
+                {{/each}}
             </div>
         </div>
     </div>

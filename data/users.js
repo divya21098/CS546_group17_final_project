@@ -280,7 +280,7 @@ const userRecommendation = async (id) => {
   if (searchFilter.preference["food"]) {
     recommendList = {};
     recommendList["preference.food"] = {
-      $all: searchFilter.preference["food"],
+      $all: [searchFilter.preference["food"]],
     };
     recarr.push(recommendList);
   }
@@ -292,14 +292,15 @@ const userRecommendation = async (id) => {
   if (searchFilter.preference["room"]) {
     recommendList = {};
     recommendList["preference.room"] = {
-      $all: searchFilter.preference["room"],
+      $all: [searchFilter.preference["room"]],
     };
     recarr.push(recommendList);
   }
   if (searchFilter.preference["home_type"]) {
     recommendList = {};
     recommendList["preference.home_type"] = {
-      $all: searchFilter.preference["home_type"],
+      //updated rhs to arry
+      $all: [searchFilter.preference["home_type"]],
     };
     recarr.push(recommendList);
   }

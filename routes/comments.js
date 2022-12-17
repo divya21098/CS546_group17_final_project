@@ -5,6 +5,7 @@ const data = require("../data/");
 const post = data.posts;
 const commentData = data.comments;
 const validation = require("../helper");
+const xss = require("xss");
 
 router
   .route("/:postId")
@@ -30,17 +31,30 @@ router
     }
   })
   .post(async (req, res) => {
-    let commentInfo = req.body;
-    if (!commentInfo) {
-      res
-        .status(400)
-        .json({ error: "You must provide data to create a review" });
-      return;
-    }
+    let errors = [];
     if (req.session.user) {
+      let commentInfo = req.body;
+      if (!commentInfo) {
+        errors.push("Comment text is empty");
+      }
+      if (
+        !commentInfo.commentText ||
+        typeof commentInfo.commentText != "string" ||
+        commentInfo.commentText.trim().length == 0
+      ) {
+        errors.push("Comment text is invalid");
+      }
+      if (errors.length > 0) {
+        // return res.status(200).json(errors);
+        return res.status(400).render("posts/postDetails", {
+          errors: errors,
+          hasErrors: true,
+        });
+      }
+
       try {
-        commentInfo.commentText = validation.validString(
-          commentInfo.commentText
+        commentInfo.commentText = xss(
+          validation.validString(commentInfo.commentText)
         );
         commentInfo.userId = validation.validId(req.session.user);
         const postId = validation.validId(req.params.postId);
@@ -56,7 +70,7 @@ router
           commentInfo.commentText.trim()
         );
         var allcomm = post["comments"];
-        
+
         let lastelm = allcomm.slice(-1);
         // console.log(lastelm);
         // console.log(post)
@@ -68,10 +82,10 @@ router
         //return res.render('posts/createPost')
         //return res.redirect("/posts/" + req.params.postId);
       } catch (e) {
-        res.status(400).json({ error: "Comment cannot be created" });
+        return res.status(500).render("error");
       }
     } else {
-      res.status(401).json({ user: "not auth" });
+      res.redirect("/login");
     }
   });
 
