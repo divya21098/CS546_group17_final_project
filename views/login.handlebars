@@ -52,7 +52,8 @@
                                 </div>
 
                                 <!-- Submit button -->
-                                <button type="sumbit" class="btn btn-primary btn-block mb-4" onclick="lsRememberMe()">Sign in</button>
+                                <button type="sumbit" class="btn btn-primary btn-block mb-4"
+                                    onclick="lsRememberMe()">Sign in</button>
 
                                 <!-- Register buttons -->
                                 <div class="text-center">
@@ -80,22 +81,27 @@
 
     <script>
         const rmCheck = document.getElementById("rememberme"),
-            emailInput = document.getElementById("emailId");
+            emailInput = document.getElementById("emailId"),
+            passInput = document.getElementById("password");
 
         if (localStorage.checkbox && localStorage.checkbox !== "") {
             rmCheck.setAttribute("checked", "checked");
             emailInput.value = localStorage.username;
+            passInput.value = localStorage.password;
         } else {
             rmCheck.removeAttribute("checked");
             emailInput.value = "";
+            passInput.value = "";
         }
 
         function lsRememberMe() {
             if (rmCheck.checked && emailInput.value !== "") {
                 localStorage.username = emailInput.value;
+                localStorage.password = passInput.value;
                 localStorage.checkbox = rmCheck.value;
             } else {
                 localStorage.username = "";
+                localStorage.password = "";
                 localStorage.checkbox = "";
             }
         }
