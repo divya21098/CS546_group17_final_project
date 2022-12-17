@@ -56,6 +56,8 @@ const [path,queryString]= url.split('?');
 const post_id = path.split('/')[4];
 const host = window.location.origin
 
+console.log(editUserForm)
+
 editUserForm.addEventListener("submit", (e) => {
     if (newEditFirstName.value === "" || newEditLastName.value === "" || newEditEmail.value === "" || newEditAge.value === "" || newEditPhoneNumber.value === "" || newEditGender.value === "" || newEditNationality.value === "" || newEditAboutMe.value === "") {
         e.preventDefault();

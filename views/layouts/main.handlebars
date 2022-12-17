@@ -91,14 +91,12 @@
         crossorigin="anonymous"></script>
     --}}
 
-    {{!-- <script src="/public/js/comment-ajax.js"></script>
-    <script src="/public/js/comment.js"></script> --}}
-    <script src="/public/js/editPost.js"></script>
-    <script src="/public/js/editUser.js"></script>
-    {{!-- <script src="/public/js/register.js"></script> --}}
-    <script src="/public/js/login.js"></script>
-    {{!-- <script src="/public/js/savedPost.js"></script>
-    <script src="/public/js/createPost.js"></script> --}}
+    <script src="/public/js/comment-ajax.js"></script>
+    <script src="/public/js/comment.js"></script>
+    {{#if register}}
+    <script src="/public/js/register.js"></script>
+    {{/if}}
+    
 
 
 </body>

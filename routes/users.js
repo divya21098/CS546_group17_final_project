@@ -62,7 +62,6 @@ router.post("/register", async (req, res) => {
   if (preference.smoking) {
     if (!validator.validString(preference.smoking))
       errors.push("Please enter valid field");
-    errors.push("Please enter valid field");
   }
   try {
     if (preference.food) {
@@ -147,7 +146,7 @@ router.get("/register", async (req, res) => {
   if (req.session.user) {
     return res.redirect("/posts");
   } else {
-    return res.render("register", { userLoggedIn: false });
+    return res.render("register", { userLoggedIn: false, register : true });
   }
 });
 
