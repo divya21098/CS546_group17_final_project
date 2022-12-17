@@ -260,9 +260,10 @@ router.get("/users/myProfileEdit", async (req, res) => {
 });
 
 // PUT METHOD for myProfileEdit route
-router.post("/users/myProfileEdit", async (req, res) => {
+router.post("/users/editProfile", async (req, res) => {
   if (req.session.user) {
     let updatedUser = req.body;
+    console.log(updatedUser);
     let updatedUserData = {};
     let errors = [];
     //if (!validator.validString(req.session.user)) throw "id must be given";
@@ -279,6 +280,7 @@ router.post("/users/myProfileEdit", async (req, res) => {
       updatedUser.firstName = xss(validator.trimString(updatedUser.firstName));
       updatedUserData.firstName = updatedUser.firstName;
     }
+
     if (updatedUser.lastName) {
       if (!validator.validString(updatedUser.lastName))
         errors.push("Last name is not a valid string");
@@ -295,6 +297,9 @@ router.post("/users/myProfileEdit", async (req, res) => {
       //updatedUser.age = validator.trimString(updatedUser.age);
       updatedUserData.age = xss(updatedUser.age);
     }
+    // else{
+    //   errors.push("Age cannot be empty");
+    // }
 
     if (updatedUser.phoneNumber) {
       try {
@@ -307,6 +312,9 @@ router.post("/users/myProfileEdit", async (req, res) => {
       );
       updatedUserData.phoneNumber = updatedUser.phoneNumber;
     }
+    else{
+      errors.push("Phone Number cannot be empty");
+    }
 
     if (updatedUser.aboutMe) {
       if (!validator.validString(updatedUser.aboutMe))
@@ -314,6 +322,9 @@ router.post("/users/myProfileEdit", async (req, res) => {
       updatedUser.aboutMe = xss(validator.trimString(updatedUser.aboutMe));
       updatedUserData.aboutMe = updatedUser.aboutMe;
     }
+    // else{
+    //   errors.push("About Me cannot be empty");
+    // }
 
     //nationality call use npm package in drop down box to be called on client side
     if (updatedUser.nationality) {
@@ -324,6 +335,9 @@ router.post("/users/myProfileEdit", async (req, res) => {
       );
       updatedUserData.nationality = updatedUser.nationality;
     }
+    // else{
+    //   errors.push("Nationality cannot be empty");
+    // }
     //preference  in drop down box to be called on client side
     //gender - Male, Female, Others drop box
     if (updatedUser.gender) {
@@ -332,6 +346,10 @@ router.post("/users/myProfileEdit", async (req, res) => {
       updatedUser.gender = xss(validator.trimString(updatedUser.gender));
       updatedUserData.gender = updatedUser.gender;
     }
+    // else{
+    //   errors.push("Gender cannot be empty");
+    // }
+
     if (updatedUser.preference) {
       if (updatedUser.preference.drinking) {
         if (!validator.validString(updatedUser.preference.drinking))
