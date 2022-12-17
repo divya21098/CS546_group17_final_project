@@ -13,6 +13,7 @@ const xss = require("xss");
 const path = require("path");
 
 var fs = require("fs");
+const { users } = require("../config/mongoCollections");
 // SET STORAGE
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -22,7 +23,7 @@ var storage = multer.diskStorage({
     cb(null, file.fieldname + "-" + Date.now());
   },
 });
-var upload =  multer({ storage: storage });
+var upload = multer({ storage: storage });
 
 router.get("/postpic/:id", async (req, res) => {
   let errors = [];
@@ -52,78 +53,77 @@ router.get("/postpic/:id", async (req, res) => {
 
 router.route("/filter").get(async (req, res) => {
   let userId = req.session.user;
-  if(userId){
-  return res.render("search",{userLoggedIn:true});
-  }
-  else{
+  if (userId) {
+    return res.render("search", { userLoggedIn: true });
+  } else {
     return res.redirect("/login");
   }
 });
 
-
 router.route("/filter").post(async (req, res) => {
-let userId = req.session.user;
-if(userId){
-const search = req.body;
-let errors = [];
-// if (!search.key) {
-//   return res.redirect("/");
-// }
-var b = {};
-if (Object.keys(search).length === 0) {
-  return res.status(401).json({ "Enter some search": "Nothing" });
-}
-if (search.preference.drinking) {
-  if (!validation.validString(search.preference.drinking))
-    errors.push("Not a valid input");
-  b["preference.drinking"] = search.preference.drinking;
-}
-if (search.preference.smoking) {
-  if (!validation.validString(search.preference.smoking))
-    errors.push("Not a valid input");
-  b["preference.smoking"] = search.preference.smoking;
-}
-try {
-  if (search.preference.food) {
-    validation.validArray(search.preference.food, "food");
-    b["preference.food"] = search.preference.food;
+  let userId = req.session.user;
+  if (userId) {
+    const search = req.body;
+    let errors = [];
+    // if (!search.key) {
+    //   return res.redirect("/");
+    // }
+    var b = {};
+    if (Object.keys(search).length === 0) {
+      return res.status(401).json({ "Enter some search": "Nothing" });
+    }
+    if (search.preference.drinking) {
+      if (!validation.validString(search.preference.drinking))
+        errors.push("Not a valid input");
+      b["preference.drinking"] = search.preference.drinking;
+    }
+    if (search.preference.smoking) {
+      if (!validation.validString(search.preference.smoking))
+        errors.push("Not a valid input");
+      b["preference.smoking"] = search.preference.smoking;
+    }
+    try {
+      if (search.preference.food) {
+        validation.validArray(search.preference.food, "food");
+        b["preference.food"] = search.preference.food;
+      }
+      if (search.preference.room) {
+        validation.validArray(search.preference.room, "room");
+        b["preference.room"] = search.preference.room;
+      }
+      if (search.preference.location) {
+        validation.validArray(search.preference.location, "location");
+        b["preference.location"] = search.preference.location;
+      }
+      if (search.preference.home_type) {
+        validation.validArray(search.preference.home_type, "home_type");
+        b["preference.home_type"] = search.preference.home_type;
+      }
+    } catch (e) {
+      errors.push(e);
+      return res.render("error", { userLoggedIn: true });
+    }
+  } else {
+    return res.render("login");
   }
-  if (search.preference.room) {
-    validation.validArray(search.preference.room, "room");
-    b["preference.room"] = search.preference.room;
+  try {
+    let searchList = await posts.filterSearch(b);
+    return res.render("posts/searchDetails", {
+      searchList: searchList,
+      userLoggedIn: true,
+    });
+  } catch (e) {
+    return res.render("error", { userLoggedIn: true });
+    //return res.render("",e)
   }
-  if (search.preference.location) {
-    validation.validArray(search.preference.location, "location");
-    b["preference.location"] = search.preference.location;
-  }
-  if (search.preference.home_type) {
-    validation.validArray(search.preference.home_type, "home_type");
-    b["preference.home_type"] = search.preference.home_type;
-  }
-  
-} catch (e) {
-  errors.push(e);
-  return res.render("error",{userLoggedIn:true});
-}
-}
-else{
-  return res.render("login")
-}
-try {
-  let searchList = await posts.filterSearch(b);
-  return res.render("posts/searchDetails",{searchList:searchList,userLoggedIn:true})
-} catch (e) {
-  return res.render("error", {userLoggedIn:true});
-  //return res.render("",e)
-}
 });
-
 
 router.route("/").get(async (req, res) => {
   try {
     let userId = req.session.user;
 
     const postList = await posts.getAllPosts();
+
     if (userId) {
       res.render("posts/index", { posts: postList, userLoggedIn: true });
     } else {
@@ -276,16 +276,10 @@ router.route("/:id").get(async (req, res) => {
   }
 });
 router.route("/delete/:id").post(async (req, res) => {
-  if (
-    !req.params.id ||
-    typeof req.params.id != "string" ||
-    req.params.id.trim().length == 0 ||
-    !ObjectId.isValid(req.params.id)
-  ) {
-    errors.push("not valid string");
-  }
+  console.log("in del");
+
   try {
-    req.params.id = validation.validId(req.params.id);
+    id = validation.validId(req.params.id);
   } catch (e) {
     return res.status(400).json({ error: e });
   }
@@ -299,7 +293,7 @@ router.route("/delete/:id").post(async (req, res) => {
 
       // res.render("users/userPost", { all_post: post });
     } catch (e) {
-      return res.status(404).json({ error: "No post with id" });
+      return res.status(404).json({ error:e});
     }
   } else {
     return res.status(401).json({ user: "not auth" });
@@ -310,7 +304,7 @@ router.route("/edit/:id").get(async (req, res) => {
   if (req.session.user) {
     const id = req.params.id;
     const post = await posts.getPostById(id);
-    res.render("posts/editPost", { id: req.params.id, postInfo : post});
+    res.render("posts/editPost", { id: req.params.id, postInfo: post });
   } else {
     res.render("login", {});
   }
@@ -349,9 +343,7 @@ router
         }
         const { postTitle, postBody, aptPhotos } = info;
         if (postTitle) {
-          if (
-            !validation.validString(postTitle) 
-          ) {
+          if (!validation.validString(postTitle)) {
             errors.push("Please Enter post title");
           }
           // if (!validation.validString(postTitle)) throw "Title not valid";
@@ -382,5 +374,4 @@ router
     }
   });
 
-  
 module.exports = router;
