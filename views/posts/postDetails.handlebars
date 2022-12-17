@@ -80,24 +80,32 @@
                 <div class="card postcomments px-2">
                     <input type="hidden" name="post_id" id="post_id" value="{{posts._id}}" />
                     {{#if canComment}}
-                    <p>Enter a comment</p>
+                    {{!-- <p class="form-group">Enter a comment</p> --}}
                     <div class="mt-2">
                         <form id="comments-form" method="POST" action="/comments/{{posts._id}}">
                             <div class="form-group">
 
-                                <label class="commentText" for="commentText">comment text :</label>
-                                <input type="text" id="commentText" name="commentText" />
-                                <button type="submit">Create</button>
+                                <label class="commentText" for="commentText">Enter a
+                                    comment</label>
+                                <div class="input-group mb-3">
+                                    <br>
+                                    <input type="text" class="form-control" id="commentText" name="commentText"
+                                        placeholder="Enter comment here" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-button" id="basic-addon2"><button type="submit"
+                                                class="btn btn-primary">Create</button></span>
+                                    </div>
+                                </div>
                             </div>
 
                         </form>
                     </div>
-                    <div id="empty-comment" hidden></div>
+                    <div id="empty-comment" class="alert alert-info div-text" hidden></div>
                     {{/if}}
                 </div>
 
 
-                <div class="card postcomments px-2">
+                <div class="card postcomments mt-2 px-2">
 
                     {{!-- <div class="mt-2">
 

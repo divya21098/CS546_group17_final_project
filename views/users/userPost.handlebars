@@ -1,22 +1,33 @@
 <main>
-    <div class="user-posts-list">
-        <ul>  
-            {{#each all_post}}              
-            <li>
-            <h2>{{this.postTitle}}</h2>
-            <p>{{this.userId}}</p>
-            <p>{{this.postDate}}</p>
-               <p>Preferences :</p> 
-                {{#each this.preference}}
-                {{@key}} : {{this}} <br> 
-            {{/each}}
-            <p>Apartment Details :</p>
-            <p>{{this.postBody}}</p>
+    <div class="container user-details-card">
+        <div class="card mt-2 mb-2">
+            <div class="row">
+                <div class="col-sm ml-3 mt-3 mb-3">
 
-            <p>Photos :</p>
-            <img src="/posts/postpic/{{this._id}}" alt="Apartment Photo" class="aptPhoto"></img>
-            </li>
-            {{/each}}
-        </ul>
+                    <ul>
+                        {{#each all_post}}
+                        <li>
+                            <h2>{{this.postTitle}}</h2>
+                            <p>{{this.userId}}</p>
+                            <p>{{this.postDate}}</p>
+                            <p>Preferences :</p>
+                            {{#each this.preference}}
+                            {{@key}} : {{this}} <br>
+                            {{/each}}
+                            <p>Apartment Details :</p>
+                            <p>{{this.postBody}}</p>
+
+                            <p>Photos :</p>
+                            <img src="/posts/postpic/{{this._id}}" alt="Apartment Photo" class="aptPhoto" />
+                        </li>
+                        {{/each}}
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 </main>
