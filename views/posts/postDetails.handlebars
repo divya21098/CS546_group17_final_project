@@ -62,7 +62,8 @@
                         <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto"></img>
                     </div>
                 </div>
-                <div class="card card-map mb-2 mx-auto" id="gmap" style="height:400px; width:100%;" aria-labelledby="Google map location"></div>
+                <div class="card card-map mb-2 mx-auto" id="gmap" style="height:400px; width:100%;"
+                    aria-labelledby="Google map location"></div>
 
                 <!-- Some restaurants already have a pin on Google maps, and manual pin is somewhat inaccurate due to our estimation -->
                 {{!-- <div class="HoverDiv">
@@ -174,9 +175,10 @@
     <script>
         function showAlert() {
             if ($("#myAlert").find("div#myAlert2").length == 0) {
-                $("#myAlert").append("<div class='alert alert-success alert-dismissable' id='myAlert2'> <button type='button' class='close' data-dismiss='alert'  aria-hidden='true'>&times;</button> Success! message sent successfully.</div>");
+                $("#myAlert").append("<div class='alert alert-success alert-dismissable' id='myAlert2'> <button type='button' class='close' data-dismiss='alert'  aria-hidden='true'>&times;</button> </div>");
             }
             $("#myAlert").css("display", "");
+
         }
 
         const btn = document.getElementById('btn');
