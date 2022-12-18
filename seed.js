@@ -14,7 +14,7 @@ const main = async () => {
     "Test@123",
     24,
     "5512478554",
-    "F",
+    "Female",
     "American",
     "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
     {
@@ -34,7 +34,7 @@ const main = async () => {
     "Test@123",
     24,
     "5512478555",
-    "M",
+    "Male",
     "Indian",
     "I am from India. I am in my first year of Masters. I like to play badminton and go out for drinks in weekend.",
     {
@@ -54,7 +54,7 @@ const main = async () => {
     "Test@123",
     22,
     "5514329765",
-    "F",
+    "Female",
     "Indian",
     "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
     {

@@ -66,7 +66,10 @@ const createPost = async (userId, postTitle, postBody, postPicture) => {
 //post listing
 const getAllPosts = async () => {
   const postCollection = await posts();
-  const postList = await postCollection.find({}).toArray();
+  const postList = await postCollection
+    .find({})
+    .sort({ postDate: -1 })
+    .toArray();
   if (!postList) throw "No post with that id";
   //convert id to string
   for (let post of postList) {
@@ -75,7 +78,8 @@ const getAllPosts = async () => {
     post.userId = u.firstName+" "+u.lastName
   }
   if (postList.length == 0) return [];
-  return postList;
+  // console.log(postList.sort((a, b) => a.postDate - b.postDate));
+  return postList
 };
 //post individual
 const getPostById = async (id) => {
@@ -90,31 +94,44 @@ const getPostById = async (id) => {
 //edit post once user login
 const removePostById = async (postid, userid) => {
   //check if it's a savedPost in other users then delete it  from other users
-  postId = validation.validId(postid);
+  postid = validation.validId(postid);
   userid = validation.validId(userid);
   const userCollection = await users();
   const postCollection = await posts();
-  const post = await postCollection.findOne({ _id: ObjectId(postId) });
-  if (post === null) throw "No post with that id";
-  const deletionInfo = await postCollection.deleteOne({
-    _id: ObjectId(postId),
-  });
+  const post = await postCollection.findOne({ _id: ObjectId(postid) });
+  if (!post) throw "No post with that id";
+  // const deletionInfo = await postCollection.deleteOne({
+  //   _id: ObjectId(postid),
+  // });
 
-  if (deletionInfo.deletedCount === 0) {
-    throw `Could not delete movie with id of ${id}`;
-  }
+  // if (deletionInfo.deletedCount === 0) {
+  //   throw `Could not delete post with id of ${id}`;
+  // }
   const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
   if (userinfo === null) throw "No user with that id";
+  let flag = false;
   if (userinfo.postId.length > 0) {
     for (i = 0; i < userinfo.postId.length; i++) {
       if (userinfo.postId[i] === postid) {
         userinfo.postId.splice(i, 1);
+        flag = true;
       }
     }
-    await userData.updateUser(userid, { postId: userinfo.postId });
+  }
+  if (flag) {
+    var deletionInfo = await postCollection.deleteOne({
+      _id: ObjectId(postid),
+    });
+  } else {
+    throw "Not allowed to deleted";
   }
 
-  return { postId: postId, deleted: true };
+  if (deletionInfo.deletedCount === 0) {
+    throw `Could not delete post with id of ${id}`;
+  }
+  await userData.updateUser(userid, { postId: userinfo.postId });
+
+  return { deleted: true };
 };
 //edit post once user login
 const updatePostbyId = async (postId, userId, updatedPost) => {
@@ -257,7 +274,7 @@ const removeSavedPostByuserId = async (postid, userid) => {
         userinfo.savedPost.splice(i, 1);
       }
     }
-    console.log(userinfo);
+    // console.log(userinfo);
     await userData.updateUser(userid, { savedPost: userinfo.savedPost });
   }
 
@@ -313,7 +330,7 @@ const filterSearch = async (searchFilter) => {
   }
   if (searchFilter["preference.drinking"]) {
     searchFilter["preference.drinking"] = {
-    $all: [searchFilter["preference.drinking"]],
+      $all: [searchFilter["preference.drinking"]],
     };
   }
   if (searchFilter["preference.smoking"]) {
@@ -322,25 +339,36 @@ const filterSearch = async (searchFilter) => {
     };
   }
   if (searchFilter["preference.food"]) {
-    if (typeof (searchFilter["preference.food"])==="string")
-      searchFilter["preference.food"] = { $all: [searchFilter["preference.food"]] };
+    if (typeof searchFilter["preference.food"] === "string")
+      searchFilter["preference.food"] = {
+        $all: [searchFilter["preference.food"]],
+      };
     else
-      searchFilter["preference.food"] = { $all: searchFilter["preference.food"]};
-
+      searchFilter["preference.food"] = {
+        $all: searchFilter["preference.food"],
+      };
   }
-  
+
   if (searchFilter["preference.room"]) {
-    if (typeof (searchFilter["preference.room"])==="string" )
-      searchFilter["preference.room"] = { $all: [searchFilter["preference.room"]] };
+    if (typeof searchFilter["preference.room"] === "string")
+      searchFilter["preference.room"] = {
+        $all: [searchFilter["preference.room"]],
+      };
     else
-      searchFilter["preference.room"] = { $all: searchFilter["preference.room"] }
+      searchFilter["preference.room"] = {
+        $all: searchFilter["preference.room"],
+      };
   }
   if (searchFilter["preference.home_type"]) {
-    if (typeof (searchFilter["preference.home_type"])==="string" )
-      searchFilter["preference.home_type"] = {$all: [searchFilter["preference.home_type"]]};
+    if (typeof searchFilter["preference.home_type"] === "string")
+      searchFilter["preference.home_type"] = {
+        $all: [searchFilter["preference.home_type"]],
+      };
     else
-    searchFilter["preference.home_type"] = {$all: searchFilter["preference.home_type"]}
-  }  
+      searchFilter["preference.home_type"] = {
+        $all: searchFilter["preference.home_type"],
+      };
+  }
   if (searchFilter["preference.location"]) {
     searchFilter["preference.location"] = {
       $all: [searchFilter["preference.location"]],

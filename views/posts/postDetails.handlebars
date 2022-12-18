@@ -138,7 +138,17 @@
                         {{this.commentText}}<br>
                         <hr>
                         {{/each}}
+
                     </div>
+                    {{#if hasErrors}}
+                    <ul id="error-list" class="error-list">
+                        {{#each errors}}
+                        <li>
+                            {{this}}
+                        </li>
+                        {{/each}}
+                    </ul>
+                    {{/if}}
                 </div>
             </div>
             </d iv>
