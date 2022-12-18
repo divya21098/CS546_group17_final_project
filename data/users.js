@@ -312,8 +312,10 @@ const userRecommendation = async (id) => {
   for (let i = 0; i < recommendUsers.length; i++) {
     if (recommendUsers[i]._id.toString() === id) {
       console.log(recommendUsers.splice(i, 1));
-      break;
+      //break;
     }
+    recommendUsers[i]._id=recommendUsers[i]._id.toString()
+    
   }
   // console.log(recommendUsers);
 

@@ -220,7 +220,6 @@ const getPostByuserId = async (id) => {
       result.push(await getPostById(userinfo.postId[i]));
     }
   }
-
   if (!result) throw "Posts not found";
   return result;
 };
@@ -397,9 +396,15 @@ const filterSearch = async (searchFilter) => {
       $all: [searchFilter["preference.location"]],
     };
   }
-  const filteredPost = await postCollection.find(searchFilter).toArray();
+  const filteredPost = await postCollection.find(searchFilter).sort({ postDate: -1 }).toArray();
   if (filteredPost.length === 0) {
     return "No results found";
+  }
+
+  for (let post of filteredPost) {
+    post._id = post._id.toString();
+    let u =  await userData.getUserById(post.userId)
+    post.userId = u.firstName+" "+u.lastName
   }
   return filteredPost;
 };

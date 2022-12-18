@@ -458,6 +458,7 @@ router.get("/users/myProfile/savedPosts", async (req, res) => {
     try {
       let all_post = await posts.getSavedPostByuserId(req.session.user);
       // return res.send(all_post);
+      console.log(all_post)
       return res.render("users/index", {
         allPost: all_post,
         userLoggedIn: true,
@@ -501,13 +502,26 @@ router.get("/users/recommendation", async (req, res) => {
   if (req.session.user) {
     let userList = await users.userRecommendation(req.session.user);
     console.log(userList);
+
     return res.status(200).render("users/userRec", {
       userRec: userList,
       userLoggedIn: true,
     });
   } else {
-    return res.status(403).json({ error: "Not aunthencticated" });
+    return res.redirect("/login")
   }
 });
+
+router.get("/users/checkUser/:id",async(req,res)=>{
+  req.params.id = validator.validId(req.params.id);
+  const userInfo = await users.getUserById(req.params.id);
+  console.log(userInfo)
+  if(userInfo!==null){
+    userInfo._id = userInfo._id.toString()
+    return res.render("users/showUser",{userInfo:userInfo, userLoggedIn:true})
+  }
+  return res.render("error")
+  
+})
 
 module.exports = router;
