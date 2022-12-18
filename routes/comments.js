@@ -82,7 +82,7 @@ router
         //return res.render('posts/createPost')
         //return res.redirect("/posts/" + req.params.postId);
       } catch (e) {
-        return res.status(500).render("error");
+        return res.status(500).render("error",{errors:e,hasErrors:true,userLoggedIn:true});
       }
     } else {
       res.redirect("/login");

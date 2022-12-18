@@ -398,7 +398,7 @@ const filterSearch = async (searchFilter) => {
   }
   const filteredPost = await postCollection.find(searchFilter).sort({ postDate: -1 }).toArray();
   if (filteredPost.length === 0) {
-    return "No results found";
+    return []
   }
 
   for (let post of filteredPost) {
