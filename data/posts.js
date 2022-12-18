@@ -86,9 +86,9 @@ const getPostById = async (id) => {
   const postId = validation.validId(id);
   const postCollection = await posts();
   const post = await postCollection.findOne({ _id: ObjectId(postId) });
+  if (post === null) throw "No post with that id";
   let u =  await userData.getUserById(post.userId)
   post.userId = u.firstName+" "+u.lastName
-  if (post === null) throw "No post with that id";
   return post;
 };
 //edit post once user login

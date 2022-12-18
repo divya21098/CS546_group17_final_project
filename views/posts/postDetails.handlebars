@@ -55,14 +55,14 @@
                         {{/each}}
 
                         <p>Apartment Details :</p>
-                        <p class="textIndent">{{posts.postBody}}</p>
+                        <p class="textIndent word-wrap">{{posts.postBody}}</p>
 
                         <p>Photos :</p>
 
                         <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto"></img>
                     </div>
                 </div>
-                <div class="card card-map mb-2 mx-auto" id="gmap" style="height:400px; width:100%;"></div>
+                <div class="card card-map mb-2 mx-auto" id="gmap" style="height:400px; width:100%;" aria-labelledby="Google map location"></div>
 
                 <!-- Some restaurants already have a pin on Google maps, and manual pin is somewhat inaccurate due to our estimation -->
                 {{!-- <div class="HoverDiv">
@@ -81,22 +81,22 @@
                     <input type="hidden" name="post_id" id="post_id" value="{{posts._id}}" />
                     {{#if canComment}}
                     {{!-- <p class="form-group">Enter a comment</p> --}}
-                    <div class="mt-2">
+                    <div class="form-group mt-2">
                         <form id="comments-form" method="POST" action="/comments/{{posts._id}}">
-                            <div class="form-group">
 
-                                <label class="commentText" for="commentText">Enter a
-                                    comment</label>
-                                <div class="input-group mb-3">
-                                    <br>
-                                    <input type="text" class="form-control" id="commentText" name="commentText"
-                                        placeholder="Enter comment here" />
-                                    <div class="input-group-append">
-                                        <span class="input-group-button" id="basic-addon2"><button type="submit"
-                                                class="btn btn-primary">Create</button></span>
-                                    </div>
+
+                            <label class="commentText" for="commentText">Enter a
+                                comment</label>
+                            <div class="input-group mb-3">
+                                <br>
+                                <input type="text" class="form-control" id="commentText" name="commentText"
+                                    placeholder="Enter comment here" />
+                                <div class="input-group-append">
+                                    <span class="input-group-button" id="basic-addon2"><button type="submit"
+                                            class="btn btn-primary">Create</button></span>
                                 </div>
                             </div>
+
 
                         </form>
                     </div>
@@ -132,11 +132,21 @@
 
                     </div> --}}
 
-                    <div class=" card comment-area px-2 mt-2 mb-2" id="comment-area">
+                    <div class="comment-area px-2 mt-2 mb-2" id="comment-area">
                         {{#each posts.comments}}
-                        {{@key}} : {{this.userId}}<br>
-                        {{this.commentText}}<br>
-                        <hr>
+                        <div class="chat">
+                            <div class="yours messages">
+                                <div class="message last">
+                                    {{this.commentText}}
+                                    <hr>
+                                </div>
+                                <div class="bold"> - {{this.userId}}</div>
+                                <hr>
+                            </div>
+                        </div>
+
+
+
                         {{/each}}
 
                     </div>
@@ -151,10 +161,10 @@
                     {{/if}}
                 </div>
             </div>
-            </d iv>
         </div>
+    </div>
 
-        <iframe name="frame" style="display: none;"></iframe>
+    <iframe name="frame" style="display: none;"></iframe>
 
 
     </div>
