@@ -436,17 +436,18 @@
     </div>
 
     {{#if hasErrors}}
-    <ul class="error-list">
-        {{#each errors}}
-        <li>
-            {{this}}
-        </li>
-        {{/each}}
-    </ul>
+    <div class="alert alert-danger div-text" role="alert" hidden>
+        <ul class="error-list">
+            {{#each errors}}
+            <li>
+                {{this}}
+            </li>
+            {{/each}}
+        </ul>
+    </div>
     {{/if}}
 
     <!--
     <script src="../public/js/errors.js"></script> 
     -->
 </main>
-
