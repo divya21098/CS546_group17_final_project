@@ -15,13 +15,18 @@
                     <p>{{userInfo.nationality}}</p>
                     <p>Preferences - </p>
 
-
                     {{#each userInfo.preference}}
                     <p class="fit-contents-p textIndent">
                         {{@key}} : {{this}} <br>
                     </p>
                     {{/each}}
                 </div>
+
+                <form method="get" action="/users/myProfileEdit">
+                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <button type="submit" class="btn btn-primary btn-lg" id="editUser">Edit User</button>
+                </div>
+                </form>
 
             </div>
 
@@ -32,7 +37,18 @@
             <button id="allUserSavedPostsButton">Your Saved Posts</button>
             <div class="your-posts" id="yourPosts" style="display: none;">
                 {{#each userInfo.postId}}
-                <a href="http://localhost:3000/posts/{{this}}">{{this}} </a>
+                <a href="http://localhost:3000/posts/{{this}}">{{this}} </a><br>
+
+                <form method="post" action="/posts/delete/{{this}}">
+                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <button type="submit" class="btn btn-primary btn-lg" id="deletePosts">Delete</button>
+                </div>
+                </form>
+                <form method="get" action="/posts/edit/{{this}}">
+                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                    <button type="submit" class="btn btn-primary btn-lg" id="editPost">Edit</button>
+                </div>
+                </form>
                 {{/each}}
             </div>
             <div class="your-saved-posts" id="yourSavedPosts" style="display: none;">
@@ -46,7 +62,7 @@
 
 
     </div>
-
+{{!-- 
     <div class="userPostDisplay">
         <button id="allUserPostsButton">Your Posts</button>
         <button id="allUserSavedPostsButton">Your Saved Posts</button>
@@ -59,7 +75,7 @@
             {{#each userInfo.savedPost}}
                 <a href="http://localhost:3000/posts/{{this}}">{{this}} </a>
             {{/each}}        </div>
-    </div>
+    </div> --}}
 
     <script>
         document.getElementById("allUserPostsButton").addEventListener("click", function(){
@@ -72,3 +88,5 @@
         });
     </script>
 </main>
+
+<script src="/public/js/deletePost.js"></script>
