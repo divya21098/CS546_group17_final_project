@@ -358,17 +358,11 @@ router.post("/users/editProfile", async (req, res) => {
       }
       if (updatedUser.preference.food) {
         validator.validArray(updatedUser.preference.food, "food");
-<<<<<<< HEAD
         //updatedUserData.preference.food = updatedUser.preference.food
-=======
-      } else {
-        errors.push("Atleast one food preference needs to be checked");
->>>>>>> 3fcdcb8 (all changes fix4)
       }
 
       if (updatedUser.preference.room) {
         validator.validArray(updatedUser.preference.room, "room");
-<<<<<<< HEAD
         //updatedUserData.preference.room = updatedUser.preference.room
       }
       else{
@@ -387,20 +381,6 @@ router.post("/users/editProfile", async (req, res) => {
       }
       else{
         errors.push("Atleast one hometype preference needs to be checked")
-=======
-      } else {
-        errors.push("Atleast one room preference needs to be checked");
-      }
-      if (updatedUser.preference.location) {
-        validator.validString(updatedUser.preference.location, "location");
-      } else {
-        errors.push("Atleast one location preference needs to be checked");
-      }
-      if (updatedUser.preference.home_type) {
-        validator.validArray(updatedUser.preference.home_type, "home_type");
-      } else {
-        errors.push("Atleast one hometype preference needs to be checked");
->>>>>>> 3fcdcb8 (all changes fix4)
       }
       updatedUserData.preference = updatedUser.preference;
     }
@@ -463,18 +443,9 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
       return res.redirect("/posts/" + postid);
     } catch (e) {
       //render handlebar that says user cant save own post
-<<<<<<< HEAD
 
       return res.status(500).render("error",{errors:e,userLoggedIn:true});
     }
-=======
-      console.log(e)
-      return res.status(500).render("posts/postDetails", {
-        authenticated: false,
-        errors: e,
-        hasErrors: true
-    })}
->>>>>>> 3fcdcb8 (all changes fix4)
   } else {
     return res.redirect("/login");
   }
@@ -539,7 +510,6 @@ router.get("/users/recommendation", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 router.get("/users/checkUser/:id",async(req,res)=>{
   try{
   req.params.id = validator.validId(req.params.id);
@@ -555,20 +525,5 @@ router.get("/users/checkUser/:id",async(req,res)=>{
   
   
 })
-=======
-router.get("/users/checkUser/:id", async (req, res) => {
-  req.params.id = validator.validId(req.params.id);
-  const userInfo = await users.getUserById(req.params.id);
-  console.log(userInfo);
-  if (userInfo !== null) {
-    userInfo._id = userInfo._id.toString();
-    return res.render("users/showUser", {
-      userInfo: userInfo,
-      userLoggedIn: true,
-    });
-  }
-  return res.render("error");
-});
->>>>>>> 3fcdcb8 (all changes fix4)
 
 module.exports = router;
