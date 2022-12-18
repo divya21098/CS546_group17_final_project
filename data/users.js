@@ -312,18 +312,19 @@ const userRecommendation = async (id) => {
 
   const userCollection = await users();
   const recommendUsers = await userCollection.find({ $or: recarr }).toArray();
-  if (recommendUsers === "null") {
+  if (recommendUsers.length===0) {
     throw "At the moment we were not able to recommend you the users. Please come back later.";
   }
   for (let i = 0; i < recommendUsers.length; i++) {
     if (recommendUsers[i]._id.toString() === id) {
-      console.log(recommendUsers.splice(i, 1));
-      //break;
+      recommendUsers.splice(i, 1);
+    }
+    if (recommendUsers.length===0) {
+      throw "At the moment we were not able to recommend you the users. Please come back later.";
     }
     recommendUsers[i]._id=recommendUsers[i]._id.toString()
     
   }
-  // console.log(recommendUsers);
 
   return recommendUsers;
 };
