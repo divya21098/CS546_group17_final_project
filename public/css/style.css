@@ -336,3 +336,10 @@ h1 {
 .black{
   color: #000;
 }
+
+#message {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}

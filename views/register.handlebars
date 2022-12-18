@@ -428,6 +428,16 @@
                                 <a href="/login">Already have an account? Click here to log-in</a>
                             </div>
 
+                            {{#if hasErrors}}
+                            <ul class="error-list">
+                                {{#each errors}}
+                                <li>
+                                    {{this}}
+                                </li>
+                                {{/each}}
+                            </ul>
+                            {{/if}}
+
                         </div>
                     </div>
                 </div>
@@ -435,19 +445,17 @@
         </div>
     </div>
 
-    {{#if hasErrors}}
-    <div class="alert alert-danger div-text" role="alert" hidden>
-        <ul class="error-list">
-            {{#each errors}}
-            <li>
-                {{this}}
-            </li>
-            {{/each}}
-        </ul>
-    </div>
-    {{/if}}
+
+    {{!--
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div> --}}
 
     <!--
     <script src="../public/js/errors.js"></script> 
     -->
+
+
+
 </main>

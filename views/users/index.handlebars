@@ -1,4 +1,3 @@
-
 <main>
     <div class="container user-details-card">
         <div class="card mt-2 mb-2">
@@ -45,14 +44,18 @@
                         <div class="btn-group px-2 mb-1">
                             <form method="post" action="/posts/delete/{{this}}">
                                 <div class="d-flex justify-content-center px-1">
-                                    <button type="submit" class="btn btn-dark btn-sm"
-                                        id="deletePosts"><i class="bi bi-trash"></i></button>
+                                    <button type="submit" class="btn btn-dark btn-sm" id="deletePost"><label
+                                            for="deletePost">
+                                        </label><i class="bi bi-trash"></i></button>
                                 </div>
                             </form>
 
                             <form method="get" action="/posts/edit/{{this}}">
                                 <div class="d-flex justify-content-center px-1">
-                                    <button type="submit" class="btn btn-dark btn-sm" id="editPost"><i class="bi bi-pen"></i></button>
+                                    <button type="submit" class="btn btn-dark btn-sm" id="editPost"><label
+                                            for="editPost">
+
+                                        </label><i class="bi bi-pen"></i></button>
                                 </div>
                             </form>
                         </div>
