@@ -75,7 +75,7 @@ const main = async () => {
       "Test@123",
       22,
       "2045512471",
-      "M",
+      "Male",
       "Indian",
       "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
       {
@@ -96,7 +96,7 @@ const main = async () => {
       "Test@123",
       22,
       "2048885555",
-      "M",
+      "Male",
       "Indian",
       "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
       {
@@ -117,7 +117,7 @@ const main = async () => {
       "Test@123",
       23,
       "5512340987",
-      "M",
+      "Male",
       "Indian",
       "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
       {
@@ -138,7 +138,7 @@ const main = async () => {
       "Test@123",
       23,
       "5516382491",
-      "M",
+      "Male",
       "Indian",
       "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
       {
@@ -159,7 +159,7 @@ const main = async () => {
       "Test@123",
       22,
       "5512476888",
-      "F",
+      "Female",
       "Indian",
       "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
       {
@@ -180,7 +180,7 @@ const main = async () => {
       "Test@123",
       24,
       "5512578663",
-      "F",
+      "Female",
       "American",
       "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
       {
@@ -201,7 +201,7 @@ const main = async () => {
       "Test@123",
       22,
       "5513892743",
-      "M",
+      "Male",
       "Indian",
       "Currently pursuing master's in CS. I like to chat and go for drinks during weekend. I love to cook.",
       {

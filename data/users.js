@@ -199,22 +199,28 @@ const updateUser = async (id, updatedUser) => {
   if(updatedUser.preference){
     if(updatedUser.preference.drinking){
       if(!validator.validStringBool(updatedUser.preference.drinking)) throw "Not a type boolean"
+      updatedUserData.preference.drinking = updatedUser.preference.drinking
   
     }
     if(updatedUser.preference.smoking){
       if(!validator.validStringBool(updatedUser.preference.smoking)) throw "Not a type boolean"
+      updatedUserData.preference.drinking = updatedUser.preference.drinking
     }
     if (updatedUser.preference.food) {
       validator.validArray(updatedUser.preference.food, "food");
+      updatedUserData.preference.food = updatedUser.preference.food
     }
     if(updatedUser.preference.room){
       validator.validArray(updatedUser.preference.room,"room")
+      updatedUserData.preference.room = updatedUser.preference.room
     }
     if (updatedUser.preference.location) {
       validator.validArray(updatedUser.preference.location, "location");
+      updatedUserData.preference.location = updatedUser.preference.location
     }
     if (updatedUser.preference.home_type) {
       validator.validArray(updatedUser.preference.home_type, "home_type");
+      updatedUserData.preference.home_type = updatedUser.preference.home_type
     }
     updatedUserData.preference = updatedUser.preference;
   }
@@ -312,8 +318,10 @@ const userRecommendation = async (id) => {
   for (let i = 0; i < recommendUsers.length; i++) {
     if (recommendUsers[i]._id.toString() === id) {
       console.log(recommendUsers.splice(i, 1));
-      break;
+      //break;
     }
+    recommendUsers[i]._id=recommendUsers[i]._id.toString()
+    
   }
   // console.log(recommendUsers);
 

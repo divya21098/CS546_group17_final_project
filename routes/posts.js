@@ -275,6 +275,7 @@ router.route("/:id").get(async (req, res) => {
 
       const id = req.params.id;
       const post = await posts.getPostById(id);
+      
       //return res.status(200).json(post);
       res.render("posts/postDetails", {
         posts: post,
