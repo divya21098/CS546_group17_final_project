@@ -5,17 +5,18 @@
                 <div class="card shadow border mt-2">
                     <div class="card-body d-flex flex-column align-items-center">
                         <div class="register-page">
-                            <form id="registration-form" method="POST" action="/users/myProfileEdit">
+                            {{!-- id="edit-form" --}}
+                            <form id="edit-form">
 
                                 <!-- First name input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label firstName" for="firstName">Your First Name</label>
 
 
-                                    <input type="text" id="firstName" name="firstName" class="form-control"
+                                    <input type="text" id="editFirstName" name="firstName" class="form-control"
                                         placeholder="Enter first name" value="{{userInfo.firstName}}">
 
-                                    <div class="alert alert-danger div-text" role="alert" id="no-first-name" hidden>Please enter your First Name</div>
+                                    <div class="alert alert-danger div-text" role="alert" id="no-edit-first-name" hidden>Please enter your First Name</div>
 
                                 </div>
 
@@ -23,9 +24,9 @@
                                 <div class="form-outline mb-4">
                                     <label class="form-label lastName" for="lastName">Your Last Name</label>
 
-                                    <input type="text" id="lastName" name="lastName" class="form-control"
+                                    <input type="text" id="editLastName" name="lastName" class="form-control"
                                         placeholder="Enter last name" value="{{userInfo.lastName}}">
-                                    <div class="alert alert-danger div-text" role="alert" id="no-last-name" hidden>Please enter your Last Name</div>
+                                    <div class="alert alert-danger div-text" role="alert" id="no-edit-last-name" hidden>Please enter your Last Name</div>
                                 </div>
 
                                 <!-- Email input -->
@@ -33,9 +34,9 @@
                                     <label class="form-label emailId" for="emailId">Your Email</label>
 
                                     
-                                    <input type="email" id="emailId" name="emailId" pattern=".+@stevens\.edu"
+                                    <input type="email" id="editEmailId" name="emailId" pattern=".+@stevens\.edu"
                                         class="form-control" placeholder="Enter your Email" value="{{userInfo.emailId}}" readonly>
-                                        <div class="alert alert-danger div-text" role="alert" id="no-email" hidden>Please enter your Email</div>
+                                        <div class="alert alert-danger div-text" role="alert" id="no-edit-email" hidden>Please enter your Email</div>
                                 </div>
 
                                 <!-- Password input -->
@@ -53,39 +54,39 @@
                                 <!-- Age input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label age" for="age">Your Age</label>
-                                    <input type="number" class="form-control" id="age" min="22" max="80" name="age"
+                                    <input type="number" class="form-control" id="editAge" min="22" max="80" name="age"
                                         placeholder="Enter your age" value="{{userInfo.age}}"/>
-                                    <div id="no-age" class="alert alert-danger div-text" role="alert" hidden>Please enter your age</div>
+                                    <div id="no-edit-age" class="alert alert-danger div-text" role="alert" hidden>Please enter your age</div>
                                 </div>
 
 
                                 <!-- Phone input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label phoneNumber" for="phoneNumber">Your Phone No.</label>
-                                    <input type="number" class="form-control" id="phoneNumber" name="phoneNumber"
+                                    <input type="number" class="form-control" id="editPhoneNumber" name="phoneNumber"
                                         placeholder="Enter your phone number" value="{{userInfo.phoneNumber}}"/>
-                                    <div id="no-phone" class="alert alert-danger div-text" role="alert" hidden>Please enter your phone number
+                                    <div id="no-edit-phone" class="alert alert-danger div-text" role="alert" hidden>Please enter your phone number
                                     </div>
                                 </div>
 
                                 <!-- Gender input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label gender" for="gender">Your Gender</label>
-                                    <select class="custom-select" id="gender" name="gender">
-                                        <option selected disabled>{{userInfo.gender}}</option>
+                                    <select class="custom-select" id="editGender" name="gender">
+                                        <option selected>{{userInfo.gender}}</option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="other">Other</option>
                                         <option value="dontdisclose">Don't wish to disclose</option>
                                     </select>
-                                    <div id="no-gender" class="alert alert-danger div-text" role="alert" hidden>Please select a gender</div>
+                                    <div id="no-edit-gender" class="alert alert-danger div-text" role="alert" hidden>Please select a gender</div>
                                 </div>
 
                                 <!-- Nationality input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label nationality" for="nationality">Your Nationality</label>
-                                    <select class="custom-select" id="nationality" name="nationality">
-                                        <option selected disabled>{{userInfo.nationality}}</option>
+                                    <select class="custom-select" id="editNationality" name="nationality">
+                                        <option selected>{{userInfo.nationality}}</option>
                                         <option value="">Other</option>
                                         <option value="afghan">Afghan</option>
                                         <option value="albanian">Albanian</option>
@@ -280,21 +281,21 @@
                                         <option value="zambian">Zambian</option>
                                         <option value="zimbabwean">Zimbabwean</option>
                                     </select>
-                                    <div id="no-nationality" class="alert alert-danger div-text" role="alert" hidden>Please select a nationality</div>
+                                    <div id="no-edit-nationality" class="alert alert-danger div-text" role="alert" hidden>Please select a nationality</div>
                                 </div>
 
                                 <!-- About-me input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label aboutMe" for="aboutMe" name="aboutMe">About me</label>
-                                    <textarea class="form-control" id="aboutMe" name="aboutMe" rows="5"> {{userInfo.aboutMe}} </textarea>
-                                    <div id="no-aboutme" class="alert alert-danger div-text" role="alert" hidden>Please enter something about yourself
+                                    <textarea class="form-control" id="editAboutMe" name="aboutMe" rows="5"> {{userInfo.aboutMe}} </textarea>
+                                    <div id="no-edit-aboutme" class="alert alert-danger div-text" role="alert" hidden>Please enter something about yourself
                                     </div>
                                 </div>
 
 
                                 <!-- Preferences input -->
                                 <div class="form-outline mb-4">
-                                    <label class="form-label preference" id="preference" name="preference">Your
+                                    <label class="form-label preference" id="editPreference" name="preference">Your
                                         Preferences</label>
                                     <br>
                                     <div class="form-check form-check-inline">
@@ -530,10 +531,15 @@
                                     
                                 </div>
 
-                                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                    <button type="submit" class="btn btn-primary btn-lg"
-                                        id="buttonregister">Update</button>
+                                {{!-- <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"> --}}
+                                    {{!-- <button type="submit" class="btn btn-primary btn-lg"
+                                        id="buttonUpdateUser">Update</button> --}}
+                                
+                                {{!-- </div> --}}
+                                <div>
+                                    <button type="submit" class="btn btn-success">Create</button>
                                 </div>
+                            </form>
 
                         </div>
                     </div>
@@ -552,7 +558,10 @@
     </ul>
     {{/if}}
 
+    {{!-- <script src="/public/js/editUser.js"></script> --}}
     <!--
     <script src="../public/js/errors.js"></script> 
     -->
 </main>
+
+<script src="/public/js/editUser.js"></script>

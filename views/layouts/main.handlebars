@@ -46,9 +46,12 @@
 
     {{{body}}}
 
+    {{!-- <script src="/public/js/editPost.js"></script>
+    <script src="/public/js/editUser.js"></script>
     <script src="/public/js/register.js"></script>
     <script src="/public/js/login.js"></script>
     <script src="/public/js/savedPost.js"></script>
+    <script src="/public/js/createPost.js"></script> --}}
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -88,10 +91,12 @@
         crossorigin="anonymous"></script>
     --}}
 
-    <script src="/public/js/register.js"></script>
-    <script src="/public/js/login.js"></script>
     <script src="/public/js/comment-ajax.js"></script>
     <script src="/public/js/comment.js"></script>
+    {{#if register}}
+    <script src="/public/js/register.js"></script>
+    {{/if}}
+    
 
 
 </body>
