@@ -86,9 +86,9 @@ const getPostById = async (id) => {
   const postId = validation.validId(id);
   const postCollection = await posts();
   const post = await postCollection.findOne({ _id: ObjectId(postId) });
-  let u = await userData.getUserById(post.userId);
-  post.userId = u.firstName + " " + u.lastName;
   if (post === null) throw "No post with that id";
+  let u =  await userData.getUserById(post.userId)
+  post.userId = u.firstName+" "+u.lastName
   return post;
 };
 //edit post once user login
@@ -159,6 +159,8 @@ const updatePostbyId = async (postId, userId, updatedPost) => {
   updatedPostData.userId = userid;
   const postCollection = await posts();
   // const movie = await getMovieById(postId);
+  const userCollection = await users();
+
 
   const post = await postCollection.findOne({ _id: ObjectId(postid) });
   if (post === null) throw "No post with that id";
@@ -191,15 +193,17 @@ const updatePostbyId = async (postId, userId, updatedPost) => {
       { _id: ObjectId(postid) },
       { $set: updatedPostData }
     );
+      
+  if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+  throw "Error: Update failed";
+  const res = await getPostById(postid);
+  return res;
   } else {
     throw "Not allowed to update";
   }
 
-  if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-    throw "Error: Update failed";
 
-  const res = await getPostById(postid);
-  return res;
+  
 };
 
 //list of post user see after login

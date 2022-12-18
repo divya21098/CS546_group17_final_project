@@ -1,4 +1,5 @@
 <main>
+
     <div class="container">
         <div class="row align-items-center vh-100">
             <div class="col-18 mx-auto">
@@ -15,7 +16,8 @@
                                     <input type="text" id="firstName" name="firstName" class="form-control"
                                         placeholder="Enter first name">
 
-                                    <div class="alert alert-danger div-text" role="alert" id="no-first-name" hidden>Please enter your First Name</div>
+                                    <div class="alert alert-danger div-text" role="alert" id="no-first-name" hidden>
+                                        Please enter your First Name</div>
 
                                 </div>
 
@@ -25,28 +27,32 @@
 
                                     <input type="text" id="lastName" name="lastName" class="form-control"
                                         placeholder="Enter last name">
-                                    <div class="alert alert-danger div-text" role="alert" id="no-last-name" hidden>Please enter your Last Name</div>
+                                    <div class="alert alert-danger div-text" role="alert" id="no-last-name" hidden>
+                                        Please enter your Last Name</div>
                                 </div>
 
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label emailId" for="emailId">Your Email</label>
 
-                                    
+
                                     <input type="email" id="emailId" name="emailId" pattern=".+@stevens\.edu"
                                         class="form-control" placeholder="Enter your Email">
-                                        <div class="alert alert-danger div-text" role="alert" id="no-email" hidden>Please enter your Email</div>
-                                        <div class="alert alert-danger div-text" role="alert" id="registered-email" hidden>Please enter your Email</div>
+                                    <div class="alert alert-danger div-text" role="alert" id="no-email" hidden>Please
+                                        enter your Email</div>
+                                    <div class="alert alert-danger div-text" role="alert" id="registered-email" hidden>
+                                        Please enter your Email</div>
                                 </div>
 
                                 <!-- Password input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label password" for="password">Your Password</label>
 
-                                    
+
                                     <input type="password" id="password" name="password" class="form-control"
                                         placeholder="Enter your password">
-                                        <div id="no-password" class="alert alert-danger div-text" role="alert" hidden>Please enter your password</div>
+                                    <div id="no-password" class="alert alert-danger div-text" role="alert" hidden>Please
+                                        enter your password</div>
 
                                 </div>
 
@@ -55,7 +61,8 @@
                                     <label class="form-label age" for="age">Your Age</label>
                                     <input type="number" class="form-control" id="age" min="22" max="80" name="age"
                                         placeholder="Enter your age" />
-                                    <div id="no-age" class="alert alert-danger div-text" role="alert" hidden>Please enter your age</div>
+                                    <div id="no-age" class="alert alert-danger div-text" role="alert" hidden>Please
+                                        enter your age</div>
                                 </div>
 
 
@@ -64,28 +71,30 @@
                                     <label class="form-label phoneNumber" for="phoneNumber">Your Phone No.</label>
                                     <input type="number" class="form-control" id="phoneNumber" name="phoneNumber"
                                         placeholder="Enter your phone number" />
-                                    <div id="no-phone" class="alert alert-danger div-text" role="alert" hidden>Please enter your phone number
+                                    <div id="no-phone" class="alert alert-danger div-text" role="alert" hidden>Please
+                                        enter your phone number
                                     </div>
                                 </div>
 
                                 <!-- Gender input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label gender" for="gender">Your Gender</label>
-                                    <select class="custom-select" id="gender" name="gender">
-                                        <option selected disabled>Select your gender</option>
+                                    <select class="custom-select" id="gender" name="gender" required>
+                                        {{!-- <option selected disabled>Select your gender</option> --}}
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="other">Other</option>
                                         <option value="dontdisclose">Don't wish to disclose</option>
                                     </select>
-                                    <div id="no-gender" class="alert alert-danger div-text" role="alert" hidden>Please select a gender</div>
+                                    <div id="no-gender" class="alert alert-danger div-text" role="alert" hidden>Please
+                                        select a gender</div>
                                 </div>
 
                                 <!-- Nationality input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label nationality" for="nationality">Your Nationality</label>
-                                    <select class="custom-select" id="nationality" name="nationality">
-                                        <option selected disabled>Choose your Nationality</option>
+                                    <select class="custom-select" id="nationality" name="nationality" required>
+                                        {{!-- <option selected disabled>Choose your Nationality</option> --}}
                                         <option value="">Other</option>
                                         <option value="afghan">Afghan</option>
                                         <option value="albanian">Albanian</option>
@@ -280,14 +289,16 @@
                                         <option value="zambian">Zambian</option>
                                         <option value="zimbabwean">Zimbabwean</option>
                                     </select>
-                                    <div id="no-nationality" class="alert alert-danger div-text" role="alert" hidden>Please select a nationality</div>
+                                    <div id="no-nationality" class="alert alert-danger div-text" role="alert" hidden>
+                                        Please select a nationality</div>
                                 </div>
 
                                 <!-- About-me input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label aboutMe" for="aboutMe" name="aboutMe">About me</label>
                                     <textarea class="form-control" id="aboutMe" name="aboutMe" rows="5"></textarea>
-                                    <div id="no-aboutme" class="alert alert-danger div-text" role="alert" hidden>Please enter something about yourself
+                                    <div id="no-aboutme" class="alert alert-danger div-text" role="alert" hidden>Please
+                                        enter something about yourself
                                     </div>
                                 </div>
 
@@ -403,7 +414,7 @@
                                         <option value="Union City">Union City</option>
                                         <option value="Newport">Newport</option>
                                     </select>
-                                    
+
                                 </div>
 
                                 <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
