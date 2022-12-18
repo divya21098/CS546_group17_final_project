@@ -79,8 +79,8 @@
                                 <!-- Gender input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label gender" for="gender">Your Gender</label>
-                                    <select class="custom-select" id="gender" name="gender">
-                                        <option selected disabled>Select your gender</option>
+                                    <select class="custom-select" id="gender" name="gender" required>
+                                        {{!-- <option selected disabled>Select your gender</option> --}}
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="other">Other</option>
@@ -93,8 +93,8 @@
                                 <!-- Nationality input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label nationality" for="nationality">Your Nationality</label>
-                                    <select class="custom-select" id="nationality" name="nationality">
-                                        <option selected disabled>Choose your Nationality</option>
+                                    <select class="custom-select" id="nationality" name="nationality" required>
+                                        {{!-- <option selected disabled>Choose your Nationality</option> --}}
                                         <option value="">Other</option>
                                         <option value="afghan">Afghan</option>
                                         <option value="albanian">Albanian</option>
