@@ -74,20 +74,20 @@ const getAllPosts = async () => {
   //convert id to string
   for (let post of postList) {
     post._id = post._id.toString();
-    let u =  await userData.getUserById(post.userId)
-    post.userId = u.firstName+" "+u.lastName
+    let u = await userData.getUserById(post.userId);
+    post.userId = u.firstName + " " + u.lastName;
   }
   if (postList.length == 0) return [];
   // console.log(postList.sort((a, b) => a.postDate - b.postDate));
-  return postList
+  return postList;
 };
 //post individual
 const getPostById = async (id) => {
   const postId = validation.validId(id);
   const postCollection = await posts();
   const post = await postCollection.findOne({ _id: ObjectId(postId) });
-  let u =  await userData.getUserById(post.userId)
-  post.userId = u.firstName+" "+u.lastName
+  let u = await userData.getUserById(post.userId);
+  post.userId = u.firstName + " " + u.lastName;
   if (post === null) throw "No post with that id";
   return post;
 };
@@ -163,19 +163,38 @@ const updatePostbyId = async (postId, userId, updatedPost) => {
   const post = await postCollection.findOne({ _id: ObjectId(postid) });
   if (post === null) throw "No post with that id";
 
-  const date = new Date();
+  const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
+  if (userinfo === null) throw "No user with that id";
+  let flag = false;
+  if (userinfo.postId.length > 0) {
+    for (i = 0; i < userinfo.postId.length; i++) {
+      if (userinfo.postId[i] === postid) {
+        // userinfo.postId.splice(i, 1);
+        flag = true;
+      }
+    }
+  }
+  if (flag) {
+    // var deletionInfo = await postCollection.deleteOne({
+    //   _id: ObjectId(postid),
+    // });
+    const date = new Date();
 
-  let day = date.getDate();
-  let month = String(date.getMonth() + 1).padStart(2, "0");
-  let year = String(date.getFullYear()).padStart(2, "0");
-  let currentDate = `${month}/${day}/${year}`;
-  updatedPostData.userId = userid;
-  updatedPostData.currentDate = currentDate;
+    let day = date.getDate();
+    let month = String(date.getMonth() + 1).padStart(2, "0");
+    let year = String(date.getFullYear()).padStart(2, "0");
+    let currentDate = `${month}/${day}/${year}`;
+    updatedPostData.userId = userid;
+    updatedPostData.currentDate = currentDate;
 
-  const updateInfo = await postCollection.updateOne(
-    { _id: ObjectId(postid) },
-    { $set: updatedPostData }
-  );
+    const updateInfo = await postCollection.updateOne(
+      { _id: ObjectId(postid) },
+      { $set: updatedPostData }
+    );
+  } else {
+    throw "Not allowed to update";
+  }
+
   if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
     throw "Error: Update failed";
 
