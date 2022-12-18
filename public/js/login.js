@@ -1,22 +1,22 @@
-const loginForm = document.getElementById("login-form");
-const newEmail = document.getElementById("emailId");
-const newPassword = document.getElementById("password");
+const newLoginForm = document.getElementById("loginForm");
+const newLoginEmail = document.getElementById("emailId");
+const newLoginPassword = document.getElementById("password");
 
-const errorEmail = document.getElementById("no-email");
-const errorPassword = document.getElementById("no-password");
+const errorLoginEmail = document.getElementById("no-email");
+const errorLoginPassword = document.getElementById("no-password");
 
-if(loginForm) {
+if(newLoginForm) {
 
-    loginForm.addEventListener("submit", (event) => {
+    newLoginForm.addEventListener("submit", (event) => {
         
-        if (newEmail.value && newPassword.value) {
-            errorEmail.hidden = true;
-            errorPassword.hidden = true;
+        if (newLoginEmail.value && newLoginPassword.value) {
+            errorLoginEmail.hidden = true;
+            errorLoginPassword.hidden = true;
             loginForm.submit();
         } else {
             event.preventDefault();
-            errorEmail.hidden = newEmail.value;
-            errorPassword.hidden = newPassword.value;
+            errorLoginEmail.hidden = newLoginEmail.value;
+            errorLoginPassword.hidden = newLoginPassword.value;
             errorList.hidden = true;
             
         }

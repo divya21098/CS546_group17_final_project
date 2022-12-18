@@ -104,7 +104,6 @@ router.route("/filter").post(async (req, res) => {
       return res.render("error", { userLoggedIn: true });
     }
   } else {
-    
     return res.redirect("login");
   }
   try {
@@ -200,15 +199,16 @@ router.route("/add").post(upload.single("postPicture"), async (req, res) => {
       errors.push("Please Enter valid post body");
     }
     if (errors.length > 0) {
-      // return res.status(200).json(errors);
       return res.status(400).render("posts/createPost", {
+        userLoggedIn: true,
+        title: "Register",
         errors: errors,
         hasErrors: true,
       });
     }
     try {
-      info.postTitle = xss(validation.validString(info.postTitle));
-      info.postBody = xss(validation.validString(info.postBody));
+      info.postTitle = xss(info.postTitle);
+      info.postBody = xss(info.postBody);
       // info.postPicture = validation.validString(info.postPicture);
       var finalImg = "";
 
@@ -222,6 +222,7 @@ router.route("/add").post(upload.single("postPicture"), async (req, res) => {
           image: Buffer.from(encode_image, "base64"),
         };
       }
+
       const { postTitle, postBody, postPicture } = info;
       const post = await posts.createPost(
         userId,
@@ -229,10 +230,11 @@ router.route("/add").post(upload.single("postPicture"), async (req, res) => {
         postBody,
         finalImg
       );
-
+      //return res.status(200).json(post);
       return res.redirect("/posts");
+      //res.render("posts/index");
     } catch (e) {
-      return res.status(500).render("error");
+      return res.render("error");
       //render error page
     }
   } else {
@@ -288,7 +290,7 @@ router.route("/:id").get(async (req, res) => {
 });
 router.route("/delete/:id").post(async (req, res) => {
   console.log("in del");
-
+  errors = [];
   if (
     !req.params.id ||
     req.params.id.trim().length == 0 ||
@@ -322,15 +324,21 @@ router.route("/edit/:id").get(async (req, res) => {
   console.log("edit");
   if (req.session.user) {
     const id = req.params.id;
+    console.log(id);
     const post = await posts.getPostById(id);
-    res.render("posts/editPost", { id: req.params.id, postInfo: post });
+    return res.render("posts/editPost", {
+      id: req.params.id,
+      postInfo: post,
+      userLoggedIn: true,
+    });
   } else {
-    res.redirect("login");
+    return res.redirect("/login");
   }
 });
 router
   .route("/edit/:id")
   .post(upload.single("postPicture"), async (req, res) => {
+    console.log("inside post edit ");
     const info = req.body;
     let userId = req.session.user;
     let updatedPostData = {};
@@ -351,6 +359,7 @@ router
 
     if (userId) {
       console.log("in put post route");
+      postId = validation.validId(req.params.id);
 
       // try {
       //   postId = validation.validId(req.params.id);
@@ -389,14 +398,15 @@ router
           updatedPostData
         );
         const postList = await posts.getAllPosts();
+        return res.redirect("/posts");
         // res.status(200).json(post);
-        res.status(200).render("posts/index", { posts: postList });
+        // return res.status(200).render("posts/index", { posts: postList, userLoggedIn: true });
       } catch (e) {
         //add res.render
-        return res.status(500).render("error");
+        res.status(500).render("error");
       }
     } else {
-      //handle errors
+      //handle error
       return res.redirect("/login");
     }
   });
