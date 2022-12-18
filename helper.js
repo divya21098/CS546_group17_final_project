@@ -7,6 +7,14 @@ const validString = (str) => {
   return str;
 };
 
+// Takes in a string argument.
+// Return true if the argument is non-empty, a string, and non-empty when trimmed; otherwise return false.
+const validStringBool = (str) => {
+  if (!str || typeof str !== "string" || !str.trim())
+    return false
+  return true;
+};
+
 // Takes in a number argument.
 // Return true if the argument is above 0 and is a positive integer, false otherwise.
 const validAge = (age) => {
@@ -16,7 +24,7 @@ const validAge = (age) => {
 };
 
 const validPassword = (password)=>{
-  if(!validString(password)) return false
+  if(!validStringBool(password)) return false
 const passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
 return passRegex.test(password)
 }
@@ -107,6 +115,11 @@ const map_cord = (location) => {
   }
 };
 
+const validName = (name)=>{
+  const reg=/^[A-Za-z]+$/
+  return reg.test(name)
+
+}
 module.exports = {
   validString,
   validAge,
@@ -118,5 +131,7 @@ module.exports = {
   validBool,
   validArray,
   validPassword,
-  map_cord
+  map_cord,
+  validStringBool,
+  validName
 };

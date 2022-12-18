@@ -25,15 +25,18 @@ router.post("/register", async (req, res) => {
   let nationality = xss(validator.trimString(req.body.nationality));
   let aboutMe = xss(validator.trimString(req.body.aboutMe));
   let preference = req.body.preference;
-
-  if (!validator.validString(firstName)) {
+  
+  if (!validator.validStringBool(firstName)|| !validator.validName(firstName)) {
     errors.push("Please Enter valid First Name");
   }
-  if (!validator.validString(lastName)) {
+  if (!validator.validStringBool(lastName) || !validator.validName(lastName)) {
     errors.push("Please Enter valid Last Name");
   }
   if (!validator.validEmail(emailId)) {
     errors.push("Please Enter valid email id");
+  }
+  if(!validator.validPassword(password)){
+    errors.push("Please enter valid password")
   }
   if (typeof age === "string") {
     age = parseInt(age);
@@ -46,38 +49,48 @@ router.post("/register", async (req, res) => {
   } catch (e) {
     errors.push(e);
   }
-  if (!validator.validString(aboutMe)) {
+  if (!validator.validStringBool(aboutMe)) {
     errors.push("Please Enter valid about me");
   }
-  if (!validator.validString(nationality)) {
+  if (!validator.validStringBool(nationality)) {
     errors.push("Please Enter valid Nationality");
   }
   if (preference.length < 0) {
-    errors.push("here should be atleast one preference");
+    errors.push("There should be atleast one preference");
   }
   if (preference.drinking) {
-    if (!validator.validString(preference.drinking))
-      errors.push("Please enter valid field");
+    if (!validator.validStringBool(preference.drinking))
+      errors.push("Please enter valid field for drinking");
   }
   if (preference.smoking) {
-    if (!validator.validString(preference.smoking))
-      errors.push("Please enter valid field");
+    if (!validator.validStringBool(preference.smoking))
+      errors.push("Please enter valid field for smoking");
+   // errors.push("Please enter valid field");
   }
   try {
     if (preference.food) {
       validator.validArray(preference.food, "food");
     }
-    // if (preference.budget) {
-    //   console.log(preference.budget);
-    // }
+    else{
+      errors.push("Atleast one food preference needs to be checked")
+    }
     if (preference.room) {
       validator.validArray(preference.room, "room");
+    }
+    else{
+      errors.push("Atleast one room preference needs to be checked")
     }
     if (preference.location) {
       validator.validArray(preference.location, "location");
     }
+    else{
+    errors.push("Atleast one location preference needs to be checked")
+    }
     if (preference.home_type) {
       validator.validArray(preference.home_type, "home_type");
+    }
+    else{
+      errors.push("Atleast one home type preference needs to be checked")
     }
   } catch (e) {
     errors.push(e);
@@ -111,16 +124,16 @@ router.post("/register", async (req, res) => {
 
   try {
     const user = await users.createUser(
-      xss(firstName),
-      xss(lastName),
-      xss(emailId),
-      xss(password),
-      xss(age),
-      xss(phoneNumber),
-      xss(gender),
-      xss(nationality),
-      xss(aboutMe),
-      xss(preference)
+      firstName,
+      lastName,
+      emailId,
+      password,
+      age,
+      phoneNumber,
+      gender,
+      nationality,
+      aboutMe,
+      preference
     );
     //return res.status(200).json({ user: "registered" });
     // req.session.user = user.__id.toString();
@@ -265,23 +278,15 @@ router.post("/users/editProfile", async (req, res) => {
     console.log(updatedUser);
     let updatedUserData = {};
     let errors = [];
-    //if (!validator.validString(req.session.user)) throw "id must be given";
-    // try{
-    // var updatedUser  = await users.getUserById(req.session.user);
-    // }
-    // catch(e){
-    //   return res.status(500).render("error",{e:"Something went wrong"})
-    // }
-
     if (updatedUser.firstName) {
-      if (!validator.validString(updatedUser.firstName))
+      if (!validator.validStringBool(updatedUser.firstName))
         errors.push("First name is not a valid string");
       updatedUser.firstName = xss(validator.trimString(updatedUser.firstName));
       updatedUserData.firstName = updatedUser.firstName;
     }
 
     if (updatedUser.lastName) {
-      if (!validator.validString(updatedUser.lastName))
+      if (!validator.validStringBool(updatedUser.lastName))
         errors.push("Last name is not a valid string");
       updatedUser.lastName = xss(validator.trimString(updatedUser.lastName));
       updatedUserData.lastName = updatedUser.lastName;
@@ -313,7 +318,7 @@ router.post("/users/editProfile", async (req, res) => {
     }
 
     if (updatedUser.aboutMe) {
-      if (!validator.validString(updatedUser.aboutMe))
+      if (!validator.validStringBool(updatedUser.aboutMe))
         errors.push("About  Me is not a valid string");
       updatedUser.aboutMe = xss(validator.trimString(updatedUser.aboutMe));
       updatedUserData.aboutMe = updatedUser.aboutMe;
@@ -324,7 +329,7 @@ router.post("/users/editProfile", async (req, res) => {
 
     //nationality call use npm package in drop down box to be called on client side
     if (updatedUser.nationality) {
-      if (!validator.validString(updatedUser.nationality))
+      if (!validator.validStringBool(updatedUser.nationality))
         errors.push("Nationality is not a valid string");
       updatedUser.nationality = xss(
         validator.trimString(updatedUser.nationality)
@@ -337,7 +342,7 @@ router.post("/users/editProfile", async (req, res) => {
     //preference  in drop down box to be called on client side
     //gender - Male, Female, Others drop box
     if (updatedUser.gender) {
-      if (!validator.validString(updatedUser.gender))
+      if (!validator.validStringBool(updatedUser.gender))
         errors.push("Gender is not a valid string");
       updatedUser.gender = xss(validator.trimString(updatedUser.gender));
       updatedUserData.gender = updatedUser.gender;
@@ -348,27 +353,37 @@ router.post("/users/editProfile", async (req, res) => {
 
     if (updatedUser.preference) {
       if (updatedUser.preference.drinking) {
-        if (!validator.validString(updatedUser.preference.drinking))
+        if (!validator.validStringBool(updatedUser.preference.drinking))
           errors.push("Not a type boolean");
       }
       if (updatedUser.preference.smoking) {
-        if (!validator.validString(updatedUser.preference.smoking))
+        if (!validator.validStringBool(updatedUser.preference.smoking))
           errors.push("Not a type boolean");
       }
       if (updatedUser.preference.food) {
         validator.validArray(updatedUser.preference.food, "food");
       }
-      // if (updatedUser.preference.budget) {
-      //   console.log(updatedUser.preference.budget);
-      // }
+      else{
+        errors.push("Atleast one food preference needs to be checked")
+      }
+      
       if (updatedUser.preference.room) {
         validator.validArray(updatedUser.preference.room, "room");
+      }
+      else{
+        errors.push("Atleast one room preference needs to be checked")
       }
       if (updatedUser.preference.location) {
         validator.validString(updatedUser.preference.location, "location");
       }
+      else{
+        errors.push("Atleast one location preference needs to be checked")
+      }
       if (updatedUser.preference.home_type) {
         validator.validArray(updatedUser.preference.home_type, "home_type");
+      }
+      else{
+        errors.push("Atleast one hometype preference needs to be checked")
       }
       updatedUserData.preference = updatedUser.preference;
     }
