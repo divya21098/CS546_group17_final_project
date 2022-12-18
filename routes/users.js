@@ -498,9 +498,12 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
 router.post("/users/recommendation", async (req, res) => {});
 router.get("/users/recommendation", async (req, res) => {
   if (req.session.user) {
+    try{
     let userList = await users.userRecommendation(req.session.user);
-    console.log(userList);
-
+    }
+    catch(e){
+      return res.status(404).render("users/userRec",{hasErrors:true, userLoggedIn:true})
+    }
     return res.status(200).render("users/userRec", {
       userRec: userList,
       userLoggedIn: true,
