@@ -24,8 +24,11 @@ router.post("/register", async (req, res) => {
   let nationality = xss(validator.trimString(req.body.nationality));
   let aboutMe = xss(validator.trimString(req.body.aboutMe));
   let preference = req.body.preference;
-  
-  if (!validator.validStringBool(firstName)|| !validator.validName(firstName)) {
+
+  if (
+    !validator.validStringBool(firstName) ||
+    !validator.validName(firstName)
+  ) {
     errors.push("Please Enter valid First Name");
   }
   if (!validator.validStringBool(lastName) || !validator.validName(lastName)) {
@@ -34,8 +37,8 @@ router.post("/register", async (req, res) => {
   if (!validator.validEmail(emailId)) {
     errors.push("Please Enter valid email id");
   }
-  if(!validator.validPassword(password)){
-    errors.push("Please enter valid password")
+  if (!validator.validPassword(password)) {
+    errors.push("Please enter valid password");
   }
   if (typeof age === "string") {
     age = parseInt(age);
@@ -64,32 +67,28 @@ router.post("/register", async (req, res) => {
   if (preference.smoking) {
     if (!validator.validStringBool(preference.smoking))
       errors.push("Please enter valid field for smoking");
-   // errors.push("Please enter valid field");
+    // errors.push("Please enter valid field");
   }
   try {
     if (preference.food) {
       validator.validArray(preference.food, "food");
-    }
-    else{
-      errors.push("Atleast one food preference needs to be checked")
+    } else {
+      errors.push("Atleast one food preference needs to be checked");
     }
     if (preference.room) {
       validator.validArray(preference.room, "room");
-    }
-    else{
-      errors.push("Atleast one room preference needs to be checked")
+    } else {
+      errors.push("Atleast one room preference needs to be checked");
     }
     if (preference.location) {
       validator.validArray(preference.location, "location");
-    }
-    else{
-    errors.push("Atleast one location preference needs to be checked")
+    } else {
+      errors.push("Atleast one location preference needs to be checked");
     }
     if (preference.home_type) {
       validator.validArray(preference.home_type, "home_type");
-    }
-    else{
-      errors.push("Atleast one home type preference needs to be checked")
+    } else {
+      errors.push("Atleast one home type preference needs to be checked");
     }
   } catch (e) {
     errors.push(e);
@@ -152,7 +151,7 @@ router.get("/register", async (req, res) => {
   if (req.session.user) {
     return res.redirect("/posts");
   } else {
-    return res.render("register", { userLoggedIn: false, register : true });
+    return res.render("register", { userLoggedIn: false, register: true });
   }
 });
 
@@ -268,14 +267,20 @@ router.post("/users/editProfile", async (req, res) => {
     let updatedUserData = {};
     let errors = [];
     if (updatedUser.firstName) {
-      if (!validator.validStringBool(updatedUser.firstName) || !validator.validName(updatedUser.firstName))
+      if (
+        !validator.validStringBool(updatedUser.firstName) ||
+        !validator.validName(updatedUser.firstName)
+      )
         errors.push("First name is not a valid string");
       updatedUser.firstName = xss(validator.trimString(updatedUser.firstName));
       updatedUserData.firstName = updatedUser.firstName;
     }
 
     if (updatedUser.lastName) {
-      if (!validator.validStringBool(updatedUser.lastName) || !validator.validName(updatedUser.lastName))
+      if (
+        !validator.validStringBool(updatedUser.lastName) ||
+        !validator.validName(updatedUser.lastName)
+      )
         errors.push("Last name is not a valid string");
       updatedUser.lastName = xss(validator.trimString(updatedUser.lastName));
       updatedUserData.lastName = updatedUser.lastName;
@@ -355,10 +360,7 @@ router.post("/users/editProfile", async (req, res) => {
         validator.validArray(updatedUser.preference.food, "food");
         //updatedUserData.preference.food = updatedUser.preference.food
       }
-      else{
-        errors.push("Atleast one food preference needs to be checked")
-      }
-      
+
       if (updatedUser.preference.room) {
         validator.validArray(updatedUser.preference.room, "room");
         //updatedUserData.preference.room = updatedUser.preference.room
@@ -428,9 +430,11 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
 
   if (req.session.user) {
     try {
+      let errors = [];
       let postid = validator.validId(req.params.postid);
       let post = await posts.getPostById(postid);
-      if (!post) throw "post doesnt exists";
+      if (!post) errors.push("post doesnt exists") 
+      
       let all_post = await posts.createSavedPost(postid, req.session.user);
       //create handlebar which says post saved
       //return res.send(all_post);
@@ -451,9 +455,10 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
 router.get("/users/myProfile/savedPosts", async (req, res) => {
   if (req.session.user) {
     try {
+      
       let all_post = await posts.getSavedPostByuserId(req.session.user);
       // return res.send(all_post);
-      console.log(all_post)
+      console.log(all_post);
       return res.render("users/index", {
         allPost: all_post,
         userLoggedIn: true,
@@ -501,7 +506,7 @@ router.get("/users/recommendation", async (req, res) => {
       userLoggedIn: true,
     });
   } else {
-    return res.redirect("/login")
+    return res.redirect("/login");
   }
 });
 
