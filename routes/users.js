@@ -471,6 +471,7 @@ router.post("/users/recommendation", async (req, res) => {});
 router.get("/users/recommendation", async (req, res) => {
   if (req.session.user) {
     let userList = await users.userRecommendation(req.session.user);
+    console.log(userList);
     return res.status(200).render("users/userRec", {
       userRec: userList,
       userLoggedIn: true,
