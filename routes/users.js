@@ -279,14 +279,14 @@ router.post("/users/editProfile", async (req, res) => {
     let updatedUserData = {};
     let errors = [];
     if (updatedUser.firstName) {
-      if (!validator.validStringBool(updatedUser.firstName))
+      if (!validator.validStringBool(updatedUser.firstName) || !validator.validName(updatedUser.firstName))
         errors.push("First name is not a valid string");
       updatedUser.firstName = xss(validator.trimString(updatedUser.firstName));
       updatedUserData.firstName = updatedUser.firstName;
     }
 
     if (updatedUser.lastName) {
-      if (!validator.validStringBool(updatedUser.lastName))
+      if (!validator.validStringBool(updatedUser.lastName) || !validator.validName(updatedUser.lastName))
         errors.push("Last name is not a valid string");
       updatedUser.lastName = xss(validator.trimString(updatedUser.lastName));
       updatedUserData.lastName = updatedUser.lastName;

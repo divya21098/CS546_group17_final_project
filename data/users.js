@@ -141,13 +141,13 @@ const updateUser = async (id, updatedUser) => {
   id = validator.trimString(id);
   // let = await getUserById(id);
   if (updatedUser.firstName) {
-    if (!validator.validStringBool(updatedUser.firstName)|| !validator.validName(firstName))
+    if (!validator.validStringBool(updatedUser.firstName)|| !validator.validName(updatedUser.firstName))
       throw "First name is not a valid string.";
     updatedUser.firstName = validator.trimString(updatedUser.firstName);
     updatedUserData.firstName = updatedUser.firstName;
   }
   if (updatedUser.lastName) {
-    if (!validator.validStringBool(updatedUser.lastName)|| !validator.validName(lastName))
+    if (!validator.validStringBool(updatedUser.lastName)|| !validator.validName(updatedUser.lastName))
       throw "Last name is not a valid string.";
     updatedUser.lastName = validator.trimString(updatedUser.lastName);
     updatedUserData.lastName = updatedUser.lastName;
