@@ -350,18 +350,21 @@ router.post("/users/editProfile", async (req, res) => {
     // else{
     //   errors.push("Gender cannot be empty");
     // }
-
+    console.log(updatedUser)
     if (updatedUser.preference) {
       if (updatedUser.preference.drinking) {
         if (!validator.validStringBool(updatedUser.preference.drinking))
           errors.push("Not a type boolean");
+          //updatedUserData["preference"]["drinking"] = updatedUser.preference.drinking;
       }
       if (updatedUser.preference.smoking) {
         if (!validator.validStringBool(updatedUser.preference.smoking))
           errors.push("Not a type boolean");
+          //updatedUserData.preference.smoking = updatedUser.preference.smoking
       }
       if (updatedUser.preference.food) {
         validator.validArray(updatedUser.preference.food, "food");
+        //updatedUserData.preference.food = updatedUser.preference.food
       }
       else{
         errors.push("Atleast one food preference needs to be checked")
@@ -369,18 +372,21 @@ router.post("/users/editProfile", async (req, res) => {
       
       if (updatedUser.preference.room) {
         validator.validArray(updatedUser.preference.room, "room");
+        //updatedUserData.preference.room = updatedUser.preference.room
       }
       else{
         errors.push("Atleast one room preference needs to be checked")
       }
       if (updatedUser.preference.location) {
         validator.validString(updatedUser.preference.location, "location");
+        //updatedUserData.preference.location = updatedUser.preference.location
       }
       else{
         errors.push("Atleast one location preference needs to be checked")
       }
       if (updatedUser.preference.home_type) {
-        validator.validArray(updatedUser.preference.home_type, "home_type");
+        validator.validArray(updatedUser.preference.home_type, "home_type")
+        //updatedUserData.preference.home_type = updatedUser.preference.home_type;
       }
       else{
         errors.push("Atleast one hometype preference needs to be checked")
@@ -392,6 +398,7 @@ router.post("/users/editProfile", async (req, res) => {
       return res.status(400).render("users/editUser", {
         errors: errors,
         hasErrors: true,
+        userLoggedIn:true
       });
     }
     try {
