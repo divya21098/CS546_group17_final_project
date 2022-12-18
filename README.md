@@ -15,7 +15,7 @@ In the terminal, navigate to the directory containing app.js, and run the follow
   npm start : start the server  
 
   Then, navigate to localhost:3000 to experience our site.   
-## Test aaplication
+## Test application
 
 If you'd like to log in to an existing account, feel free to log using the following info:   
   username/email: dkamath@stevens.edu  
