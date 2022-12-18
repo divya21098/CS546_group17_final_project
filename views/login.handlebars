@@ -1,0 +1,113 @@
+<main>
+
+
+
+    <div class="container">
+        <div class="row align-items-center vh-100">
+            <div class="col-6 mx-auto">
+                <div class="card shadow border">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <div class="login-page">
+
+                            <form id="loginForm" method="POST" action="/login">
+                                <!-- Email input -->
+                                <div class="form-outline mb-4">
+                                    <label class="form-label emailId" for="emailId">Email address</label>
+
+                                    <input type="email" class="form-control" id="emailId" name="emailId"
+                                        aria-describedby="emailHelp" placeholder="Enter email">
+                                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with
+                                        anyone
+                                        else.</small>
+                                    <div id="no-email" class="alert alert-danger div-text" role="alert" hidden>Please
+                                        enter your email</div>
+
+                                </div>
+
+
+
+                                <!-- Password input -->
+                                <div class="form-outline mb-4">
+
+                                    <label class="form-label password" for="password">Password</label>
+                                    <input type="password" id="password" name="password" class="form-control"
+                                        placeholder="Enter password" />
+                                    <div id="no-password" class="alert alert-danger div-text" role="alert" hidden>Please
+                                        enter your password</div>
+
+                                </div>
+
+                                <!-- 2 column grid layout for inline styling -->
+                                <div class="row mb-4">
+                                    <div class="col d-flex justify-content-center">
+                                        <!-- Checkbox -->
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="rememberme"
+                                                id="rememberme" checked />
+                                            <label class="form-check-label" for="rememberme"> &nbsp; &nbsp; Remember
+                                                me </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Submit button -->
+                                <button type="sumbit" class="btn btn-primary btn-block mb-4"
+                                    onclick="lsRememberMe()">Sign in</button>
+
+                                <!-- Register buttons -->
+                                <div class="text-center">
+
+                                    <p>Not a member? <a href="/register">Click here to register</a></p>
+
+                                </div>
+                            </form>
+
+                            {{#if hasErrors}}
+                            <ul id="error-list" class="error-list">
+                                {{#each errors}}
+                                <li>
+                                    {{this}}
+                                </li>
+                                {{/each}}
+                            </ul>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const rmCheck = document.getElementById("rememberme"),
+            emailInput = document.getElementById("emailId"),
+            passInput = document.getElementById("password");
+
+        if (localStorage.checkbox && localStorage.checkbox !== "") {
+            rmCheck.setAttribute("checked", "checked");
+            emailInput.value = localStorage.username;
+            passInput.value = localStorage.password;
+        } else {
+            rmCheck.removeAttribute("checked");
+            emailInput.value = "";
+            passInput.value = "";
+        }
+
+        function lsRememberMe() {
+            if (rmCheck.checked && emailInput.value !== "") {
+                localStorage.username = emailInput.value;
+                localStorage.password = passInput.value;
+                localStorage.checkbox = rmCheck.value;
+            } else {
+                localStorage.username = "";
+                localStorage.password = "";
+                localStorage.checkbox = "";
+            }
+        }
+    </script>
+
+
+</main>
+
+<script src="/public/js/login.js"></script>

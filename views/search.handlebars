@@ -1,0 +1,152 @@
+<main>
+    <div class="container">
+        <div class="row align-items-center vh-100">
+            <div class="col-18 mx-auto">
+                <div class="card shadow border">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <div class="register-page">
+                            <form id="search-form" method="POST" action="/posts/filter">
+
+                                <!-- Preferences input -->
+                                <div class="form-outline mb-4">
+                                    <label class="form-label preference" id="preference" name="preference">Your
+                                        Preferences</label>
+                                    <br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="preference[drinking]"
+                                            id="drinking" value="Drinking">
+                                        <label class="form-check-label" for="drinking">Drinking</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="preference[drinking]"
+                                            id="nodrinking" value="No Drinking">
+                                        <label class="form-check-label" for="nodrinking">No Drinking</label>
+                                    </div>
+
+                                    <br>
+
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="preference[smoking]"
+                                            id="smoking" value="Smoking">
+                                        <label class="form-check-label" for="smoking">Smoking</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="preference[smoking]"
+                                            id="nosmoking" value="No Smoking">
+                                        <label class="form-check-label" for="nosmoking">No Smoking</label>
+                                    </div>
+
+                                    <br>
+
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="preference[food]"
+                                            id="vegetarian" value="Vegetarian">
+                                        <label class="form-check-label" for="vegetarian">Vegetarian</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="preference[food]"
+                                            id="nonvegetarian" value="Non Vegetarian">
+                                        <label class="form-check-label" for="nonvegetarian">Non Vegetarian</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="preference[food]"
+                                            id="vegan" value="Vegan">
+                                        <label class="form-check-label" for="vegan">Vegan</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="preference[food]"
+                                            id="eggitarian" value="Eggitarian">
+                                        <label class="form-check-label" for="eggitarian">Eggitarian</label>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="preference[room]"
+                                            id="privateroom" value="Private Room">
+                                        <label class="form-check-label" for="privateroom">Private Room</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="preference[room]"
+                                            id="sharedroom" value="Shared Room">
+                                        <label class="form-check-label" for="sharedroom">Shared Room</label>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="preference[home_type]"
+                                            id="apartments" value="Apartment">
+                                        <label class="form-check-label" for="apartments">Apartment</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="preference[home_type]"
+                                            id="condos" value="Condos">
+                                        <label class="form-check-label" for="condos">Condo</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="preference[home_type]"
+                                            id="townhouse" value="Townhouse">
+                                        <label class="form-check-label" for="townhouse">Townhouse</label>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="preference[home_type]"
+                                            id="studioapt" value="Studio Apartment">
+                                        <label class="form-check-label" for="studioapt">Studio Apartment</label>
+                                    </div>
+
+                                    <br>
+
+                                    <label for="preference[location]" name="preference[location]"></label>
+                                    <select class="custom-select" name="preference[location]" id="location">
+                                        <option selected disabled>Choose your preferred location</option>
+                                        <option value="Jersey City">Jersey City</option>
+                                        <option value="Hoboken">Hoboken</option>
+                                        <option value="Journal Square">Journal Square</option>
+                                        <option value="Weehawken">Weehawken</option>
+                                        <option value="Union City">Union City</option>
+                                        <option value="Newport">Newport</option>
+                                    </select>
+                                    
+                                </div>
+
+                                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                    <button type="submit" class="btn btn-primary btn-lg"
+                                        id="buttonsearch">Search</button>
+                                </div>
+
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{#if hasErrors}}
+    <ul class="error-list">
+        {{#each errors}}
+        <li>
+            {{this}}
+        </li>
+        {{/each}}
+    </ul>
+    {{/if}}
+
+    <!--
+    <script src="../public/js/errors.js"></script> 
+    -->
+</main>

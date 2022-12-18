@@ -1,0 +1,57 @@
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+
+                <h1>Create post</h1>
+
+                <form id="posts-form" method="POST" action="/posts/add" enctype="multipart/form-data">
+
+                    <!-- Input to add Post Title -->
+                    <div class="form-group">
+                        <label class="postTitle" for="postTitle">Post Title</label>
+                        <input type="text" class="form-control" id="postTitle" name="postTitle" />
+
+                        <div class="alert alert-danger div-text" role="alert" id="no-post-title" hidden>Please enter Post Title</div>
+                    </div>
+
+                    <!-- Input to add Apartment/ Post Details -->
+                    <div class="form-group">
+                        <label class="postBody" for="postBody" name="postBody">Post Description</label>
+                        <textarea rows="10" class="form-control" id="postBody" name="postBody"></textarea>
+
+                        <div class="alert alert-danger div-text" role="alert" id="no-post-body" hidden>Please enter Post Body</div>
+                    </div>
+
+                    <!-- Input to upload picture for the Post -->
+                    <div class="form-group">
+                        <label class="form-label postPicture" for="postPicture">Upload Photo</label>
+                        <input type="file" class="form-control" id="postPicture" name="postPicture" accept="image/*" />
+
+                        <div class="alert alert-danger div-text" role="alert" id="no-post-picture" hidden>Please input image</div>
+                    </div>
+
+                    <!-- Create Post Button-->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">
+                            Create
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+            {{#if hasErrors}}
+            <ul id="error-list" class="error-list">
+                {{#each errors}}
+                <li>
+                    {{this}}
+                </li>
+                {{/each}}
+            </ul>
+            {{/if}}
+        </div>
+    </div>
+
+</main>
+
+{{!-- <script src="/public/js/createPost.js"></script> --}}
