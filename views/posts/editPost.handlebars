@@ -5,7 +5,7 @@
 
                 <h1>Update post</h1>
 
-                <form id="editPostsForm">
+                <form id="editPostsForm" action="/posts/edit/{{postInfo._id}}" method="POST">
 
                     <!-- Input to add Post Title -->
                     <div class="form-group">
@@ -53,4 +53,4 @@
     </div>
 </main>
 
-<script src="/public/js/editPost.js"></script>
+{{!-- <script src="/public/js/editPost.js"></script> --}}

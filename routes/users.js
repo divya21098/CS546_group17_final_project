@@ -13,7 +13,6 @@ const xss = require("xss");
 
 //POST METHOD for /register route
 router.post("/register", async (req, res) => {
-  console.log(req.body);
   let errors = [];
   let firstName = xss(validator.trimString(req.body.firstName));
   let lastName = xss(validator.trimString(req.body.lastName));
@@ -113,7 +112,7 @@ router.post("/register", async (req, res) => {
       }
     });
     if (errors.length > 0) {
-      return res.status(403).render("register", {
+      return res.status(400).render("register", {
         authenticated: false,
         title: "Register",
         errors: errors,
@@ -135,16 +134,10 @@ router.post("/register", async (req, res) => {
       aboutMe,
       preference
     );
-    //return res.status(200).json({ user: "registered" });
-    // req.session.user = user.__id.toString();
+
     return res.redirect("/login");
-    //return res.status(201).render("login");
   } catch (e) {
-    res.status(500).render("register");
-    // errors.push(e);
-    // return res.status(400).render("/register", {
-    //   errors: errors,
-    // });
+    res.status(500).render("error",{userLoggedIn:false});
   }
 });
 
@@ -173,11 +166,6 @@ router.get("/login", async (req, res) => {
   }
 });
 
-// router.get('/', async (req, res) => {
-//   if (req.session.user){
-//       res.redirect("/posts");
-//   }
-// });
 
 //POST METHOD for /login route
 router.post("/login", async (req, res) => {
@@ -199,6 +187,7 @@ router.post("/login", async (req, res) => {
     return res.status(400).render("login", {
       errors: errors,
       hasErrors: true,
+      userLoggedIn:false
     });
   }
   //if (!validator.validPassword(password)) errors.push("Invalid password.");
@@ -212,6 +201,7 @@ router.post("/login", async (req, res) => {
     return res.status(401).render("login", {
       errors: errors,
       hasErrors: true,
+      userLoggedIn:false
     });
   }
 
@@ -234,6 +224,7 @@ router.post("/login", async (req, res) => {
     return res.status(401).render("login", {
       errors: errors,
       hasErrors: true,
+      userLoggedIn:false
     });
   }
 });
@@ -248,12 +239,11 @@ router.get("/users/myProfile", async (req, res) => {
         userInfo: userInfo,
         userLoggedIn: true,
       });
-    } catch {
-      return res.status(500).render("error");
+    } catch(e) {
+      return res.status(500).render("error",{errors:e,userLoggedIn:true});
     }
   } else {
     return res.redirect("/login");
-    //return res.status(401).render("login", {});
   }
 });
 
@@ -275,7 +265,6 @@ router.get("/users/myProfileEdit", async (req, res) => {
 router.post("/users/editProfile", async (req, res) => {
   if (req.session.user) {
     let updatedUser = req.body;
-    console.log(updatedUser);
     let updatedUserData = {};
     let errors = [];
     if (updatedUser.firstName) {
@@ -408,7 +397,7 @@ router.post("/users/editProfile", async (req, res) => {
       //return res.render("users/index", { userInfo: userInfo });
     } catch (e) {
       // return res.status(400).json(e);
-      return res.status(500).render("error");
+      return res.status(500).render("error",{errors:e,userLoggedIn:true});
     }
   } else {
     return res.render("login");
@@ -425,8 +414,8 @@ router.get("/users/myProfile/posts", async (req, res) => {
         all_post: all_post,
         userLoggedIn: true,
       });
-    } catch {
-      return res.status(500).render("error");
+    } catch(e) {
+      return res.status(500).render("error",{errors:e,userLoggedIn:true});
       // return res.render("error", {});
     }
   }
@@ -451,12 +440,11 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
     } catch (e) {
       //render handlebar that says user cant save own post
 
-      return res.status(400).render("error");
+      return res.status(500).render("error",{errors:e,userLoggedIn:true});
     }
   } else {
     return res.redirect("/login");
   }
-  //return res.render("login", {});
 });
 
 //GET METHOD for myProfile/savedPosts
@@ -472,7 +460,7 @@ router.get("/users/myProfile/savedPosts", async (req, res) => {
       });
       //alert("Post Saved");
     } catch {
-      console.log("Post no longer available!");
+      return res.status(500).render("error",{errors:e,userLoggedIn:true});
 
       // return res.render("error", {});
     }
@@ -494,10 +482,8 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
       //return res.send(all_post);
 
       //return res.render("users/userPost", { allPost: all_post, userLoggedIn:true });
-    } catch {
-      console.log("err");
-
-      // return res.render("error", {});
+    } catch (e){
+      return res.status(500).render("error",{errors:e,userLoggedIn:true});
     }
   } else {
     return res.redirect("/login");
@@ -520,14 +506,18 @@ router.get("/users/recommendation", async (req, res) => {
 });
 
 router.get("/users/checkUser/:id",async(req,res)=>{
+  try{
   req.params.id = validator.validId(req.params.id);
   const userInfo = await users.getUserById(req.params.id);
-  console.log(userInfo)
   if(userInfo!==null){
     userInfo._id = userInfo._id.toString()
     return res.render("users/showUser",{userInfo:userInfo, userLoggedIn:true})
   }
-  return res.render("error")
+  }
+  catch(e){
+    return res.render("error",{errors:e,userLoggedIn:true})
+  }
+  
   
 })
 
