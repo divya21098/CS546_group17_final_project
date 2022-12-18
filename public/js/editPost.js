@@ -56,6 +56,6 @@ editPostForm.addEventListener("submit", (e) => {
         );
         window.location.href = host + "/posts/" + post_id;
 
-    }
-    }
+}
+}
 );
