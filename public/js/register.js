@@ -26,7 +26,7 @@ const passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,
 if(registrationForm){
     registrationForm.addEventListener("submit", (event) =>{
         if(newFirstName.value && newLastName.value && newEmail.value && newPassword.value && newAge.value && newPhoneNumber.value && newGender.value && newNationality.value && newAboutMe.value && emailRegex.test(newEmail.value)){
-            if(newPassword.value.trim().length < 8 && !passRegex.test(newPassword.value)){
+            if(newPassword.value.trim().length < 8 && !passRegex){
                 event.preventDefault();
             }
         }
