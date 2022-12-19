@@ -66,6 +66,15 @@
 
         </div>
         <h3 class="mt-2"> Above are the Recommended Users</h3>
+        {{#if hasErrors}}
+                            <ul class="error-list">
+                                {{#each errors}}
+                                <li>
+                                    {{this}}
+                                </li>
+                                {{/each}}
+                            </ul>
+                            {{/if}}
     </div>
     <script>
 

@@ -502,7 +502,10 @@ router.get("/users/recommendation", async (req, res) => {
     let userList = await users.userRecommendation(req.session.user);
     }
     catch(e){
-      return res.status(404).render("users/userRec",{hasErrors:true, userLoggedIn:true})
+      let errors=[]
+      errors.push(e)
+      // console.log(errors)
+      return res.status(404).render("users/userRec",{hasErrors:true, userLoggedIn:true,errors:errors})
     }
     return res.status(200).render("users/userRec", {
       userRec: userList,

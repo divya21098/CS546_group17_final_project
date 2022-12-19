@@ -255,7 +255,6 @@ const updateUser = async (id, updatedUser) => {
 };
 
 const userRecommendation = async (id) => {
-  console.log("in user rec");
   if (!validator.validString(id)) throw "id must be given";
   validator.validId(id);
   id = validator.trimString(id);
