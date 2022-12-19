@@ -70,7 +70,11 @@ router.route("/filter").post(async (req, res) => {
     // }
     var b = {};
     if (Object.keys(search).length === 0) {
-      return res.status(401).render("posts/searchDetails",{errors:["Please provide atleast one search input"],hasErrors:true,userLoggedIn:true});
+      return res.status(401).render("posts/searchDetails", {
+        errors: ["Please provide atleast one search input"],
+        hasErrors: true,
+        userLoggedIn: true,
+      });
     }
     if (search.preference.drinking) {
       if (!validation.validString(search.preference.drinking))
@@ -108,16 +112,24 @@ router.route("/filter").post(async (req, res) => {
   }
   try {
     let searchList = await posts.filterSearch(b);
-    if(searchList.length===0){
-      let error=["No posts were found for your search!"]
-      return res.render("posts/searchDetails",{hasErrors:true,userLoggedIn:true,errors:error})
+    if (searchList.length === 0) {
+      let error = ["No posts were found for your search!"];
+      return res.render("posts/searchDetails", {
+        hasErrors: true,
+        userLoggedIn: true,
+        errors: error,
+      });
     }
     return res.render("posts/searchDetails", {
       searchList: searchList,
       userLoggedIn: true,
     });
   } catch (e) {
-    return res.render("error", { hasErrors:true,userLoggedIn: true ,errors:e});
+    return res.render("error", {
+      hasErrors: true,
+      userLoggedIn: true,
+      errors: e,
+    });
     //return res.render("",e)
   }
 });
@@ -131,7 +143,10 @@ router.route("/").get(async (req, res) => {
     if (userId) {
       return res.render("posts/index", { posts: postList, userLoggedIn: true });
     } else {
-      return res.render("posts/index", { posts: postList, userLoggedIn: false });
+      return res.render("posts/index", {
+        posts: postList,
+        userLoggedIn: false,
+      });
     }
   } catch (e) {
     res.status(500).render("error"); //PLEASE CHECK
@@ -172,9 +187,15 @@ router.route("/delete/:id").get(async (req, res) => {
       const id = req.params.id;
       const post = await posts.getPostById(id);
       //return res.status(200).json(post);
-      res.render("posts/deletePost", { post: post, userLoggedIn:true, hasErrors:true });
+      res.render("posts/deletePost", {
+        post: post,
+        userLoggedIn: true,
+        hasErrors: true,
+      });
     } catch (e) {
-      return res.status(500).render("error",{errors:e, userLoggedIn:true, hasErrors:true});
+      return res
+        .status(500)
+        .render("error", { errors: e, userLoggedIn: true, hasErrors: true });
     }
   } else {
     res.redirect("/login");
@@ -284,17 +305,18 @@ router.route("/:id").get(async (req, res) => {
         posts: post,
         canComment: canComment,
         userLoggedIn: true,
-        hasErrors:true
+        hasErrors: true,
       });
     } catch (e) {
-      return res.status(500).render("error",{errors:e, userLoggedIn:true,hasErrors:true});
+      return res
+        .status(500)
+        .render("error", { errors: e, userLoggedIn: true, hasErrors: true });
     }
   } else {
     return res.redirect("/login");
   }
 });
 router.route("/delete/:id").post(async (req, res) => {
-  console.log("in del");
   errors = [];
   if (
     !req.params.id ||
@@ -304,7 +326,6 @@ router.route("/delete/:id").post(async (req, res) => {
     errors.push("not valid string");
   }
   if (errors.length > 0) {
-    // return res.status(200).json(errors);
     return res.status(400).render("posts/editPost", {
       errors: errors,
       hasErrors: true,
@@ -316,35 +337,38 @@ router.route("/delete/:id").post(async (req, res) => {
       const postid = req.params.id;
       const post = await posts.removePostById(postid, userId);
       const postList = await posts.getAllPosts();
-      return res.redirect("/users/myProfile")
+      return res.redirect("/users/myProfile");
     } catch (e) {
       //render error page
-      return res.status(500).render("error",{error:e, userLoggedIn:true, hasErrors:true});
+      return res
+        .status(500)
+        .render("error", { error: e, userLoggedIn: true, hasErrors: true });
     }
   } else {
     return res.redirect("/login");
   }
 });
 router.route("/edit/:id").get(async (req, res) => {
-  console.log("edit");
   if (req.session.user) {
-    try{
-    const id = req.params.id;
-    const post = await posts.getPostById(id);
-    if(post===null){
-      return []
+    try {
+      const id = req.params.id;
+      const post = await posts.getPostById(id);
+      if (post === null) {
+        return [];
+      }
+      post._id = post._id.toString();
+      return res.render("posts/editPost", {
+        id: req.params.id,
+        postInfo: post,
+        userLoggedIn: true,
+      });
+    } catch (e) {
+      return res.render("error", {
+        error: e,
+        hasErrors: true,
+        userLoggedIn: true,
+      });
     }
-    post._id=post._id.toString();
-    return res.render("posts/editPost", {
-      id: req.params.id,
-      postInfo: post,
-      userLoggedIn: true,
-    });
-    }
-    catch(e){
-      return res.render("error",{error:e,hasErrors:true,userLoggedIn:true})
-    }
-    
   } else {
     return res.redirect("/login");
   }
@@ -352,7 +376,6 @@ router.route("/edit/:id").get(async (req, res) => {
 router
   .route("/edit/:id")
   .post(upload.single("postPicture"), async (req, res) => {
-    console.log("inside post edit ");
     const info = req.body;
     let userId = req.session.user;
     let updatedPostData = {};
@@ -372,7 +395,6 @@ router
       });
     }
     if (userId) {
-      console.log("in put post route");
       postId = validation.validId(req.params.id);
 
       // try {
@@ -391,7 +413,7 @@ router
             image: Buffer.from(encode_image, "base64"),
           };
         }
-        const { postTitle, postBody, aptPhotos } = info;
+        const { postTitle, postBody } = info;
         if (postTitle) {
           if (!validation.validString(postTitle)) {
             errors.push("Please Enter post title");
@@ -403,21 +425,26 @@ router
           if (!validation.validString(postBody)) throw "Body not valid";
           updatedPostData.postBody = postBody;
         }
-        if (aptPhotos) {
-          updatedPostData.aptPhotos = finalImg;
-        }
+
+        //updates the picture
+        updatedPostData.postPicture = finalImg;
+        // if (postPicture) {
+        //   updatedPostData.postPicture = finalImg;
+        // }
         const post = await posts.updatePostbyId(
           postId,
           userId,
           updatedPostData
         );
         const postList = await posts.getAllPosts();
-        return res.redirect("/posts/"+postId);
+        return res.redirect("/posts/" + postId);
         // res.status(200).json(post);
         // return res.status(200).render("posts/index", { posts: postList, userLoggedIn: true });
       } catch (e) {
         //add res.render
-        return res.status(500).render("error",{userLoggedIn:true,hasErrors:true});
+        return res
+          .status(500)
+          .render("error", { userLoggedIn: true, hasErrors: true });
       }
     } else {
       //handle error

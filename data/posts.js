@@ -4,12 +4,10 @@ const posts = mongoCollections.posts;
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 const userData = require("./users");
-// const users = mongoCollections.users;
+
 const validation = require("../helper");
 
 const createPost = async (userId, postTitle, postBody, postPicture) => {
-  console.log("in post data");
-
   if (
     !validation.validString(postTitle) ||
     !validation.validString(postBody) ||
@@ -78,7 +76,7 @@ const getAllPosts = async () => {
     post.userId = u.firstName + " " + u.lastName;
   }
   if (postList.length == 0) return [];
-  // console.log(postList.sort((a, b) => a.postDate - b.postDate));
+
   return postList;
 };
 //post individual
@@ -87,8 +85,8 @@ const getPostById = async (id) => {
   const postCollection = await posts();
   const post = await postCollection.findOne({ _id: ObjectId(postId) });
   if (post === null) throw "No post with that id";
-  let u =  await userData.getUserById(post.userId)
-  post.userId = u.firstName+" "+u.lastName
+  let u = await userData.getUserById(post.userId);
+  post.userId = u.firstName + " " + u.lastName;
   return post;
 };
 //edit post once user login
@@ -100,13 +98,7 @@ const removePostById = async (postid, userid) => {
   const postCollection = await posts();
   const post = await postCollection.findOne({ _id: ObjectId(postid) });
   if (!post) throw "No post with that id";
-  // const deletionInfo = await postCollection.deleteOne({
-  //   _id: ObjectId(postid),
-  // });
 
-  // if (deletionInfo.deletedCount === 0) {
-  //   throw `Could not delete post with id of ${id}`;
-  // }
   const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
   if (userinfo === null) throw "No user with that id";
   let flag = false;
@@ -158,9 +150,8 @@ const updatePostbyId = async (postId, userId, updatedPost) => {
   }
   updatedPostData.userId = userid;
   const postCollection = await posts();
-  // const movie = await getMovieById(postId);
-  const userCollection = await users();
 
+  const userCollection = await users();
 
   const post = await postCollection.findOne({ _id: ObjectId(postid) });
   if (post === null) throw "No post with that id";
@@ -171,15 +162,11 @@ const updatePostbyId = async (postId, userId, updatedPost) => {
   if (userinfo.postId.length > 0) {
     for (i = 0; i < userinfo.postId.length; i++) {
       if (userinfo.postId[i] === postid) {
-        // userinfo.postId.splice(i, 1);
         flag = true;
       }
     }
   }
   if (flag) {
-    // var deletionInfo = await postCollection.deleteOne({
-    //   _id: ObjectId(postid),
-    // });
     const date = new Date();
 
     let day = date.getDate();
@@ -193,17 +180,14 @@ const updatePostbyId = async (postId, userId, updatedPost) => {
       { _id: ObjectId(postid) },
       { $set: updatedPostData }
     );
-      
-  if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-  throw "Error: Update failed";
-  const res = await getPostById(postid);
-  return res;
+
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw "Error: Update failed";
+    const res = await getPostById(postid);
+    return res;
   } else {
     throw "Not allowed to update";
   }
-
-
-  
 };
 
 //list of post user see after login
@@ -265,8 +249,6 @@ const getSavedPostByuserId = async (id) => {
       result.push(post);
     }
   }
-  // const postCollection = await posts();
-  // const post = await postCollection.findAll({userId: userinfo.postId});
 
   if (!result) {
     return [];
@@ -277,31 +259,20 @@ const getSavedPostByuserId = async (id) => {
 const removeSavedPostByuserId = async (postid, userid) => {
   postid = validation.validId(postid);
   userid = validation.validId(userid);
-  //const userCollection = await users();
-  // const userinfo = await userCollection.findOne({ _id: ObjectId(userid) });
-  // console.log(userinfo);
-  // if (userinfo === null) throw "No user with that id";
+
   const userinfo = await userData.getUserById(userid);
   if (!userinfo) throw "user with that id not present";
-  // if (userWithPost.postId.length > 0) {
-  //   for (i = 0; i < userWithPost.postId.length; i++) {
-  //     if (userWithPost.postId == postid) {
-  //       userWithPost.postId.splice(i, 1);
-  //     }
-  //   }
-  // }
+
   if (userinfo.savedPost.length > 0) {
     for (i = 0; i < userinfo.savedPost.length; i++) {
       if (userinfo.savedPost[i] === postid) {
         userinfo.savedPost.splice(i, 1);
       }
     }
-    // console.log(userinfo);
+
     await userData.updateUser(userid, { savedPost: userinfo.savedPost });
   }
 
-  // const postCollection = await posts();
-  // const post = await postCollection.findAll({userId: userinfo.postId});
   return { updated: "true" };
 };
 
@@ -323,29 +294,6 @@ const addPostPicture = async (postid, postPicture) => {
   return await this.getPostById(postid);
 };
 const filterSearch = async (searchFilter) => {
-  //   searchFilter={
-  //   "preference": {
-  //     "drinking": false,
-  //     "smoking": false,
-  //     "food": [
-  //         "veg"
-  //     ],
-  //     "budget": "1500$-2000$",
-  //     "room": [
-  //         "private",
-  //         "sharing"
-  //     ],
-  //     "home_type": [
-  //         "Condo",
-  //         "Apartment"
-  //     ],
-  //     "location": [
-  //         "Newport",
-  //         "Hoboken"
-  //     ]
-  // }
-  // }
-  //let allPost =  await getAllPosts()
   const postCollection = await posts();
   if (Object.keys(searchFilter).length === 0) {
     throw "Preference is not valid";
@@ -396,15 +344,18 @@ const filterSearch = async (searchFilter) => {
       $all: [searchFilter["preference.location"]],
     };
   }
-  const filteredPost = await postCollection.find(searchFilter).sort({ postDate: -1 }).toArray();
+  const filteredPost = await postCollection
+    .find(searchFilter)
+    .sort({ postDate: -1 })
+    .toArray();
   if (filteredPost.length === 0) {
-    return []
+    return [];
   }
 
   for (let post of filteredPost) {
     post._id = post._id.toString();
-    let u =  await userData.getUserById(post.userId)
-    post.userId = u.firstName+" "+u.lastName
+    let u = await userData.getUserById(post.userId);
+    post.userId = u.firstName + " " + u.lastName;
   }
   return filteredPost;
 };

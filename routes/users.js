@@ -136,7 +136,7 @@ router.post("/register", async (req, res) => {
 
     return res.redirect("/login");
   } catch (e) {
-    res.status(500).render("error",{userLoggedIn:false});
+    res.status(500).render("error", { userLoggedIn: false });
   }
 });
 
@@ -165,7 +165,6 @@ router.get("/login", async (req, res) => {
   }
 });
 
-
 //POST METHOD for /login route
 router.post("/login", async (req, res) => {
   const emailId = validator.trimString(req.body.emailId);
@@ -186,7 +185,7 @@ router.post("/login", async (req, res) => {
     return res.status(400).render("login", {
       errors: errors,
       hasErrors: true,
-      userLoggedIn:false
+      userLoggedIn: false,
     });
   }
   //if (!validator.validPassword(password)) errors.push("Invalid password.");
@@ -200,7 +199,7 @@ router.post("/login", async (req, res) => {
     return res.status(401).render("login", {
       errors: errors,
       hasErrors: true,
-      userLoggedIn:false
+      userLoggedIn: false,
     });
   }
 
@@ -223,7 +222,7 @@ router.post("/login", async (req, res) => {
     return res.status(401).render("login", {
       errors: errors,
       hasErrors: true,
-      userLoggedIn:false
+      userLoggedIn: false,
     });
   }
 });
@@ -238,8 +237,8 @@ router.get("/users/myProfile", async (req, res) => {
         userInfo: userInfo,
         userLoggedIn: true,
       });
-    } catch(e) {
-      return res.status(500).render("error",{errors:e,userLoggedIn:true});
+    } catch (e) {
+      return res.status(500).render("error", { errors: e, userLoggedIn: true });
     }
   } else {
     return res.redirect("/login");
@@ -344,17 +343,17 @@ router.post("/users/editProfile", async (req, res) => {
     // else{
     //   errors.push("Gender cannot be empty");
     // }
-    console.log(updatedUser)
+
     if (updatedUser.preference) {
       if (updatedUser.preference.drinking) {
         if (!validator.validStringBool(updatedUser.preference.drinking))
           errors.push("Not a type boolean");
-          //updatedUserData["preference"]["drinking"] = updatedUser.preference.drinking;
+        //updatedUserData["preference"]["drinking"] = updatedUser.preference.drinking;
       }
       if (updatedUser.preference.smoking) {
         if (!validator.validStringBool(updatedUser.preference.smoking))
           errors.push("Not a type boolean");
-          //updatedUserData.preference.smoking = updatedUser.preference.smoking
+        //updatedUserData.preference.smoking = updatedUser.preference.smoking
       }
       if (updatedUser.preference.food) {
         validator.validArray(updatedUser.preference.food, "food");
@@ -364,23 +363,20 @@ router.post("/users/editProfile", async (req, res) => {
       if (updatedUser.preference.room) {
         validator.validArray(updatedUser.preference.room, "room");
         //updatedUserData.preference.room = updatedUser.preference.room
-      }
-      else{
-        errors.push("Atleast one room preference needs to be checked")
+      } else {
+        errors.push("Atleast one room preference needs to be checked");
       }
       if (updatedUser.preference.location) {
         validator.validString(updatedUser.preference.location, "location");
         //updatedUserData.preference.location = updatedUser.preference.location
-      }
-      else{
-        errors.push("Atleast one location preference needs to be checked")
+      } else {
+        errors.push("Atleast one location preference needs to be checked");
       }
       if (updatedUser.preference.home_type) {
-        validator.validArray(updatedUser.preference.home_type, "home_type")
+        validator.validArray(updatedUser.preference.home_type, "home_type");
         //updatedUserData.preference.home_type = updatedUser.preference.home_type;
-      }
-      else{
-        errors.push("Atleast one hometype preference needs to be checked")
+      } else {
+        errors.push("Atleast one hometype preference needs to be checked");
       }
       updatedUserData.preference = updatedUser.preference;
     }
@@ -389,7 +385,7 @@ router.post("/users/editProfile", async (req, res) => {
       return res.status(400).render("users/editUser", {
         errors: errors,
         hasErrors: true,
-        userLoggedIn:true
+        userLoggedIn: true,
       });
     }
     try {
@@ -399,7 +395,7 @@ router.post("/users/editProfile", async (req, res) => {
       //return res.render("users/index", { userInfo: userInfo });
     } catch (e) {
       // return res.status(400).json(e);
-      return res.status(500).render("error",{errors:e,userLoggedIn:true});
+      return res.status(500).render("error", { errors: e, userLoggedIn: true });
     }
   } else {
     return res.render("login");
@@ -416,8 +412,8 @@ router.get("/users/myProfile/posts", async (req, res) => {
         all_post: all_post,
         userLoggedIn: true,
       });
-    } catch(e) {
-      return res.status(500).render("error",{errors:e,userLoggedIn:true});
+    } catch (e) {
+      return res.status(500).render("error", { errors: e, userLoggedIn: true });
       // return res.render("error", {});
     }
   }
@@ -433,8 +429,8 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
       let errors = [];
       let postid = validator.validId(req.params.postid);
       let post = await posts.getPostById(postid);
-      if (!post) errors.push("post doesnt exists") 
-      
+      if (!post) errors.push("post doesnt exists");
+
       let all_post = await posts.createSavedPost(postid, req.session.user);
       //create handlebar which says post saved
       //return res.send(all_post);
@@ -444,7 +440,7 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
     } catch (e) {
       //render handlebar that says user cant save own post
 
-      return res.status(500).render("error",{errors:e,userLoggedIn:true});
+      return res.status(500).render("error", { errors: e, userLoggedIn: true });
     }
   } else {
     return res.redirect("/login");
@@ -455,17 +451,16 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
 router.get("/users/myProfile/savedPosts", async (req, res) => {
   if (req.session.user) {
     try {
-      
       let all_post = await posts.getSavedPostByuserId(req.session.user);
       // return res.send(all_post);
-      console.log(all_post);
+
       return res.render("users/index", {
         allPost: all_post,
         userLoggedIn: true,
       });
       //alert("Post Saved");
     } catch {
-      return res.status(500).render("error",{errors:e,userLoggedIn:true});
+      return res.status(500).render("error", { errors: e, userLoggedIn: true });
 
       // return res.render("error", {});
     }
@@ -487,8 +482,8 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
       //return res.send(all_post);
 
       //return res.render("users/userPost", { allPost: all_post, userLoggedIn:true });
-    } catch (e){
-      return res.status(500).render("error",{errors:e,userLoggedIn:true});
+    } catch (e) {
+      return res.status(500).render("error", { errors: e, userLoggedIn: true });
     }
   } else {
     return res.redirect("/login");
@@ -498,11 +493,17 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
 router.post("/users/recommendation", async (req, res) => {});
 router.get("/users/recommendation", async (req, res) => {
   if (req.session.user) {
-    try{
-    let userList = await users.userRecommendation(req.session.user);
-    }
-    catch(e){
-      return res.status(404).render("users/userRec",{hasErrors:true, userLoggedIn:true})
+    try {
+      var userList = await users.userRecommendation(req.session.user);
+    } catch (e) {
+      let errors = [];
+
+      errors.push(e);
+      return res.status(404).render("users/userRec", {
+        hasErrors: true,
+        userLoggedIn: true,
+        errors: errors,
+      });
     }
     return res.status(200).render("users/userRec", {
       userRec: userList,
@@ -513,20 +514,20 @@ router.get("/users/recommendation", async (req, res) => {
   }
 });
 
-router.get("/users/checkUser/:id",async(req,res)=>{
-  try{
-  req.params.id = validator.validId(req.params.id);
-  const userInfo = await users.getUserById(req.params.id);
-  if(userInfo!==null){
-    userInfo._id = userInfo._id.toString()
-    return res.render("users/showUser",{userInfo:userInfo, userLoggedIn:true})
+router.get("/users/checkUser/:id", async (req, res) => {
+  try {
+    req.params.id = validator.validId(req.params.id);
+    const userInfo = await users.getUserById(req.params.id);
+    if (userInfo !== null) {
+      userInfo._id = userInfo._id.toString();
+      return res.render("users/showUser", {
+        userInfo: userInfo,
+        userLoggedIn: true,
+      });
+    }
+  } catch (e) {
+    return res.render("error", { errors: e, userLoggedIn: true });
   }
-  }
-  catch(e){
-    return res.render("error",{errors:e,userLoggedIn:true})
-  }
-  
-  
-})
+});
 
 module.exports = router;

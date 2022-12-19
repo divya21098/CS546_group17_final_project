@@ -109,14 +109,14 @@ const createUser = async (
     commentId: [],
     savedPost: [],
   };
-  console.log("new user dict");
+
   const userCollection = await users();
   const insertInfo = await userCollection.insertOne(newUser);
   if (insertInfo.insertedCount === 0) throw "Could not add user.";
-  console.log("insert done");
+
   const newId = insertInfo.insertedId;
   const userDetail = await getUserById(newId.toString());
-  console.log("user hi");
+
   return userDetail;
 };
 
@@ -265,7 +265,6 @@ const updateUser = async (id, updatedUser) => {
 };
 
 const userRecommendation = async (id) => {
-  console.log("in user rec");
   if (!validator.validString(id)) throw "id must be given";
   validator.validId(id);
   id = validator.trimString(id);
@@ -322,17 +321,19 @@ const userRecommendation = async (id) => {
 
   const userCollection = await users();
   const recommendUsers = await userCollection.find({ $or: recarr }).toArray();
-  if (recommendUsers.length===0) {
+  if (recommendUsers.length === 0) {
     throw "At the moment we were not able to recommend you the users. Please come back later.";
   }
+
   for (let i = 0; i < recommendUsers.length; i++) {
     if (recommendUsers[i]._id.toString() === id) {
       recommendUsers.splice(i, 1);
-    }
-    if (recommendUsers.length===0) {
-      throw "At the moment we were not able to recommend you the users. Please come back later.";
+      continue;
     }
     recommendUsers[i]._id = recommendUsers[i]._id.toString();
+  }
+  if (recommendUsers.length === 0) {
+    throw "At the moment we were not able to recommend you the users. Please come back later.";
   }
 
   return recommendUsers;
