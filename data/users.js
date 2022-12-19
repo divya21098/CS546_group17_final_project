@@ -19,9 +19,9 @@ const createUser = async (
   aboutMe,
   preference
 ) => {
-  if (!validator.validStringBool(firstName)|| !validator.validName(firstName))
+  if (!validator.validStringBool(firstName) || !validator.validName(firstName))
     throw "First name is not a valid string.";
-  if (!validator.validStringBool(lastName)|| !validator.validName(lastName))
+  if (!validator.validStringBool(lastName) || !validator.validName(lastName))
     throw "Last name is not a valid string.";
   if (!validator.validEmail(emailId)) throw "Email is not a valid string.";
   let email = emailId.toLowerCase();
@@ -29,9 +29,11 @@ const createUser = async (
     age = parseInt(age);
   }
   if (!validator.validAge(age)) throw "Age must be a positive integer";
-  if (!validator.validPassword(password)) throw "Password is not a valid string.";
+  if (!validator.validPassword(password))
+    throw "Password is not a valid string.";
   validator.validatePhoneNumber(phoneNumber);
-  if (!validator.validStringBool(aboutMe)) throw "About  Me is not a valid string.";
+  if (!validator.validStringBool(aboutMe))
+    throw "About  Me is not a valid string.";
   //nationality call use npm package in drop down box to be called on client side
   if (!validator.validStringBool(nationality))
     throw "Nationality is not a valid string.";
@@ -41,25 +43,26 @@ const createUser = async (
   if (preference.length < 0) {
     throw `There should be atleast one preference`;
   }
-  if(preference.drinking){
-    if(!validator.validStringBool(preference.drinking)) throw "Not a type boolean"
+  if (preference.drinking) {
+    if (!validator.validStringBool(preference.drinking))
+      throw "Not a type boolean";
+  }
+  if (preference.smoking) {
+    if (!validator.validStringBool(preference.smoking))
+      throw "Not a type booolean";
+  }
 
+  if (preference.food) {
+    validator.validArray(preference.food, "food");
   }
-  if(preference.smoking){
-    if(!validator.validStringBool(preference.smoking))  throw "Not a type booolean"
+  if (preference.room) {
+    validator.validArray(preference.room, "room");
   }
-
-  if(preference.food){
-    validator.validArray(preference.food,"food")
+  if (preference.location) {
+    validator.validArray(preference.location, "location");
   }
-  if(preference.room){
-    validator.validArray(preference.room,"room")
-  }
-  if(preference.location){
-    validator.validArray(preference.location,"location")
-  }
-  if(preference.home_type){
-    validator.validArray(preference.home_type,"home type")
+  if (preference.home_type) {
+    validator.validArray(preference.home_type, "home type");
   }
   /*
   {
@@ -106,14 +109,14 @@ const createUser = async (
     commentId: [],
     savedPost: [],
   };
-  console.log("new user dict");
+
   const userCollection = await users();
   const insertInfo = await userCollection.insertOne(newUser);
   if (insertInfo.insertedCount === 0) throw "Could not add user.";
-  console.log("insert done");
+
   const newId = insertInfo.insertedId;
   const userDetail = await getUserById(newId.toString());
-  console.log("user hi");
+
   return userDetail;
 };
 
@@ -141,13 +144,19 @@ const updateUser = async (id, updatedUser) => {
   id = validator.trimString(id);
   // let = await getUserById(id);
   if (updatedUser.firstName) {
-    if (!validator.validStringBool(updatedUser.firstName)|| !validator.validName(updatedUser.firstName))
+    if (
+      !validator.validStringBool(updatedUser.firstName) ||
+      !validator.validName(updatedUser.firstName)
+    )
       throw "First name is not a valid string.";
     updatedUser.firstName = validator.trimString(updatedUser.firstName);
     updatedUserData.firstName = updatedUser.firstName;
   }
   if (updatedUser.lastName) {
-    if (!validator.validStringBool(updatedUser.lastName)|| !validator.validName(updatedUser.lastName))
+    if (
+      !validator.validStringBool(updatedUser.lastName) ||
+      !validator.validName(updatedUser.lastName)
+    )
       throw "Last name is not a valid string.";
     updatedUser.lastName = validator.trimString(updatedUser.lastName);
     updatedUserData.lastName = updatedUser.lastName;
@@ -195,23 +204,24 @@ const updateUser = async (id, updatedUser) => {
   // if (updatedUser.preference.length < 0) {
   //   throw `There should be atleast one preference`;
   // }
-  
-  if(updatedUser.preference){
-    if(updatedUser.preference.drinking){
-      if(!validator.validStringBool(updatedUser.preference.drinking)) throw "Not a type boolean"
+
+  if (updatedUser.preference) {
+    if (updatedUser.preference.drinking) {
+      if (!validator.validStringBool(updatedUser.preference.drinking))
+        throw "Not a type boolean";
       //updatedUserData.preference.drinking = updatedUser.preference.drinking
-  
     }
-    if(updatedUser.preference.smoking){
-      if(!validator.validStringBool(updatedUser.preference.smoking)) throw "Not a type boolean"
+    if (updatedUser.preference.smoking) {
+      if (!validator.validStringBool(updatedUser.preference.smoking))
+        throw "Not a type boolean";
       //updatedUserData.preference.drinking = updatedUser.preference.drinking
     }
     if (updatedUser.preference.food) {
       validator.validArray(updatedUser.preference.food, "food");
       //updatedUserData.preference.food = updatedUser.preference.food
     }
-    if(updatedUser.preference.room){
-      validator.validArray(updatedUser.preference.room,"room")
+    if (updatedUser.preference.room) {
+      validator.validArray(updatedUser.preference.room, "room");
       //updatedUserData.preference.room = updatedUser.preference.room
     }
     if (updatedUser.preference.location) {
@@ -255,7 +265,6 @@ const updateUser = async (id, updatedUser) => {
 };
 
 const userRecommendation = async (id) => {
-  console.log("in user rec");
   if (!validator.validString(id)) throw "id must be given";
   validator.validId(id);
   id = validator.trimString(id);
@@ -312,18 +321,19 @@ const userRecommendation = async (id) => {
 
   const userCollection = await users();
   const recommendUsers = await userCollection.find({ $or: recarr }).toArray();
-  if (recommendUsers.length===0) {
+  if (recommendUsers.length === 0) {
     throw "At the moment we were not able to recommend you the users. Please come back later.";
   }
+
   for (let i = 0; i < recommendUsers.length; i++) {
     if (recommendUsers[i]._id.toString() === id) {
       recommendUsers.splice(i, 1);
+      continue;
     }
-    if (recommendUsers.length===0) {
-      throw "At the moment we were not able to recommend you the users. Please come back later.";
-    }
-    recommendUsers[i]._id=recommendUsers[i]._id.toString()
-    
+    recommendUsers[i]._id = recommendUsers[i]._id.toString();
+  }
+  if (recommendUsers.length === 0) {
+    throw "At the moment we were not able to recommend you the users. Please come back later.";
   }
 
   return recommendUsers;

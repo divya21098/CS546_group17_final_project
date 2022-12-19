@@ -23,7 +23,7 @@ router
     }
     try {
       const postId = req.params.postId;
-      // console.log(postId);
+
       const comment = await commentData.getAllComments(postId);
       res.status(200).json(comment);
     } catch (e) {
@@ -45,7 +45,6 @@ router
         errors.push("Comment text is invalid");
       }
       if (errors.length > 0) {
-        // return res.status(200).json(errors);
         return res.status(400).render("posts/postDetails", {
           errors: errors,
           hasErrors: true,
@@ -63,7 +62,6 @@ router
         return res.status(404).json({ error: "No post with id" });
       }
       try {
-        // console.log("in comm create routes");
         const post = await commentData.createComment(
           req.params.postId,
           commentInfo.userId,
@@ -72,17 +70,16 @@ router
         var allcomm = post["comments"];
 
         let lastelm = allcomm.slice(-1);
-        // console.log(lastelm);
-        // console.log(post)
+
         return res.render("partials/comments", {
           layout: null,
           posts: lastelm[0],
           userLoggedIn: true,
         });
-        //return res.render('posts/createPost')
-        //return res.redirect("/posts/" + req.params.postId);
       } catch (e) {
-        return res.status(500).render("error",{errors:e,hasErrors:true,userLoggedIn:true});
+        return res
+          .status(500)
+          .render("error", { errors: e, hasErrors: true, userLoggedIn: true });
       }
     } else {
       res.redirect("/login");

@@ -17,7 +17,7 @@
 //                 errorEditEmail.hidden = false;
 //             }
 //             errorEditEmail.hidden = newEditEmail.value;
-            
+
 //             errorEditAge.hidden = newEditAge.value;
 //             errorEditPhoneNumber.hidden = newEditPhoneNumber.value;
 //             errorEditNationality.hidden = newEditNationality.value;
@@ -26,7 +26,6 @@
 //         }
 //     })
 // }
-
 
 const editUserForm = document.getElementById("edit-form");
 const newEditFirstName = document.getElementById("editFirstName");
@@ -51,59 +50,64 @@ const errorEditAboutMe = document.getElementById("no-edit-aboutme");
 
 const emailRegex = /^[A-Za-z0-9._%+-]+@stevens\.edu$/;
 
-const url = window.location.href
-const [path,queryString]= url.split('?');
-const post_id = path.split('/')[4];
-const host = window.location.origin
-
-console.log(editUserForm)
+const url = window.location.href;
+const [path, queryString] = url.split("?");
+const post_id = path.split("/")[4];
+const host = window.location.origin;
 
 editUserForm.addEventListener("submit", (e) => {
-    if (newEditFirstName.value === "" || newEditLastName.value === "" || newEditEmail.value === "" || newEditAge.value === "" || newEditPhoneNumber.value === "" || newEditGender.value === "" || newEditNationality.value === "" || newEditAboutMe.value === "") {
-        e.preventDefault();
-        if (newEditFirstName.value === "") {
-            errorEditFirstName.hidden = newEditPostTitle.value;
-        }
-        if (newEditLastName.value === "") {
-            errorEditLastName.hidden = newEditLastName.value;
-        }
-        if (newEditEmail.value === "") {
-            errorEditEmail.hidden = newEditEmail.value;
-        }
-        if (newEditAge.value === "") {
-            errorEditAge.hidden = newEditAge.value;
-        }
-        if (newEditPhoneNumber.value === "") {
-            errorEditPhoneNumber.hidden = newEditPhoneNumber.value;
-        }
-        if (newEditGender.value === "") {
-            errorEditGender.hidden = newEditGender.value;
-        }
-        if (newEditNationality.value === "") {
-            errorEditNationality.hidden = newEditNationality.value;
-        }
-        if (newEditAboutMe.value === "") {
-            errorEditAboutMe.hidden = newEditAboutMe.value;
-        }
-    } else {
-        e.preventDefault();
-        const editUser = new XMLHttpRequest();
-        editUser.open("POST", `/users/editProfile`);
-        editUser.setRequestHeader("Content-Type", "application/json");
-        editUser.send(
-        JSON.stringify({
-            firstName: newEditFirstName.value,
-            lastName: newEditLastName.value,
-            emailId: newEditEmail.value,
-            age: newEditAge.value,
-            phoneNumber: newEditPhoneNumber.value,
-            gender: newEditGender.value,
-            nationality: newEditNationality.value,
-            aboutMe: newEditAboutMe.value,
-        })
-        );
-        window.location.href = host + "/users/myProfile";
-
-    }
-    }
-);
+  if (
+    newEditFirstName.value === "" ||
+    newEditLastName.value === "" ||
+    newEditEmail.value === "" ||
+    newEditAge.value === "" ||
+    newEditPhoneNumber.value === "" ||
+    newEditGender.value === "" ||
+    newEditNationality.value === "" ||
+    newEditAboutMe.value === ""
+  ) {
+    e.preventDefault();
+    if (newEditFirstName.value === "") {
+      errorEditFirstName.hidden = newEditPostTitle.value;
+    }
+    if (newEditLastName.value === "") {
+      errorEditLastName.hidden = newEditLastName.value;
+    }
+    if (newEditEmail.value === "") {
+      errorEditEmail.hidden = newEditEmail.value;
+    }
+    if (newEditAge.value === "") {
+      errorEditAge.hidden = newEditAge.value;
+    }
+    if (newEditPhoneNumber.value === "") {
+      errorEditPhoneNumber.hidden = newEditPhoneNumber.value;
+    }
+    if (newEditGender.value === "") {
+      errorEditGender.hidden = newEditGender.value;
+    }
+    if (newEditNationality.value === "") {
+      errorEditNationality.hidden = newEditNationality.value;
+    }
+    if (newEditAboutMe.value === "") {
+      errorEditAboutMe.hidden = newEditAboutMe.value;
+    }
+  } else {
+    e.preventDefault();
+    const editUser = new XMLHttpRequest();
+    editUser.open("POST", `/users/editProfile`);
+    editUser.setRequestHeader("Content-Type", "application/json");
+    editUser.send(
+      JSON.stringify({
+        firstName: newEditFirstName.value,
+        lastName: newEditLastName.value,
+        emailId: newEditEmail.value,
+        age: newEditAge.value,
+        phoneNumber: newEditPhoneNumber.value,
+        gender: newEditGender.value,
+        nationality: newEditNationality.value,
+        aboutMe: newEditAboutMe.value,
+      })
+    );
+    window.location.href = host + "/users/myProfile";
+  }
+});

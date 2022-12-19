@@ -5,32 +5,36 @@
 
                 <h1>Update post</h1>
 
-                <form id="editPostsForm" action="/posts/edit/{{postInfo._id}}" method="POST">
+                <form id="editPostsForm" action="/posts/edit/{{postInfo._id}}" method="POST" enctype="multipart/form-data">
 
                     <!-- Input to add Post Title -->
                     <div class="form-group">
                         <label class="postTitle" for="editPostTitle">Post Title</label>
-                        <input type="text" class="form-control" id="editPostTitle" name="postTitle" value="{{postInfo.postTitle}}"/>
+                        <input type="text" class="form-control" id="editPostTitle" name="postTitle"
+                            value="{{postInfo.postTitle}}" />
 
-                        <div class="alert alert-danger div-text" role="alert" id="no-edit-post-title" hidden>Please enter Post Title</div>
+                        <div class="alert alert-danger div-text" role="alert" id="no-edit-post-title" hidden>Please
+                            enter Post Title</div>
                     </div>
 
                     <!-- Input to add Apartment/ Post Details -->
                     <div class="form-group">
                         <label class="postBody" for="postBody" name="postBody">Post Description</label>
-                        <textarea rows="10" class="form-control" id="editPostBody" name="postBody">{{postInfo.postBody}}</textarea>
+                        <textarea rows="10" class="form-control" id="editPostBody"
+                            name="postBody">{{postInfo.postBody}}</textarea>
 
-                        <div class="alert alert-danger div-text" role="alert" id="no-edit-post-body" hidden>Please enter Post Body</div>
+                        <div class="alert alert-danger div-text" role="alert" id="no-edit-post-body" hidden>Please enter
+                            Post Body</div>
                     </div>
 
                     <!-- Input to upload picture for the Post -->
-                    {{!-- <div class="form-group">
-                        <label class="form-label postPicture" for="postPicture">Upload Photo</label>
-                        <input type="file" class="form-control" id="editPostPicture" name="postPicture" accept="image/*" />
+                    <div class="form-group">
+                        <label class="form-label postPicture" for="postPicture">Edit Photo</label>
+                        <input type="file" class="form-control" id="postPicture" name="postPicture" accept="image/*" />
 
-                        <div class="alert alert-danger div-text" role="alert" id="no-post-picture" hidden>Please input image</div>
-                    </div> --}}
-
+                        <div class="alert alert-danger div-text" role="alert" id="no-post-picture" hidden>Please input
+                            image</div>
+                    </div>
                     <!-- Create Post Button-->
                     <div class="form-group">
                         <button type="submit" class="btn btn-success">
@@ -52,5 +56,3 @@
         </div>
     </div>
 </main>
-
-{{!-- <script src="/public/js/editPost.js"></script> --}}
