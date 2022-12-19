@@ -67,7 +67,7 @@
                                 <div class="form-outline mb-4">
                                     <label class="form-label gender" for="gender">Your Gender</label>
                                     <select class="custom-select" id="editGender" name="gender">
-                                        <option selected>{{userInfo.gender}}</option>
+                                        <option value="" selected>{{userInfo.gender}}</option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="other">Other</option>
@@ -535,9 +535,9 @@
 
                                     <br />
 
-                                    <label for="preference[location]" name="preference[location]"></label>
+                                    <label for="location" name="preference[location]"></label>
                                     <select class="custom-select" name="preference[location]" id="location">
-                                        <option selected>{{userInfo.preference.location}}</option>
+                                        <option value="" selected>{{userInfo.preference.location}}</option>
                                         <option value="Jersey City">Jersey City</option>
                                         <option value="Hoboken">Hoboken</option>
                                         <option value="Journal Square">Journal Square</option>

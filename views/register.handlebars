@@ -80,7 +80,7 @@
                                 <div class="form-outline mb-4">
                                     <label class="form-label gender" for="gender">Your Gender</label>
                                     <select class="custom-select" id="gender" name="gender" required>
-                                        {{!-- <option selected disabled>Select your gender</option> --}}
+                                        <option value="" selected disabled>Select your gender</option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="other">Other</option>
@@ -295,7 +295,7 @@
 
                                 <!-- About-me input -->
                                 <div class="form-outline mb-4">
-                                    <label class="form-label aboutMe" for="aboutMe" name="aboutMe">About me</label>
+                                    <label class="form-label aboutMe" for="aboutMe">About me</label>
                                     <textarea class="form-control" id="aboutMe" name="aboutMe" rows="5"></textarea>
                                     <div id="no-aboutme" class="alert alert-danger div-text" role="alert" hidden>Please
                                         enter something about yourself
@@ -305,7 +305,7 @@
 
                                 <!-- Preferences input -->
                                 <div class="form-outline mb-4">
-                                    <label class="form-label preference" id="preference" name="preference">Your
+                                    <label class="form-label preference" id="preference">Your
                                         Preferences</label>
                                     <br>
                                     <div class="form-check form-check-inline">
@@ -404,9 +404,9 @@
 
                                     <br>
 
-                                    <label for="preference[location]" name="preference[location]"></label>
+                                    <label for="location"></label>
                                     <select class="custom-select" name="preference[location]" id="location" required>
-                                        <option selected disabled>Choose your preferred location</option>
+                                        <option value="" selected disabled>Choose your preferred location</option>
                                         <option value="Jersey City">Jersey City</option>
                                         <option value="Hoboken">Hoboken</option>
                                         <option value="Journal Square">Journal Square</option>
@@ -444,18 +444,5 @@
             </div>
         </div>
     </div>
-
-
-    {{!--
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div> --}}
-
-    <!--
-    <script src="../public/js/errors.js"></script> 
-    -->
-
-
 
 </main>
