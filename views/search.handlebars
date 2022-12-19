@@ -118,7 +118,7 @@
                                         <option value="Union City">Union City</option>
                                         <option value="Newport">Newport</option>
                                     </select>
-                                    
+
                                 </div>
 
                                 <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
@@ -130,23 +130,19 @@
 
 
                         </div>
+                        {{#if hasErrors}}
+                        <ul class="error-list">
+                            {{#each errors}}
+                            <li>
+                                {{this}}
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{#if hasErrors}}
-    <ul class="error-list">
-        {{#each errors}}
-        <li>
-            {{this}}
-        </li>
-        {{/each}}
-    </ul>
-    {{/if}}
-
-    <!--
-    <script src="../public/js/errors.js"></script> 
-    -->
 </main>

@@ -13,7 +13,6 @@ const xss = require("xss");
 
 //POST METHOD for /register route
 router.post("/register", async (req, res) => {
-  console.log(req.body);
   let errors = [];
   let firstName = xss(validator.trimString(req.body.firstName));
   let lastName = xss(validator.trimString(req.body.lastName));
@@ -26,14 +25,20 @@ router.post("/register", async (req, res) => {
   let aboutMe = xss(validator.trimString(req.body.aboutMe));
   let preference = req.body.preference;
 
-  if (!validator.validString(firstName)) {
+  if (
+    !validator.validStringBool(firstName) ||
+    !validator.validName(firstName)
+  ) {
     errors.push("Please Enter valid First Name");
   }
-  if (!validator.validString(lastName)) {
+  if (!validator.validStringBool(lastName) || !validator.validName(lastName)) {
     errors.push("Please Enter valid Last Name");
   }
   if (!validator.validEmail(emailId)) {
     errors.push("Please Enter valid email id");
+  }
+  if (!validator.validPassword(password)) {
+    errors.push("Please enter valid password");
   }
   if (typeof age === "string") {
     age = parseInt(age);
@@ -46,38 +51,44 @@ router.post("/register", async (req, res) => {
   } catch (e) {
     errors.push(e);
   }
-  if (!validator.validString(aboutMe)) {
+  if (!validator.validStringBool(aboutMe)) {
     errors.push("Please Enter valid about me");
   }
-  if (!validator.validString(nationality)) {
+  if (!validator.validStringBool(nationality)) {
     errors.push("Please Enter valid Nationality");
   }
   if (preference.length < 0) {
-    errors.push("here should be atleast one preference");
+    errors.push("There should be atleast one preference");
   }
   if (preference.drinking) {
-    if (!validator.validString(preference.drinking))
-      errors.push("Please enter valid field");
+    if (!validator.validStringBool(preference.drinking))
+      errors.push("Please enter valid field for drinking");
   }
   if (preference.smoking) {
-    if (!validator.validString(preference.smoking))
-      errors.push("Please enter valid field");
+    if (!validator.validStringBool(preference.smoking))
+      errors.push("Please enter valid field for smoking");
+    // errors.push("Please enter valid field");
   }
   try {
     if (preference.food) {
       validator.validArray(preference.food, "food");
+    } else {
+      errors.push("Atleast one food preference needs to be checked");
     }
-    // if (preference.budget) {
-    //   console.log(preference.budget);
-    // }
     if (preference.room) {
       validator.validArray(preference.room, "room");
+    } else {
+      errors.push("Atleast one room preference needs to be checked");
     }
     if (preference.location) {
       validator.validArray(preference.location, "location");
+    } else {
+      errors.push("Atleast one location preference needs to be checked");
     }
     if (preference.home_type) {
       validator.validArray(preference.home_type, "home_type");
+    } else {
+      errors.push("Atleast one home type preference needs to be checked");
     }
   } catch (e) {
     errors.push(e);
@@ -100,7 +111,7 @@ router.post("/register", async (req, res) => {
       }
     });
     if (errors.length > 0) {
-      return res.status(403).render("register", {
+      return res.status(400).render("register", {
         authenticated: false,
         title: "Register",
         errors: errors,
@@ -111,27 +122,21 @@ router.post("/register", async (req, res) => {
 
   try {
     const user = await users.createUser(
-      xss(firstName),
-      xss(lastName),
-      xss(emailId),
-      xss(password),
-      xss(age),
-      xss(phoneNumber),
-      xss(gender),
-      xss(nationality),
-      xss(aboutMe),
-      xss(preference)
+      firstName,
+      lastName,
+      emailId,
+      password,
+      age,
+      phoneNumber,
+      gender,
+      nationality,
+      aboutMe,
+      preference
     );
-    //return res.status(200).json({ user: "registered" });
-    // req.session.user = user.__id.toString();
+
     return res.redirect("/login");
-    //return res.status(201).render("login");
   } catch (e) {
-    res.status(500).render("register");
-    // errors.push(e);
-    // return res.status(400).render("/register", {
-    //   errors: errors,
-    // });
+    res.status(500).render("error", { userLoggedIn: false });
   }
 });
 
@@ -146,7 +151,7 @@ router.get("/register", async (req, res) => {
   if (req.session.user) {
     return res.redirect("/posts");
   } else {
-    return res.render("register", { userLoggedIn: false, register : true });
+    return res.render("register", { userLoggedIn: false, register: true });
   }
 });
 
@@ -159,12 +164,6 @@ router.get("/login", async (req, res) => {
     return res.render("login", { userLoggedIn: false });
   }
 });
-
-// router.get('/', async (req, res) => {
-//   if (req.session.user){
-//       res.redirect("/posts");
-//   }
-// });
 
 //POST METHOD for /login route
 router.post("/login", async (req, res) => {
@@ -186,6 +185,7 @@ router.post("/login", async (req, res) => {
     return res.status(400).render("login", {
       errors: errors,
       hasErrors: true,
+      userLoggedIn: false,
     });
   }
   //if (!validator.validPassword(password)) errors.push("Invalid password.");
@@ -199,6 +199,7 @@ router.post("/login", async (req, res) => {
     return res.status(401).render("login", {
       errors: errors,
       hasErrors: true,
+      userLoggedIn: false,
     });
   }
 
@@ -221,6 +222,7 @@ router.post("/login", async (req, res) => {
     return res.status(401).render("login", {
       errors: errors,
       hasErrors: true,
+      userLoggedIn: false,
     });
   }
 });
@@ -235,12 +237,11 @@ router.get("/users/myProfile", async (req, res) => {
         userInfo: userInfo,
         userLoggedIn: true,
       });
-    } catch {
-      return res.status(500).render("error");
+    } catch (e) {
+      return res.status(500).render("error", { errors: e, userLoggedIn: true });
     }
   } else {
     return res.redirect("/login");
-    //return res.status(401).render("login", {});
   }
 });
 
@@ -262,26 +263,23 @@ router.get("/users/myProfileEdit", async (req, res) => {
 router.post("/users/editProfile", async (req, res) => {
   if (req.session.user) {
     let updatedUser = req.body;
-    console.log(updatedUser);
     let updatedUserData = {};
     let errors = [];
-    //if (!validator.validString(req.session.user)) throw "id must be given";
-    // try{
-    // var updatedUser  = await users.getUserById(req.session.user);
-    // }
-    // catch(e){
-    //   return res.status(500).render("error",{e:"Something went wrong"})
-    // }
-
     if (updatedUser.firstName) {
-      if (!validator.validString(updatedUser.firstName))
+      if (
+        !validator.validStringBool(updatedUser.firstName) ||
+        !validator.validName(updatedUser.firstName)
+      )
         errors.push("First name is not a valid string");
       updatedUser.firstName = xss(validator.trimString(updatedUser.firstName));
       updatedUserData.firstName = updatedUser.firstName;
     }
 
     if (updatedUser.lastName) {
-      if (!validator.validString(updatedUser.lastName))
+      if (
+        !validator.validStringBool(updatedUser.lastName) ||
+        !validator.validName(updatedUser.lastName)
+      )
         errors.push("Last name is not a valid string");
       updatedUser.lastName = xss(validator.trimString(updatedUser.lastName));
       updatedUserData.lastName = updatedUser.lastName;
@@ -313,7 +311,7 @@ router.post("/users/editProfile", async (req, res) => {
     }
 
     if (updatedUser.aboutMe) {
-      if (!validator.validString(updatedUser.aboutMe))
+      if (!validator.validStringBool(updatedUser.aboutMe))
         errors.push("About  Me is not a valid string");
       updatedUser.aboutMe = xss(validator.trimString(updatedUser.aboutMe));
       updatedUserData.aboutMe = updatedUser.aboutMe;
@@ -324,7 +322,7 @@ router.post("/users/editProfile", async (req, res) => {
 
     //nationality call use npm package in drop down box to be called on client side
     if (updatedUser.nationality) {
-      if (!validator.validString(updatedUser.nationality))
+      if (!validator.validStringBool(updatedUser.nationality))
         errors.push("Nationality is not a valid string");
       updatedUser.nationality = xss(
         validator.trimString(updatedUser.nationality)
@@ -337,7 +335,7 @@ router.post("/users/editProfile", async (req, res) => {
     //preference  in drop down box to be called on client side
     //gender - Male, Female, Others drop box
     if (updatedUser.gender) {
-      if (!validator.validString(updatedUser.gender))
+      if (!validator.validStringBool(updatedUser.gender))
         errors.push("Gender is not a valid string");
       updatedUser.gender = xss(validator.trimString(updatedUser.gender));
       updatedUserData.gender = updatedUser.gender;
@@ -348,27 +346,37 @@ router.post("/users/editProfile", async (req, res) => {
 
     if (updatedUser.preference) {
       if (updatedUser.preference.drinking) {
-        if (!validator.validString(updatedUser.preference.drinking))
+        if (!validator.validStringBool(updatedUser.preference.drinking))
           errors.push("Not a type boolean");
+        //updatedUserData["preference"]["drinking"] = updatedUser.preference.drinking;
       }
       if (updatedUser.preference.smoking) {
-        if (!validator.validString(updatedUser.preference.smoking))
+        if (!validator.validStringBool(updatedUser.preference.smoking))
           errors.push("Not a type boolean");
+        //updatedUserData.preference.smoking = updatedUser.preference.smoking
       }
       if (updatedUser.preference.food) {
         validator.validArray(updatedUser.preference.food, "food");
+        //updatedUserData.preference.food = updatedUser.preference.food
       }
-      // if (updatedUser.preference.budget) {
-      //   console.log(updatedUser.preference.budget);
-      // }
+
       if (updatedUser.preference.room) {
         validator.validArray(updatedUser.preference.room, "room");
+        //updatedUserData.preference.room = updatedUser.preference.room
+      } else {
+        errors.push("Atleast one room preference needs to be checked");
       }
       if (updatedUser.preference.location) {
         validator.validString(updatedUser.preference.location, "location");
+        //updatedUserData.preference.location = updatedUser.preference.location
+      } else {
+        errors.push("Atleast one location preference needs to be checked");
       }
       if (updatedUser.preference.home_type) {
         validator.validArray(updatedUser.preference.home_type, "home_type");
+        //updatedUserData.preference.home_type = updatedUser.preference.home_type;
+      } else {
+        errors.push("Atleast one hometype preference needs to be checked");
       }
       updatedUserData.preference = updatedUser.preference;
     }
@@ -377,6 +385,7 @@ router.post("/users/editProfile", async (req, res) => {
       return res.status(400).render("users/editUser", {
         errors: errors,
         hasErrors: true,
+        userLoggedIn: true,
       });
     }
     try {
@@ -386,7 +395,7 @@ router.post("/users/editProfile", async (req, res) => {
       //return res.render("users/index", { userInfo: userInfo });
     } catch (e) {
       // return res.status(400).json(e);
-      return res.status(500).render("error");
+      return res.status(500).render("error", { errors: e, userLoggedIn: true });
     }
   } else {
     return res.render("login");
@@ -403,8 +412,8 @@ router.get("/users/myProfile/posts", async (req, res) => {
         all_post: all_post,
         userLoggedIn: true,
       });
-    } catch {
-      return res.status(500).render("error");
+    } catch (e) {
+      return res.status(500).render("error", { errors: e, userLoggedIn: true });
       // return res.render("error", {});
     }
   }
@@ -417,9 +426,11 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
 
   if (req.session.user) {
     try {
+      let errors = [];
       let postid = validator.validId(req.params.postid);
       let post = await posts.getPostById(postid);
-      if (!post) throw "post doesnt exists";
+      if (!post) errors.push("post doesnt exists");
+
       let all_post = await posts.createSavedPost(postid, req.session.user);
       //create handlebar which says post saved
       //return res.send(all_post);
@@ -429,12 +440,11 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
     } catch (e) {
       //render handlebar that says user cant save own post
 
-      return res.status(400).render("error");
+      return res.status(500).render("error", { errors: e, userLoggedIn: true });
     }
   } else {
     return res.redirect("/login");
   }
-  //return res.render("login", {});
 });
 
 //GET METHOD for myProfile/savedPosts
@@ -443,13 +453,14 @@ router.get("/users/myProfile/savedPosts", async (req, res) => {
     try {
       let all_post = await posts.getSavedPostByuserId(req.session.user);
       // return res.send(all_post);
+
       return res.render("users/index", {
         allPost: all_post,
         userLoggedIn: true,
       });
       //alert("Post Saved");
     } catch {
-      console.log("Post no longer available!");
+      return res.status(500).render("error", { errors: e, userLoggedIn: true });
 
       // return res.render("error", {});
     }
@@ -471,10 +482,8 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
       //return res.send(all_post);
 
       //return res.render("users/userPost", { allPost: all_post, userLoggedIn:true });
-    } catch {
-      console.log("err");
-
-      // return res.render("error", {});
+    } catch (e) {
+      return res.status(500).render("error", { errors: e, userLoggedIn: true });
     }
   } else {
     return res.redirect("/login");
@@ -484,14 +493,40 @@ router.post("/users/myProfile/savedPosts/:postid", async (req, res) => {
 router.post("/users/recommendation", async (req, res) => {});
 router.get("/users/recommendation", async (req, res) => {
   if (req.session.user) {
-    let userList = await users.userRecommendation(req.session.user);
-    console.log(userList);
+    try {
+      var userList = await users.userRecommendation(req.session.user);
+    } catch (e) {
+      let errors = [];
+
+      errors.push(e);
+      return res.status(404).render("users/userRec", {
+        hasErrors: true,
+        userLoggedIn: true,
+        errors: errors,
+      });
+    }
     return res.status(200).render("users/userRec", {
       userRec: userList,
       userLoggedIn: true,
     });
   } else {
-    return res.status(403).json({ error: "Not aunthencticated" });
+    return res.redirect("/login");
+  }
+});
+
+router.get("/users/checkUser/:id", async (req, res) => {
+  try {
+    req.params.id = validator.validId(req.params.id);
+    const userInfo = await users.getUserById(req.params.id);
+    if (userInfo !== null) {
+      userInfo._id = userInfo._id.toString();
+      return res.render("users/showUser", {
+        userInfo: userInfo,
+        userLoggedIn: true,
+      });
+    }
+  } catch (e) {
+    return res.render("error", { errors: e, userLoggedIn: true });
   }
 });
 

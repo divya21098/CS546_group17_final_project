@@ -5,67 +5,61 @@
                 <div class="card shadow border mt-2">
                     <div class="card-body d-flex flex-column align-items-center">
                         <div class="register-page">
-                            {{!-- id="edit-form" --}}
-                            <form id="edit-form">
+                            {{! id="edit-form" }}
+                            <form id="edit-form" action="/users/editProfile" method="POST">
 
                                 <!-- First name input -->
                                 <div class="form-outline mb-4">
-                                    <label class="form-label firstName" for="firstName">Your First Name</label>
-
+                                    <label class="form-label firstName" for="firstName">Your First
+                                        Name</label>
 
                                     <input type="text" id="editFirstName" name="firstName" class="form-control"
-                                        placeholder="Enter first name" value="{{userInfo.firstName}}">
+                                        placeholder="Enter first name" value="{{userInfo.firstName}}" />
 
-                                    <div class="alert alert-danger div-text" role="alert" id="no-edit-first-name" hidden>Please enter your First Name</div>
+                                    <div class="alert alert-danger div-text" role="alert" id="no-edit-first-name"
+                                        hidden>Please enter your First Name</div>
 
                                 </div>
 
                                 <!-- Last name input -->
                                 <div class="form-outline mb-4">
-                                    <label class="form-label lastName" for="lastName">Your Last Name</label>
+                                    <label class="form-label lastName" for="lastName">Your Last
+                                        Name</label>
 
                                     <input type="text" id="editLastName" name="lastName" class="form-control"
-                                        placeholder="Enter last name" value="{{userInfo.lastName}}">
-                                    <div class="alert alert-danger div-text" role="alert" id="no-edit-last-name" hidden>Please enter your Last Name</div>
+                                        placeholder="Enter last name" value="{{userInfo.lastName}}" />
+                                    <div class="alert alert-danger div-text" role="alert" id="no-edit-last-name" hidden>
+                                        Please enter your Last Name</div>
                                 </div>
 
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label emailId" for="emailId">Your Email</label>
 
-                                    
                                     <input type="email" id="editEmailId" name="emailId" pattern=".+@stevens\.edu"
-                                        class="form-control" placeholder="Enter your Email" value="{{userInfo.emailId}}" readonly>
-                                        <div class="alert alert-danger div-text" role="alert" id="no-edit-email" hidden>Please enter your Email</div>
+                                        class="form-control" placeholder="Enter your Email" value="{{userInfo.emailId}}"
+                                        readonly />
+                                    <div class="alert alert-danger div-text" role="alert" id="no-edit-email" hidden>
+                                        Please enter your Email</div>
                                 </div>
-
-                                <!-- Password input -->
-                                <!--
-                                <div class="form-outline mb-4">
-                                    <label class="form-label password" for="password">Your Password</label>
-
-                                    
-                                    <input type="password" id="password" name="password" class="form-control"
-                                        placeholder="Enter your password" value="{{userInfo.password}}" readonly>
-                                        <div id="no-password" class="alert alert-danger div-text" role="alert" hidden>Please enter your password</div>
-
-                                </div> -->
 
                                 <!-- Age input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label age" for="age">Your Age</label>
                                     <input type="number" class="form-control" id="editAge" min="22" max="80" name="age"
-                                        placeholder="Enter your age" value="{{userInfo.age}}"/>
-                                    <div id="no-edit-age" class="alert alert-danger div-text" role="alert" hidden>Please enter your age</div>
+                                        placeholder="Enter your age" value="{{userInfo.age}}" />
+                                    <div id="no-edit-age" class="alert alert-danger div-text" role="alert" hidden>Please
+                                        enter your age</div>
                                 </div>
-
 
                                 <!-- Phone input -->
                                 <div class="form-outline mb-4">
-                                    <label class="form-label phoneNumber" for="phoneNumber">Your Phone No.</label>
+                                    <label class="form-label phoneNumber" for="phoneNumber">Your
+                                        Phone No.</label>
                                     <input type="number" class="form-control" id="editPhoneNumber" name="phoneNumber"
-                                        placeholder="Enter your phone number" value="{{userInfo.phoneNumber}}"/>
-                                    <div id="no-edit-phone" class="alert alert-danger div-text" role="alert" hidden>Please enter your phone number
+                                        placeholder="Enter your phone number" value="{{userInfo.phoneNumber}}" />
+                                    <div id="no-edit-phone" class="alert alert-danger div-text" role="alert" hidden>
+                                        Please enter your phone number
                                     </div>
                                 </div>
 
@@ -73,18 +67,20 @@
                                 <div class="form-outline mb-4">
                                     <label class="form-label gender" for="gender">Your Gender</label>
                                     <select class="custom-select" id="editGender" name="gender">
-                                        <option selected>{{userInfo.gender}}</option>
+                                        <option value="" selected>{{userInfo.gender}}</option>
                                         <option value="male">Male</option>
                                         <option value="female">Female</option>
                                         <option value="other">Other</option>
                                         <option value="dontdisclose">Don't wish to disclose</option>
                                     </select>
-                                    <div id="no-edit-gender" class="alert alert-danger div-text" role="alert" hidden>Please select a gender</div>
+                                    <div id="no-edit-gender" class="alert alert-danger div-text" role="alert" hidden>
+                                        Please select a gender</div>
                                 </div>
 
                                 <!-- Nationality input -->
                                 <div class="form-outline mb-4">
-                                    <label class="form-label nationality" for="nationality">Your Nationality</label>
+                                    <label class="form-label nationality" for="nationality">Your
+                                        Nationality</label>
                                     <select class="custom-select" id="editNationality" name="nationality">
                                         <option selected>{{userInfo.nationality}}</option>
                                         <option value="">Other</option>
@@ -266,7 +262,8 @@
                                         <option value="thai">Thai</option>
                                         <option value="togolese">Togolese</option>
                                         <option value="tongan">Tongan</option>
-                                        <option value="trinidadian or tobagonian">Trinidadian or Tobagonian</option>
+                                        <option value="trinidadian or tobagonian">Trinidadian or
+                                            Tobagonian</option>
                                         <option value="tunisian">Tunisian</option>
                                         <option value="turkish">Turkish</option>
                                         <option value="tuvaluan">Tuvaluan</option>
@@ -281,31 +278,33 @@
                                         <option value="zambian">Zambian</option>
                                         <option value="zimbabwean">Zimbabwean</option>
                                     </select>
-                                    <div id="no-edit-nationality" class="alert alert-danger div-text" role="alert" hidden>Please select a nationality</div>
+                                    <div id="no-edit-nationality" class="alert alert-danger div-text" role="alert"
+                                        hidden>Please select a nationality</div>
                                 </div>
 
                                 <!-- About-me input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label aboutMe" for="aboutMe" name="aboutMe">About me</label>
-                                    <textarea class="form-control" id="editAboutMe" name="aboutMe" rows="5"> {{userInfo.aboutMe}} </textarea>
-                                    <div id="no-edit-aboutme" class="alert alert-danger div-text" role="alert" hidden>Please enter something about yourself
+                                    <textarea class="form-control" id="editAboutMe" name="aboutMe"
+                                        rows="5"> {{userInfo.aboutMe}} </textarea>
+                                    <div id="no-edit-aboutme" class="alert alert-danger div-text" role="alert" hidden>
+                                        Please enter something about yourself
                                     </div>
                                 </div>
-
 
                                 <!-- Preferences input -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label preference" id="editPreference" name="preference">Your
                                         Preferences</label>
-                                    <br>
+                                    <br />
                                     <div class="form-check form-check-inline">
                                         {{#if (eq userInfo.preference.drinking "Drinking")}}
                                         <input class="form-check-input" type="radio" name="preference[drinking]"
-                                            id="drinking" value="Drinking" checked>
+                                            id="drinking" value="Drinking" checked />
                                         <label class="form-check-label" for="drinking">Drinking</label>
                                         {{else}}
                                         <input class="form-check-input" type="radio" name="preference[drinking]"
-                                            id="drinking" value="Drinking">
+                                            id="drinking" value="Drinking" />
                                         <label class="form-check-label" for="drinking">Drinking</label>
                                         {{/if}}
                                     </div>
@@ -313,26 +312,27 @@
                                     <div class="form-check form-check-inline">
                                         {{#if (eq userInfo.preference.drinking "No Drinking")}}
                                         <input class="form-check-input" type="radio" name="preference[drinking]"
-                                            id="nodrinking" value="No Drinking" checked>
-                                        <label class="form-check-label" for="nodrinking">No Drinking</label>
+                                            id="nodrinking" value="No Drinking" checked />
+                                        <label class="form-check-label" for="nodrinking">No
+                                            Drinking</label>
                                         {{else}}
                                         <input class="form-check-input" type="radio" name="preference[drinking]"
-                                            id="nodrinking" value="No Drinking">
-                                        <label class="form-check-label" for="nodrinking">No Drinking</label>
+                                            id="nodrinking" value="No Drinking" />
+                                        <label class="form-check-label" for="nodrinking">No
+                                            Drinking</label>
                                         {{/if}}
                                     </div>
 
-                                    <br>
-
+                                    <br />
 
                                     <div class="form-check form-check-inline">
                                         {{#if (eq userInfo.preference.smoking "Smoking")}}
                                         <input class="form-check-input" type="radio" name="preference[smoking]"
-                                            id="smoking" value="Smoking" checked>
+                                            id="smoking" value="Smoking" checked />
                                         <label class="form-check-label" for="smoking">Smoking</label>
                                         {{else}}
                                         <input class="form-check-input" type="radio" name="preference[smoking]"
-                                            id="smoking" value="Smoking">
+                                            id="smoking" value="Smoking" />
                                         <label class="form-check-label" for="smoking">Smoking</label>
                                         {{/if}}
                                     </div>
@@ -340,30 +340,29 @@
                                     <div class="form-check form-check-inline">
                                         {{#if (eq userInfo.preference.smoking "No Smoking")}}
                                         <input class="form-check-input" type="radio" name="preference[smoking]"
-                                            id="nosmoking" value="No Smoking" checked>
+                                            id="nosmoking" value="No Smoking" checked />
                                         <label class="form-check-label" for="nosmoking">No Smoking</label>
                                         {{else}}
                                         <input class="form-check-input" type="radio" name="preference[smoking]"
-                                            id="nosmoking" value="No Smoking">
+                                            id="nosmoking" value="No Smoking" />
                                         <label class="form-check-label" for="nosmoking">No Smoking</label>
                                         {{/if}}
                                     </div>
 
-                                    <br>
-
+                                    <br />
 
                                     <div class="form-check form-check-inline">
                                         {{#if (includes userInfo.preference.food "Vegetarian")}}
                                         <input class="form-check-input" type="checkbox" name="preference[food]"
-                                            id="vegetarian" value="Vegetarian" checked>
+                                            id="vegetarian" value="Vegetarian" checked />
                                         <label class="form-check-label" for="vegetarian">Vegetarian</label>
                                         {{else if (eq userInfo.preference.food "Vegetarian")}}
                                         <input class="form-check-input" type="checkbox" name="preference[food]"
-                                            id="vegetarian" value="Vegetarian" checked>
+                                            id="vegetarian" value="Vegetarian" checked />
                                         <label class="form-check-label" for="vegetarian">Vegetarian</label>
                                         {{else}}
                                         <input class="form-check-input" type="checkbox" name="preference[food]"
-                                            id="vegetarian" value="Vegetarian">
+                                            id="vegetarian" value="Vegetarian" />
                                         <label class="form-check-label" for="vegetarian">Vegetarian</label>
                                         {{/if}}
                                     </div>
@@ -371,31 +370,34 @@
                                     <div class="form-check form-check-inline">
                                         {{#if (includes userInfo.preference.food "Non Vegetarian")}}
                                         <input class="form-check-input" type="checkbox" name="preference[food]"
-                                            id="nonvegetarian" value="Non Vegetarian" checked>
-                                        <label class="form-check-label" for="nonvegetarian">Non Vegetarian</label>
+                                            id="nonvegetarian" value="Non Vegetarian" checked />
+                                        <label class="form-check-label" for="nonvegetarian">Non
+                                            Vegetarian</label>
                                         {{else if (eq userInfo.preference.food "Non Vegetarian")}}
                                         <input class="form-check-input" type="checkbox" name="preference[food]"
-                                            id="nonvegetarian" value="Non Vegetarian" checked>
-                                        <label class="form-check-label" for="nonvegetarian">Non Vegetarian</label>
+                                            id="nonvegetarian" value="Non Vegetarian" checked />
+                                        <label class="form-check-label" for="nonvegetarian">Non
+                                            Vegetarian</label>
                                         {{else}}
                                         <input class="form-check-input" type="checkbox" name="preference[food]"
-                                            id="nonvegetarian" value="Non Vegetarian">
-                                        <label class="form-check-label" for="nonvegetarian">Non Vegetarian</label>
+                                            id="nonvegetarian" value="Non Vegetarian" />
+                                        <label class="form-check-label" for="nonvegetarian">Non
+                                            Vegetarian</label>
                                         {{/if}}
                                     </div>
 
                                     <div class="form-check form-check-inline">
                                         {{#if (includes userInfo.preference.food "Vegan")}}
                                         <input class="form-check-input" type="checkbox" name="preference[food]"
-                                            id="vegan" value="Vegan" checked>
+                                            id="vegan" value="Vegan" checked />
                                         <label class="form-check-label" for="vegan">Vegan</label>
                                         {{else if (eq userInfo.preference.food "Vegan")}}
                                         <input class="form-check-input" type="checkbox" name="preference[food]"
-                                            id="vegan" value="Vegan" checked>
+                                            id="vegan" value="Vegan" checked />
                                         <label class="form-check-label" for="vegan">Vegan</label>
                                         {{else}}
                                         <input class="form-check-input" type="checkbox" name="preference[food]"
-                                            id="vegan" value="Vegan">
+                                            id="vegan" value="Vegan" />
                                         <label class="form-check-label" for="vegan">Vegan</label>
                                         {{/if}}
                                     </div>
@@ -403,67 +405,73 @@
                                     <div class="form-check form-check-inline">
                                         {{#if (includes userInfo.preference.food "Eggitarian")}}
                                         <input class="form-check-input" type="checkbox" name="preference[food]"
-                                            id="eggitarian" value="Eggitarian" checked>
+                                            id="eggitarian" value="Eggitarian" checked />
                                         <label class="form-check-label" for="eggitarian">Eggitarian</label>
                                         {{else if (eq userInfo.preference.food "Eggitarian")}}
                                         <input class="form-check-input" type="checkbox" name="preference[food]"
-                                            id="eggitarian" value="Eggitarian" checked>
+                                            id="eggitarian" value="Eggitarian" checked />
                                         <label class="form-check-label" for="eggitarian">Eggitarian</label>
                                         {{else}}
                                         <input class="form-check-input" type="checkbox" name="preference[food]"
-                                            id="eggitarian" value="Eggitarian">
+                                            id="eggitarian" value="Eggitarian" />
                                         <label class="form-check-label" for="eggitarian">Eggitarian</label>
                                         {{/if}}
                                     </div>
 
-                                    <br>
+                                    <br />
 
                                     <div class="form-check form-check-inline">
                                         {{#if (includes userInfo.preference.room "Private Room")}}
                                         <input class="form-check-input" type="checkbox" name="preference[room]"
-                                            id="privateroom" value="Private Room" checked>
-                                        <label class="form-check-label" for="privateroom">Private Room</label>
+                                            id="privateroom" value="Private Room" checked />
+                                        <label class="form-check-label" for="privateroom">Private
+                                            Room</label>
                                         {{else if (eq userInfo.preference.room "Private Room")}}
                                         <input class="form-check-input" type="checkbox" name="preference[room]"
-                                            id="privateroom" value="Private Room" checked>
-                                        <label class="form-check-label" for="privateroom">Private Room</label>
+                                            id="privateroom" value="Private Room" checked />
+                                        <label class="form-check-label" for="privateroom">Private
+                                            Room</label>
                                         {{else}}
                                         <input class="form-check-input" type="checkbox" name="preference[room]"
-                                            id="privateroom" value="Private Room">
-                                        <label class="form-check-label" for="privateroom">Private Room</label>
+                                            id="privateroom" value="Private Room" />
+                                        <label class="form-check-label" for="privateroom">Private
+                                            Room</label>
                                         {{/if}}
                                     </div>
 
                                     <div class="form-check form-check-inline">
                                         {{#if (includes userInfo.preference.room "Shared Room")}}
                                         <input class="form-check-input" type="checkbox" name="preference[room]"
-                                            id="sharedroom" value="Shared Room" checked>
-                                        <label class="form-check-label" for="sharedroom">Shared Room</label>
+                                            id="sharedroom" value="Shared Room" checked />
+                                        <label class="form-check-label" for="sharedroom">Shared
+                                            Room</label>
                                         {{else if (eq userInfo.preference.room "Shared Room")}}
                                         <input class="form-check-input" type="checkbox" name="preference[room]"
-                                            id="sharedroom" value="Shared Room" checked>
-                                        <label class="form-check-label" for="sharedroom">Shared Room</label>
+                                            id="sharedroom" value="Shared Room" checked />
+                                        <label class="form-check-label" for="sharedroom">Shared
+                                            Room</label>
                                         {{else}}
                                         <input class="form-check-input" type="checkbox" name="preference[room]"
-                                            id="sharedroom" value="Shared Room">
-                                        <label class="form-check-label" for="sharedroom">Shared Room</label>
+                                            id="sharedroom" value="Shared Room" />
+                                        <label class="form-check-label" for="sharedroom">Shared
+                                            Room</label>
                                         {{/if}}
                                     </div>
 
-                                    <br>
+                                    <br />
 
                                     <div class="form-check form-check-inline">
                                         {{#if (includes userInfo.preference.home_type "Apartment")}}
                                         <input class="form-check-input" type="checkbox" name="preference[home_type]"
-                                            id="apartments" value="Apartment" checked>
+                                            id="apartments" value="Apartment" checked />
                                         <label class="form-check-label" for="apartments">Apartment</label>
                                         {{else if (eq userInfo.preference.home_type "Apartment")}}
                                         <input class="form-check-input" type="checkbox" name="preference[home_type]"
-                                            id="apartments" value="Apartment" checked>
+                                            id="apartments" value="Apartment" checked />
                                         <label class="form-check-label" for="apartments">Apartment</label>
                                         {{else}}
                                         <input class="form-check-input" type="checkbox" name="preference[home_type]"
-                                            id="apartments" value="Apartment">
+                                            id="apartments" value="Apartment" />
                                         <label class="form-check-label" for="apartments">Apartment</label>
                                         {{/if}}
                                     </div>
@@ -471,15 +479,15 @@
                                     <div class="form-check form-check-inline">
                                         {{#if (includes userInfo.preference.home_type "Condos")}}
                                         <input class="form-check-input" type="checkbox" name="preference[home_type]"
-                                            id="condos" value="Condos" checked>
+                                            id="condos" value="Condos" checked />
                                         <label class="form-check-label" for="condos">Condo</label>
                                         {{else if (eq userInfo.preference.home_type "Condos")}}
                                         <input class="form-check-input" type="checkbox" name="preference[home_type]"
-                                            id="condos" value="Condos" checked>
+                                            id="condos" value="Condos" checked />
                                         <label class="form-check-label" for="condos">Condo</label>
                                         {{else}}
                                         <input class="form-check-input" type="checkbox" name="preference[home_type]"
-                                            id="condos" value="Condos">
+                                            id="condos" value="Condos" />
                                         <label class="form-check-label" for="condos">Condo</label>
                                         {{/if}}
                                     </div>
@@ -487,40 +495,49 @@
                                     <div class="form-check form-check-inline">
                                         {{#if (includes userInfo.preference.home_type "Townhouse")}}
                                         <input class="form-check-input" type="checkbox" name="preference[home_type]"
-                                            id="townhouse" value="Townhouse" checked>
+                                            id="townhouse" value="Townhouse" checked />
                                         <label class="form-check-label" for="townhouse">Townhouse</label>
                                         {{else if (eq userInfo.preference.home_type "Townhouse")}}
                                         <input class="form-check-input" type="checkbox" name="preference[home_type]"
-                                            id="townhouse" value="Townhouse" checked>
+                                            id="townhouse" value="Townhouse" checked />
                                         <label class="form-check-label" for="townhouse">Townhouse</label>
                                         {{else}}
                                         <input class="form-check-input" type="checkbox" name="preference[home_type]"
-                                            id="townhouse" value="Townhouse">
+                                            id="townhouse" value="Townhouse" />
                                         <label class="form-check-label" for="townhouse">Townhouse</label>
                                         {{/if}}
                                     </div>
 
                                     <div class="form-check form-check-inline">
-                                        {{#if (includes userInfo.preference.home_type "Studio Apartment")}}
+                                        {{#if
+                                        (includes
+                                        userInfo.preference.home_type "Studio Apartment"
+                                        )
+                                        }}
                                         <input class="form-check-input" type="checkbox" name="preference[home_type]"
-                                            id="studioapt" value="Studio Apartment" checked>
-                                        <label class="form-check-label" for="studioapt">Studio Apartment</label>
-                                        {{else if (eq userInfo.preference.home_type "Studio Apartment")}}
+                                            id="studioapt" value="Studio Apartment" checked />
+                                        <label class="form-check-label" for="studioapt">Studio
+                                            Apartment</label>
+                                        {{else if (eq
+                                        userInfo.preference.home_type "Studio Apartment"
+                                        )}}
                                         <input class="form-check-input" type="checkbox" name="preference[home_type]"
-                                            id="studioapt" value="Studio Apartment" checked>
-                                        <label class="form-check-label" for="studioapt">Studio Apartment</label>
+                                            id="studioapt" value="Studio Apartment" checked />
+                                        <label class="form-check-label" for="studioapt">Studio
+                                            Apartment</label>
                                         {{else}}
                                         <input class="form-check-input" type="checkbox" name="preference[home_type]"
-                                            id="studioapt" value="Studio Apartment">
-                                        <label class="form-check-label" for="studioapt">Studio Apartment</label>
+                                            id="studioapt" value="Studio Apartment" />
+                                        <label class="form-check-label" for="studioapt">Studio
+                                            Apartment</label>
                                         {{/if}}
                                     </div>
 
-                                    <br>
+                                    <br />
 
-                                    <label for="preference[location]" name="preference[location]"></label>
+                                    <label for="location" name="preference[location]"></label>
                                     <select class="custom-select" name="preference[location]" id="location">
-                                        <option selected disabled>{{userInfo.preference.location}}</option>
+                                        <option value="" selected>{{userInfo.preference.location}}</option>
                                         <option value="Jersey City">Jersey City</option>
                                         <option value="Hoboken">Hoboken</option>
                                         <option value="Journal Square">Journal Square</option>
@@ -528,18 +545,24 @@
                                         <option value="Union City">Union City</option>
                                         <option value="Newport">Newport</option>
                                     </select>
-                                    
+
                                 </div>
 
-                                {{!-- <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"> --}}
-                                    {{!-- <button type="submit" class="btn btn-primary btn-lg"
-                                        id="buttonUpdateUser">Update</button> --}}
-                                
-                                {{!-- </div> --}}
+
                                 <div>
-                                    <button type="submit" class="btn btn-success">Create</button>
+                                    <button type="submit" class="btn btn-success">Update</button>
                                 </div>
                             </form>
+
+                            {{#if hasErrors}}
+                            <ul class="error-list">
+                                {{#each errors}}
+                                <li>
+                                    {{this}}
+                                </li>
+                                {{/each}}
+                            </ul>
+                            {{/if}}
 
                         </div>
                     </div>
@@ -548,20 +571,5 @@
         </div>
     </div>
 
-    {{#if hasErrors}}
-    <ul class="error-list">
-        {{#each errors}}
-        <li>
-            {{this}}
-        </li>
-        {{/each}}
-    </ul>
-    {{/if}}
 
-    {{!-- <script src="/public/js/editUser.js"></script> --}}
-    <!--
-    <script src="../public/js/errors.js"></script> 
-    -->
 </main>
-
-<script src="/public/js/editUser.js"></script>

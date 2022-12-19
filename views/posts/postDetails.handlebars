@@ -55,48 +55,37 @@
                         {{/each}}
 
                         <p>Apartment Details :</p>
-                        <p class="textIndent">{{posts.postBody}}</p>
+                        <p class="textIndent word-wrap">{{posts.postBody}}</p>
 
                         <p>Photos :</p>
 
                         <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto"></img>
                     </div>
                 </div>
-                <div class="card card-map mb-2 mx-auto" id="gmap" style="height:400px; width:100%;"></div>
+                <div class="card card-map mb-2 mx-auto" id="gmap" style="height:400px; width:100%;"
+                    aria-labelledby="Google map location"></div>
 
-                <!-- Some restaurants already have a pin on Google maps, and manual pin is somewhat inaccurate due to our estimation -->
-                {{!-- <div class="HoverDiv">
 
-                    <!--
-
-                        <img src="https://q-xx.bstatic.com/xdata/images/hotel/max1024x768/279319209.jpg?k=fa11770fb7da068fd656ebc055c3acdd4f364be2fa2ced61638cb46bdcfd7dc0&o="
-                            alt="Apartment Photo" class="aptPhoto mb-2" />
-
-                        -->
-
-                    <img src="/posts/postpic/{{posts._id}}" alt="Apartment Photo" class="aptPhoto mb-2" />
-
-                </div> --}}
                 <div class="card postcomments px-2">
                     <input type="hidden" name="post_id" id="post_id" value="{{posts._id}}" />
                     {{#if canComment}}
-                    {{!-- <p class="form-group">Enter a comment</p> --}}
-                    <div class="mt-2">
+                 
+                    <div class="form-group mt-2">
                         <form id="comments-form" method="POST" action="/comments/{{posts._id}}">
-                            <div class="form-group">
 
-                                <label class="commentText" for="commentText">Enter a
-                                    comment</label>
-                                <div class="input-group mb-3">
-                                    <br>
-                                    <input type="text" class="form-control" id="commentText" name="commentText"
-                                        placeholder="Enter comment here" />
-                                    <div class="input-group-append">
-                                        <span class="input-group-button" id="basic-addon2"><button type="submit"
-                                                class="btn btn-primary">Create</button></span>
-                                    </div>
+
+                            <label class="commentText" for="commentText">Enter a
+                                comment</label>
+                            <div class="input-group mb-3">
+                                <br>
+                                <input type="text" class="form-control" id="commentText" name="commentText"
+                                    placeholder="Enter comment here" />
+                                <div class="input-group-append">
+                                    <span class="input-group-button" id="basic-addon2"><button type="submit"
+                                            class="btn btn-primary">Create</button></span>
                                 </div>
                             </div>
+
 
                         </form>
                     </div>
@@ -106,45 +95,40 @@
 
                 <div class="card postcomments mt-2 px-2">
 
-                    {{!-- <div class="mt-2">
 
-                        <form id="comments-form" method="POST" action="/comments/{{posts._id}}">
-
-                            <div class="form-group">
-                                <label class="commentText" for="commentText"><strong>Enter a
-                                        comment</strong></label>
-
-
-                                <div class="input-group mb-3">
-                                    <br>
-                                    <input type="text" class="form-control" id="commentText" name="commentText"
-                                        placeholder="Enter comment here" />
-                                    <div class="input-group-append">
-                                        <span class="input-group-button" id="basic-addon2"><button type="submit"
-                                                class="btn btn-primary">Create</button></span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-                        </form>
-
-                    </div> --}}
-
-                    <div class=" card comment-area px-2 mt-2 mb-2" id="comment-area">
+                    <div class="comment-area px-2 mt-2 mb-2" id="comment-area">
                         {{#each posts.comments}}
-                        {{@key}} : {{this.userId}}<br>
-                        {{this.commentText}}<br>
-                        <hr>
+                        <div class="chat">
+                            <div class="yours messages">
+                                <div class="message last">
+                                    {{this.commentText}}
+                                    <hr>
+                                </div>
+                                <div class="bold"> - {{this.userId}}</div>
+                                <hr>
+                            </div>
+                        </div>
+
+
+
                         {{/each}}
+
                     </div>
+                    {{#if hasErrors}}
+                    <ul id="error-list" class="error-list">
+                        {{#each errors}}
+                        <li>
+                            {{this}}
+                        </li>
+                        {{/each}}
+                    </ul>
+                    {{/if}}
                 </div>
             </div>
-            </d iv>
         </div>
+    </div>
 
-        <iframe name="frame" style="display: none;"></iframe>
+    <iframe name="frame" style="display: none;"></iframe>
 
 
     </div>
@@ -154,9 +138,10 @@
     <script>
         function showAlert() {
             if ($("#myAlert").find("div#myAlert2").length == 0) {
-                $("#myAlert").append("<div class='alert alert-success alert-dismissable' id='myAlert2'> <button type='button' class='close' data-dismiss='alert'  aria-hidden='true'>&times;</button> Success! message sent successfully.</div>");
+                $("#myAlert").append("<div class='alert alert-success alert-dismissable' id='myAlert2'> <button type='button' class='close' data-dismiss='alert'  aria-hidden='true'>&times;</button> </div>");
             }
             $("#myAlert").css("display", "");
+
         }
 
         const btn = document.getElementById('btn');
@@ -172,6 +157,3 @@
     </script>
 
 </main>
-
-<script src="/public/js/comment-ajax.js"></script>
-<script src="/public/js/comment.js"></script>

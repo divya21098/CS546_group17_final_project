@@ -3,12 +3,12 @@ const mongoCollections = require("../config/mongoCollections");
 const { ObjectId } = require("mongodb");
 const validation = require("../helper");
 const userData = require("./users");
-// const comments = mongoCollections.comments;
+
 const users = mongoCollections.users;
 const posts = mongoCollections.posts;
 
 const createComment = async (postId, userId, commentText) => {
-  console.log("in comm create data");
+
   if (!validation.validId(postId)) throw "postId must be given as a string";
   if (!validation.validString(userId)) throw "userId must be given as a string";
   if (!validation.validString(commentText))

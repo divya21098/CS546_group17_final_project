@@ -2,6 +2,15 @@
     <form method="POST" action="/posts/delete/{{post._id}}">
         <button type="submit" >Delete Post</button>
     </form>
+    {{#if hasErrors}}
+            <ul id="error-list" class="error-list">
+                {{#each errors}}
+                <li>
+                    {{this}}
+                </li>
+                {{/each}}
+            </ul>
+    {{/if}}
 </main>
 
 <!-- add button which call delete route on click -->

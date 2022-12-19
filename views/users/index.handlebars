@@ -2,9 +2,8 @@
     <div class="container user-details-card">
         <div class="card mt-2 mb-2">
             <div class="row">
-                <div class="col-sm">
-                    <img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-512.png" style="width: 150px;"
-                        alt="Avatar" />
+                <div class="col-sm div-row-image">
+                    <img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-512.png" alt="Avatar" />
                 </div>
                 <div class="col-sm ml-3 mt-3 mb-3">
                     <p>{{userInfo.firstName}} {{userInfo.lastName}}</p>
@@ -23,66 +22,75 @@
                 </div>
 
                 <form method="get" action="/users/myProfileEdit">
-                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button type="submit" class="btn btn-primary btn-lg" id="editUser">Edit User</button>
-                </div>
+                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                        <button type="submit" class="btn btn-primary" id="editUser">Edit User</button>
+                    </div>
                 </form>
 
             </div>
 
         </div>
 
-        <div class="userPostDisplay">
-            <button id="allUserPostsButton">Your Posts</button>
-            <button id="allUserSavedPostsButton">Your Saved Posts</button>
-            <div class="your-posts" id="yourPosts" style="display: none;">
-                {{#each userInfo.postId}}
-                <a href="http://localhost:3000/posts/{{this}}">{{this}} </a><br>
+        <div class="userPostDisplay px-2">
+            <button id="allUserPostsButton" class="btn btn-primary">Check all Posts</button>
+            <button id="allUserSavedPostsButton" class="btn btn-primary">Check my Saved Posts</button>
+            <div class="card-your-posts mt-2 mb-2 px-2" id="yourPosts">
+                <ol id="customlist">
+                    {{#each userInfo.postId}}
+                    <li>
+                        <a href="http://localhost:3000/posts/{{this}}">{{this}}</a>
 
-                <form method="post" action="/posts/delete/{{this}}">
-                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button type="submit" class="btn btn-primary btn-lg" id="deletePosts">Delete</button>
-                </div>
-                </form>
-                <form method="get" action="/posts/edit/{{this}}">
-                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button type="submit" class="btn btn-primary btn-lg" id="editPost">Edit</button>
-                </div>
-                </form>
-                {{/each}}
+                        <div class="btn-group px-2 mb-1">
+                            <form method="post" action="/posts/delete/{{this}}">
+                                <div class="d-flex justify-content-center px-1">
+                                    <button type="submit" class="btn btn-dark btn-sm" id="deletePost"><label
+                                            for="deletePost">
+                                        </label><i class="bi bi-trash"></i></button>
+                                </div>
+                            </form>
+
+                            <form method="get" action="/posts/edit/{{this}}">
+                                <div class="d-flex justify-content-center px-1">
+                                    <button type="submit" class="btn btn-dark btn-sm" id="editPost"><label
+                                            for="editPost">
+
+                                        </label><i class="bi bi-pen"></i></button>
+                                </div>
+                            </form>
+                        </div>
+
+
+
+
+
+
+                    </li>
+                    {{/each}}
+
+                </ol>
+
             </div>
-            <div class="your-saved-posts" id="yourSavedPosts" style="display: none;">
-                {{#each userInfo.savedPost}}
-                <a href="http://localhost:3000/posts/{{this}}">
-                    {{this}} </a>
-                {{/each}}
+            <div class="card-your-saved-posts mt-2 mb-2 px-2" id="yourSavedPosts">
+                <ol id="customlist">
+                    {{#each userInfo.savedPost}}
+                    <li><a href="http://localhost:3000/posts/{{this}}">{{this}} </a></li>
+                    {{/each}}
+
+                </ol>
             </div>
         </div>
 
 
 
     </div>
-{{!-- 
-    <div class="userPostDisplay">
-        <button id="allUserPostsButton">Your Posts</button>
-        <button id="allUserSavedPostsButton">Your Saved Posts</button>
-        <div class="your-posts" id="yourPosts" style="display: none;">
-            {{#each userInfo.postId}}
-                <a href="http://localhost:3000/posts/{{this}}">{{this}} </a>
-            {{/each}}
-        </div>
-        <div class="your-saved-posts" id="yourSavedPosts" style="display: none;">
-            {{#each userInfo.savedPost}}
-                <a href="http://localhost:3000/posts/{{this}}">{{this}} </a>
-            {{/each}}        </div>
-    </div> --}}
+
 
     <script>
-        document.getElementById("allUserPostsButton").addEventListener("click", function(){
+        document.getElementById("allUserPostsButton").addEventListener("click", function () {
             document.getElementById("yourPosts").style.display = 'block';
             document.getElementById("yourSavedPosts").style.display = 'none';
         });
-        document.getElementById("allUserSavedPostsButton").addEventListener("click", function(){
+        document.getElementById("allUserSavedPostsButton").addEventListener("click", function () {
             document.getElementById("yourPosts").style.display = 'none';
             document.getElementById("yourSavedPosts").style.display = 'block';
         });
