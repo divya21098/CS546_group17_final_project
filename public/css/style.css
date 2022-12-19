@@ -333,7 +333,7 @@ h1 {
   border-radius: 0;
 }
 
-.black{
+.black {
   color: #000;
 }
 
@@ -342,4 +342,167 @@ h1 {
   bottom: 0;
   left: 0;
   width: 100%;
+}
+
+/* Index Static */
+
+#hero-index {
+  width: 100%;
+  height: 100vh;
+  background-image: url("https://ca-times.brightspotcdn.com/dims4/default/e5f45ec/2147483647/strip/true/crop/2000x1125+0+0/resize/1440x810!/quality/80/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb8%2F7b%2Fd99744af36549bab5a47b89f2448%2Fla-fi-co-living-pictures-20160317-008");
+  background-size: cover;
+  position: fixed;
+}
+
+.justify-content-center {
+  justify-content: center !important;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.section-index {
+  padding: 80px 0;
+  overflow: hidden;
+}
+
+.card-index {
+  width: 50rem;
+  opacity: 0.5;
+}
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+section {
+  display: block;
+}
+
+.body-index {
+  font-family: "Open Sans", sans-serif;
+  color: #444444;
+}
+
+.body-index {
+  margin: 0;
+  font-family: var(--bs-body-font-family);
+  font-size: var(--bs-body-font-size);
+  font-weight: var(--bs-body-font-weight);
+  line-height: var(--bs-body-line-height);
+  color: var(--bs-body-color);
+  text-align: var(--bs-body-text-align);
+  background-color: var(--bs-body-bg);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --swiper-navigation-size: 44px;
+}
+
+:root {
+  --swiper-theme-color: #007aff;
+}
+
+#hero-index:before {
+  content: "";
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.h1-index {
+  margin: 0 0 10px 0;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 56px;
+  color: black;
+  font-family: "Raleway", sans-serif;
+}
+
+.word-wrap {
+  overflow-wrap: break-word;
+}
+
+.word-wrap-index {
+  overflow-wrap: break-word;
+  font-family: "Raleway", sans-serif;
+  font-size: 20px;
+}
+
+.card-index {
+  width: 50rem;
+  opacity: 0.5;
+}
+
+/* postDetails */
+
+/* posts Index.handlebars */
+
+.card-your-posts {
+  display: none;
+}
+
+.card-your-saved-posts {
+  display: none;
+}
+
+.div-row-image {
+  width: 150px;
+}
+
+/* showUser */
+
+.div-showUser-img {
+  width: 150px;
+}
+
+/* userRec */
+
+.cards-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.card-userRec img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.card-userRec {
+  margin: 0 0.5em;
+  box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+  border: none;
+  border-radius: 0;
+}
+
+.carousel-inner {
+  padding: 1em;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  background-color: #e1e1e1;
+  width: 5vh;
+  height: 5vh;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media (min-width: 768px) {
+  .card-userRec img {
+    height: 11em;
+  }
 }
